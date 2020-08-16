@@ -68,11 +68,15 @@ public:
 	void personality(u8 v);
 	
 	// Items.
-	std::unique_ptr<Item> song();
+	u8 song();
+	void song(u8 sng);
 	std::unique_ptr<Item> shirt();
-	std::unique_ptr<Item> wallpaper();
-	std::unique_ptr<Item> carpet();
+	u8 wallpaper();
+	void wallpaper(u8 wlp);
+	u8 carpet();
+	void carpet(u8 crp);
 	std::unique_ptr<Item> umbrella();
+	
 	std::unique_ptr<Item> furniture(int slot);
 private:
 	u8* villagerPointer() const {

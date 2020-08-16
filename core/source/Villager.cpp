@@ -106,25 +106,43 @@ void Villager::personality(u8 v) {
 	}
 }
 
-/* NOTE: Every item there besides the furnitures seem to be indexes [u8]. */
+/* NOTE: Wallpaper, Carpet and the Song seems to be an uint8_t index [u8]. */
 
 // Villager Song.
-std::unique_ptr<Item> Villager::song() {
+u8 Villager::song() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			return std::make_unique<Item>(data, offset + 0x6D0);
+			return this->villagerPointer()[0x6D0];
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			return std::make_unique<Item>(data, offset + 0x59A);
+			return this->villagerPointer()[0x59A];
 		case WWRegion::KOR_REV1:
-			return std::make_unique<Item>(data, offset + 0x7AC);
+			return this->villagerPointer()[0x7AC];
 		case WWRegion::UNKNOWN:
-			return nullptr;
+			return 0;
 	}
 
-	return nullptr;
+	return 0;
+}
+void Villager::song(u8 sng) {
+	switch(this->region) {
+		case WWRegion::USA_REV0:
+		case WWRegion::USA_REV1:
+		case WWRegion::EUR_REV1:
+			this->villagerPointer()[0x6D0] = sng;
+			break;
+		case WWRegion::JPN_REV0:
+		case WWRegion::JPN_REV1:
+			this->villagerPointer()[0x59A] = sng;
+			break;
+		case WWRegion::KOR_REV1:
+			this->villagerPointer()[0x7AC] = sng;
+			break;
+		case WWRegion::UNKNOWN:
+			break;
+	}
 }
 
 // Villager Shirt.
@@ -133,12 +151,12 @@ std::unique_ptr<Item> Villager::shirt() {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			return std::make_unique<Item>(data, offset + 0x6EC);
+			return std::make_unique<Item>(this->data, this->offset + 0x6EC);
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			return std::make_unique<Item>(data, offset + 0x5AE);
+			return std::make_unique<Item>(this->data, this->offset + 0x5AE);
 		case WWRegion::KOR_REV1:
-			return std::make_unique<Item>(data, offset + 0x7CA);
+			return std::make_unique<Item>(this->data, this->offset + 0x7CA);
 		case WWRegion::UNKNOWN:
 			return nullptr;
 	}
@@ -147,55 +165,91 @@ std::unique_ptr<Item> Villager::shirt() {
 }
 
 // Villager Wallpaper.
-std::unique_ptr<Item> Villager::wallpaper() {
+u8 Villager::wallpaper() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			return std::make_unique<Item>(data, offset + 0x6CC);
+			return this->villagerPointer()[0x6CC];
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			return std::make_unique<Item>(data, offset + 0x596);
+			return this->villagerPointer()[0x596];
 		case WWRegion::KOR_REV1:
-			return std::make_unique<Item>(data, offset + 0x7A8);
+			return this->villagerPointer()[0x7A8];
 		case WWRegion::UNKNOWN:
-			return nullptr;
+			return 0;
 	}
 
-	return nullptr;
+	return 0;
+}
+void Villager::wallpaper(u8 wlp) {
+	switch(this->region) {
+		case WWRegion::USA_REV0:
+		case WWRegion::USA_REV1:
+		case WWRegion::EUR_REV1:
+			this->villagerPointer()[0x6CC] = wlp;
+			break;
+		case WWRegion::JPN_REV0:
+		case WWRegion::JPN_REV1:
+			this->villagerPointer()[0x596] = wlp;
+			break;
+		case WWRegion::KOR_REV1:
+			this->villagerPointer()[0x7A8] = wlp;
+			break;
+		case WWRegion::UNKNOWN:
+			break;
+	}
 }
 
 // Villager Carpet.
-std::unique_ptr<Item> Villager::carpet() {
+u8 Villager::carpet() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			return std::make_unique<Item>(data, offset + 0x6CE);
+			return this->villagerPointer()[0x6CE];
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			return std::make_unique<Item>(data, offset + 0x598);
+			return this->villagerPointer()[0x598];
 		case WWRegion::KOR_REV1:
-			return std::make_unique<Item>(data, offset + 0x7AA);
+			return this->villagerPointer()[0x7AA];
 		case WWRegion::UNKNOWN:
-			return nullptr;
+			return 0;
 	}
 
-	return nullptr;
+	return 0;
+}
+void Villager::carpet(u8 crp) {
+	switch(this->region) {
+		case WWRegion::USA_REV0:
+		case WWRegion::USA_REV1:
+		case WWRegion::EUR_REV1:
+			this->villagerPointer()[0x6CE] = crp;
+			break;
+		case WWRegion::JPN_REV0:
+		case WWRegion::JPN_REV1:
+			this->villagerPointer()[0x598] = crp;
+			break;
+		case WWRegion::KOR_REV1:
+			this->villagerPointer()[0x7AA] = crp;
+			break;
+		case WWRegion::UNKNOWN:
+			break;
+	}
 }
 
-// Villager Umbrella.
+// Villager Umbrella. Unsure if Item or u8 index yet.
 std::unique_ptr<Item> Villager::umbrella() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			return std::make_unique<Item>(data, offset + 0x6D2); // Needs checks.
+			return std::make_unique<Item>(this->data, this->offset + 0x6D2); // Needs checks.
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			return std::make_unique<Item>(data, offset + 0x59C); // Needs checks.
+			return std::make_unique<Item>(this->data, this->offset + 0x59C); // Needs checks.
 		case WWRegion::KOR_REV1:
-			return std::make_unique<Item>(data, offset + 0x7AE); // Needs checks.
+			return std::make_unique<Item>(this->data, this->offset + 0x7AE); // Needs checks.
 		case WWRegion::UNKNOWN:
 			return nullptr;
 	}
@@ -210,12 +264,12 @@ std::unique_ptr<Item> Villager::furniture(int slot) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			return std::make_unique<Item>(data, offset + 0x6AC + slot * 2); // 0x14
+			return std::make_unique<Item>(this->data, this->offset + 0x6AC + slot * 2); // 0x14
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			return std::make_unique<Item>(data, offset + 0x578 + slot * 2); // 0x14
+			return std::make_unique<Item>(this->data, this->offset + 0x578 + slot * 2); // 0x14
 		case WWRegion::KOR_REV1:
-			return std::make_unique<Item>(data, offset + 0x784 + slot * 2); // 0x14
+			return std::make_unique<Item>(this->data, this->offset + 0x784 + slot * 2); // 0x14
 		case WWRegion::UNKNOWN:
 			return nullptr;
 	}

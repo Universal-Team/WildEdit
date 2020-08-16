@@ -1,0 +1,7 @@
+
+*.o
+*.d
+*.elf
+*.gfx
+*.nds
+arm9/build/.map

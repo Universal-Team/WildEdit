@@ -66,8 +66,6 @@ public:
 	void injectPattern(const std::string fileName);
 
 	// Pattern Image.
-	u8* patternData(const int pattern);
-	std::array<u8, 16> customPalette();
 	std::shared_ptr<PatternImage> image(const int pattern);
 private:
 	u8* patternPointer() const {

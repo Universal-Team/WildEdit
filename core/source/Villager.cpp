@@ -106,6 +106,8 @@ void Villager::personality(u8 v) {
 	}
 }
 
+/* NOTE: Every item there besides the furnitures seem to be indexes [u8]. */
+
 // Villager Song.
 std::unique_ptr<Item> Villager::song() {
 	switch(this->region) {

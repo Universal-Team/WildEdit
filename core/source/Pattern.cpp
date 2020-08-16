@@ -141,7 +141,7 @@ void Pattern::creatorname(std::u16string v) {
 	}
 }
 
-// Creator Gender.
+// Creator Gender. Unsure if exist.
 u8 Pattern::creatorGender() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -373,41 +373,6 @@ void Pattern::injectPattern(const std::string fileName) {
 		// Close File, cause we don't need it.
 		fclose(ptrn);
 	}
-}
-
-// TODO.
-u8* Pattern::patternData(const int pattern) {
-	u8* patternData = new u8[0x400];
-
-	u8 *data = 0;
-
-		// Get start offset.
-		switch(this->region) {
-			case WWRegion::USA_REV0:
-			case WWRegion::USA_REV1:
-			case WWRegion::EUR_REV1:
-			case WWRegion::JPN_REV0:
-			case WWRegion::JPN_REV1:
-				data = this->patternPointer() + 0;
-				break;
-			case WWRegion::KOR_REV1:
-				data = this->patternPointer() + 0;
-				break;
-			case WWRegion::UNKNOWN:
-				return nullptr; // What else should be returned? :P
-				break;
-		}
-
-	for(uint i = 0; i < 0x200; i++) {
-		patternData[i * 2] = data[i] & 0xF;
-		patternData[i * 2 + 1] = data[i] >> 4;
-	}
-
-	return patternData;
-}
-
-std::array<u8, 16> Pattern::customPalette() {
-	return {0};
 }
 
 std::shared_ptr<PatternImage> Pattern::image(const int pattern) {

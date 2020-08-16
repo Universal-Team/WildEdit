@@ -75,10 +75,6 @@ public:
 	void hairstyle(u8 v);
 	u8 haircolor();
 	void haircolor(u8 v);
-	u8 eyecolor();
-	void eyecolor(u8 v);
-	u8 badge(int badge);
-	void badge(int badge, u8 v);
 	u16 playerid();
 	void playerid(u16 v);
 	u16 townid();
@@ -92,19 +88,10 @@ public:
 	void wallet(u32 v);
 	u32 bank();
 	void bank(u32 v);
-	u32 islandmedals();
-	void islandmedals(u32 v);
-	u32 coupons();
-	void coupons(u32 v);
 	
 	std::unique_ptr<Item> pocket(int slot);
 	std::unique_ptr<Item> dresser(int slot);
-	std::unique_ptr<Item> islandbox(int slot) { return nullptr; };
-	std::unique_ptr<Item> storage(int slot) { return nullptr; };
 	std::unique_ptr<Pattern> pattern(int slot);
-
-	u8 *tpcImage();
-	bool hasTPC() { return false; }
 private:
 	u8* playerPointer() const {
 		return data.get() + offset;

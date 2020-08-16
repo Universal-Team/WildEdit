@@ -210,18 +210,6 @@ void Player::haircolor(u8 v) {
 	}
 }
 
-// Eye Color. Does not exist.
-u8 Player::eyecolor() {
-	return 0;
-}
-void Player::eyecolor(u8 v) { }
-
-// Badges. Does not exist.
-u8 Player::badge(int badge) {
-	return 0;
-}
-void Player::badge(int badge, u8 v) { }
-
 // Player ID. Is that right? Check that!
 u16 Player::playerid() {
 	switch(this->region) {
@@ -296,7 +284,7 @@ void Player::townid(u16 v) {
 	}
 }
 
-// Town Name.
+// Town Name. TODO.
 std::u16string Player::townname() {
 	return StringUtils::UTF8toUTF16("?");
 }
@@ -432,18 +420,6 @@ void Player::bank(u32 v) {
 	}
 }
 
-// Island Medals. Does not exist.
-u32 Player::islandmedals() {
-	return 0;
-}
-void Player::islandmedals(u32 v) { }
-
-// Coupons. Does not exist.
-u32 Player::coupons() {
-	return 0;
-}
-void Player::coupons(u32 v) { }
-
 // Player Pocket.
 std::unique_ptr<Item> Player::pocket(int slot) {
 	if (slot > 14) return nullptr;
@@ -503,11 +479,6 @@ std::unique_ptr<Pattern> Player::pattern(int slot) {
 	
 	return nullptr;
 	
-}
-
-// TPC Image. Does not exist.
-u8* Player::tpcImage() {
-	return nullptr;
 }
 
 /* Other Offsets:

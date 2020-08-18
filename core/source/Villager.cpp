@@ -106,9 +106,7 @@ void Villager::personality(u8 v) {
 	}
 }
 
-/* NOTE: Wallpaper, Carpet and the Song seems to be an uint8_t index [u8]. */
-
-// Villager Song.
+// Villager Song. This needs still to be researched.
 u8 Villager::song() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -170,12 +168,12 @@ u8 Villager::wallpaper() {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			return this->villagerPointer()[0x6CC];
+			return this->villagerPointer()[0x6EE];
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			return this->villagerPointer()[0x596];
+			return this->villagerPointer()[0x5B0];
 		case WWRegion::KOR_REV1:
-			return this->villagerPointer()[0x7A8];
+			return this->villagerPointer()[0x7CC];
 		case WWRegion::UNKNOWN:
 			return 0;
 	}
@@ -187,14 +185,14 @@ void Villager::wallpaper(u8 wlp) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			this->villagerPointer()[0x6CC] = wlp;
+			SaveUtils::Write<u8>(this->villagerPointer(), 0x6EE, wlp);
 			break;
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			this->villagerPointer()[0x596] = wlp;
+			SaveUtils::Write<u8>(this->villagerPointer(), 0x5B0, wlp);
 			break;
 		case WWRegion::KOR_REV1:
-			this->villagerPointer()[0x7A8] = wlp;
+			SaveUtils::Write<u8>(this->villagerPointer(), 0x7CC, wlp);
 			break;
 		case WWRegion::UNKNOWN:
 			break;
@@ -207,12 +205,12 @@ u8 Villager::carpet() {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			return this->villagerPointer()[0x6CE];
+			return this->villagerPointer()[0x6EF];
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			return this->villagerPointer()[0x598];
+			return this->villagerPointer()[0x5B1];
 		case WWRegion::KOR_REV1:
-			return this->villagerPointer()[0x7AA];
+			return this->villagerPointer()[0x7CD];
 		case WWRegion::UNKNOWN:
 			return 0;
 	}
@@ -224,37 +222,55 @@ void Villager::carpet(u8 crp) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			this->villagerPointer()[0x6CE] = crp;
+			SaveUtils::Write<u8>(this->villagerPointer(), 0x6EF, crp);
 			break;
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			this->villagerPointer()[0x598] = crp;
+			SaveUtils::Write<u8>(this->villagerPointer(), 0x5B1, crp);
 			break;
 		case WWRegion::KOR_REV1:
-			this->villagerPointer()[0x7AA] = crp;
+			SaveUtils::Write<u8>(this->villagerPointer(), 0x7CD, crp);
 			break;
 		case WWRegion::UNKNOWN:
 			break;
 	}
 }
 
-// Villager Umbrella. Unsure if Item or u8 index yet.
-std::unique_ptr<Item> Villager::umbrella() {
+// Villager Umbrella.
+u8 Villager::umbrella() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			return std::make_unique<Item>(this->data, this->offset + 0x6D2); // Needs checks.
+			return this->villagerPointer()[0x6F4];
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			return std::make_unique<Item>(this->data, this->offset + 0x59C); // Needs checks.
+			return this->villagerPointer()[0x544];
 		case WWRegion::KOR_REV1:
-			return std::make_unique<Item>(this->data, this->offset + 0x7AE); // Needs checks.
+			return this->villagerPointer()[0x7D2];
 		case WWRegion::UNKNOWN:
-			return nullptr;
+			return 0;
 	}
 
-	return nullptr;
+	return 0;
+}
+void Villager::umbrella(u8 umbr) {
+	switch(this->region) {
+		case WWRegion::USA_REV0:
+		case WWRegion::USA_REV1:
+		case WWRegion::EUR_REV1:
+			SaveUtils::Write<u8>(this->villagerPointer(), 0x6F4, umbr);
+			break;
+		case WWRegion::JPN_REV0:
+		case WWRegion::JPN_REV1:
+			SaveUtils::Write<u8>(this->villagerPointer(), 0x544, umbr);
+			break;
+		case WWRegion::KOR_REV1:
+			SaveUtils::Write<u8>(this->villagerPointer(), 0x7D2, umbr);
+			break;
+		case WWRegion::UNKNOWN:
+			break;
+	}
 }
 
 // Villager Furniture.

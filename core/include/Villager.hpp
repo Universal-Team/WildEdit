@@ -75,7 +75,8 @@ public:
 	void wallpaper(u8 wlp);
 	u8 carpet();
 	void carpet(u8 crp);
-	std::unique_ptr<Item> umbrella();
+	u8 umbrella();
+	void umbrella(u8 umbr);
 	
 	std::unique_ptr<Item> furniture(int slot);
 private:

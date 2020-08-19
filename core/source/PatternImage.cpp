@@ -27,21 +27,41 @@
 #include "PatternImage.hpp"
 
 u8 PatternImage::getPaletteColor(u8 plt) {
-	if (plt > 14) return 0;
+	if (plt > 15) return 0;
 	u8 paletteIndex = (u8)(((this->paletteData()[0]) & 0xF0) >> 4);
 	return (u8)((paletteIndex * 15) + plt);
 }
 
-/* Thanks to Slattz for this function! */
-u8 PatternImage::getPixel(int index, bool right) {
+int PatternImage::getWWPaletteIndex() {
+	return (u8)(((this->paletteData()[0]) & 0xF0) >> 4);
+}
+
+void PatternImage::setPaletteColor(int index, u8 color) {
+	if (index > 14) return;
+	this->paletteData()[0] = (u8)(((index) << 4) & 0xF0);
+}
+
+pixel PatternImage::getPixel(int index) {
 	if (this->valid) {
 		if (this->patternData() != nullptr) {
-			u8 data = this->patternData()[index];
-			if (right) data >>= 4;
-
-			return (u8)(data & 0x0F);
+			return this->pixelPointer()[index];
 		} 
 	}
 
-	return 0;
+	return {0, 0};
+}
+
+void PatternImage::setPixel(int index, int color) {
+	if (color > 15 || index > 0x3FF) return; // Out of scope.
+	
+	if (this->valid) {
+		if (this->patternData() != nullptr) {
+			if (index % 2 == 0) this->pixelPointer()[index / 2].left = color;
+			else this->pixelPointer()[index / 2].right = color;
+		}
+	}
+}
+
+void PatternImage::setPixel(int x, int y, int color) {
+	this->setPixel((x + (y * 32)), color);
 }

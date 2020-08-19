@@ -32,6 +32,12 @@
 
 #include <memory>
 
+// Pixel struct.
+struct pixel {
+	u8 left: 4; // 0000
+	u8 right: 4; // 1111
+};
+
 class PatternImage {
 protected:
 	std::shared_ptr<u8[]> data;
@@ -47,12 +53,20 @@ public:
 
 	bool isValid() { return this->valid; }
 	u8 getPaletteColor(u8 plt);
-	u8 getPixel(int pixel, bool right = false);
+	int getWWPaletteIndex();
+	void setPaletteColor(int index, u8 color);
+	pixel getPixel(int pixel);
+	void setPixel(int index, int color);
+	void setPixel(int x, int y, int color);
 private:
 	bool valid = false;
 
 	u8* patternData() const {
 		return this->data.get() + this->ptrnOffset;
+	}
+
+	pixel *pixelPointer() const {
+		return (pixel *)(data.get() + ptrnOffset);
 	}
 
 	u8* paletteData() const {

@@ -217,8 +217,7 @@ void StringUtils::WriteUTF16String(u8 *data, const std::u16string &str, u32 offs
 	// Do not allow a string longer as max.
 	if (str.length() > maxSize + 1) return;
 
-	const std::string dataString(StringUtils::UTF16toUTF8(str));
-	memcpy(data + offset, (u8 *)dataString.data(), maxSize * 2);
+	memcpy(data + offset, (u8 *)str.data(), maxSize * 2);
 }
 
 // Converts a single latin character from half-width to full-width

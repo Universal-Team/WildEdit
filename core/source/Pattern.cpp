@@ -42,7 +42,7 @@ std::u16string Pattern::name() {
 		case WWRegion::JPN_REV1:
 			return StringUtils::ReadUTF8String(patternPointer(), 0x212, 9, this->region);
 		case WWRegion::KOR_REV1:
-			return StringUtils::ReadUTF16String(patternPointer(), 0x21E, 10, u'\uFFFF');
+			return StringUtils::ReadUTF16String(patternPointer(), 0x21E, 10);
 		case WWRegion::UNKNOWN:
 			return StringUtils::UTF8toUTF16("?");
 	}
@@ -91,7 +91,7 @@ void Pattern::creatorid(u16 v) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			SaveUtils::Write<u16>(patternPointer(), 0x20A);
+			SaveUtils::Write<u16>(patternPointer(), 0x20A, v);
 			break;
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
@@ -116,7 +116,7 @@ std::u16string Pattern::creatorname() {
 		case WWRegion::JPN_REV1:
 			return StringUtils::ReadUTF8String(patternPointer(), 0x20A, 6, this->region);
 		case WWRegion::KOR_REV1:
-			return StringUtils::ReadUTF16String(patternPointer(), 0x210, 6, u'\uFFFF');
+			return StringUtils::ReadUTF16String(patternPointer(), 0x210, 6);
 		case WWRegion::UNKNOWN:
 			return StringUtils::UTF8toUTF16("?");
 	}
@@ -221,7 +221,7 @@ std::u16string Pattern::origtownname() {
 		case WWRegion::JPN_REV1:
 			return StringUtils::ReadUTF8String(patternPointer(), 0x202, 6, this->region);
 		case WWRegion::KOR_REV1:
-			return StringUtils::ReadUTF16String(patternPointer(), 0x202, 6, u'\uFFFF');
+			return StringUtils::ReadUTF16String(patternPointer(), 0x202, 6);
 		case WWRegion::UNKNOWN:
 			return StringUtils::UTF8toUTF16("?");
 	}

@@ -41,7 +41,7 @@ namespace StringUtils {
 	u16 strToU16(const std::string str);
 
 	// UTF-16 for Korean.
-	std::u16string ReadUTF16String(const u8* data, int ofs, int len, char16_t term);
+	std::u16string ReadUTF16String(u8* data, int ofs, int len);
 	void WriteUTF16String(u8 *data, const std::u16string &str, u32 offset, u32 maxSize);
 
 	// For the other regions.

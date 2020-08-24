@@ -27,7 +27,7 @@
 #include "Acre.hpp"
 #include "saveUtils.hpp"
 
-// Acre ID.
+/* Acre ID. */
 u8 Acre::id() {
 	return acrePointer()[0];
 }

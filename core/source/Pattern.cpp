@@ -31,7 +31,7 @@
 #include <cstring>
 #include <unistd.h>
 
-// Pattern Name.
+/* Pattern Name. */
 std::u16string Pattern::name() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -68,7 +68,7 @@ void Pattern::name(std::u16string v) {
 	}
 }
 
-// Creator ID.
+/* Creator ID. */
 u16 Pattern::creatorid() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -105,7 +105,7 @@ void Pattern::creatorid(u16 v) {
 	}
 }
 
-// Creator Name.
+/* Creator Name. */
 std::u16string Pattern::creatorname() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -142,7 +142,7 @@ void Pattern::creatorname(std::u16string v) {
 	}
 }
 
-// Creator Gender. Unsure if exist.
+/* Creator Gender. */
 u8 Pattern::creatorGender() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -179,7 +179,7 @@ void Pattern::creatorGender(u8 v) {
 	}
 }
 
-// Town ID.
+/* Town ID. */
 u16 Pattern::origtownid() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -210,7 +210,7 @@ void Pattern::origtownid(u16 v) {
 	}
 }
 
-// Town Name.
+/* Town Name. */
 std::u16string Pattern::origtownname() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -247,18 +247,19 @@ void Pattern::origtownname(std::u16string v) {
 	}
 }
 
-// Own a Pattern.
+/* Own a Pattern. */
 void Pattern::ownPattern(std::unique_ptr<Player> player) {
-	// Only set if player is not nullptr!
-	if (player != nullptr) {
+	/* Only set if player is not nullptr! */
+	if (player) {
 		this->creatorid(player->playerid());
+		this->creatorGender(player->gender());
 		this->creatorname(player->name());
 		this->origtownid(player->townid());
 		this->origtownname(player->townname());
 	}
 }
 
-// Design Type.
+/* Design Type. */
 u8 Pattern::designtype() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -295,12 +296,12 @@ void Pattern::designtype(u8 v) {
 	}
 }
 
-// Needs checking. Dump a Pattern to file.
+/* Dump a Pattern to file. */
 void Pattern::dumpPattern(const std::string fileName) {
-	// If region == UNKNOWN -> Do NOTHING.
+	/* If region == UNKNOWN -> Do NOTHING. */
 	if (this->region != WWRegion::UNKNOWN) {
 		u32 size = 0;
-		// Get size.
+		/* Get size. */
 		switch(this->region) {
 			case WWRegion::USA_REV0:
 			case WWRegion::USA_REV1:
@@ -318,73 +319,71 @@ void Pattern::dumpPattern(const std::string fileName) {
 				break;
 		}
 	
-		// Open File.
+		/* Open File. */
 		FILE* ptrn = fopen(fileName.c_str(), "wb");
-		// Set Buffer.
-		u8 *patternData = new u8[size];
-		
-		// Write Pattern data to Buffer.
-		for(int i = 0; i < (int)size; i++) {
-			SaveUtils::Write<u8>(patternData, i, this->patternPointer()[i], false);
-		}
 
-		// Write to file and close.
-		fwrite(patternData, 1, size, ptrn);
-		fclose(ptrn);
-		// Free Buffer.
-		delete(patternData);
+		if (ptrn) {
+			/* Write to file and close. */
+			fwrite(this->patternPointer(), 1, size, ptrn);
+			fclose(ptrn);
+		}
 	}
 }
 
-// Needs checking. Inject a Pattern from a file.
+/* Inject a Pattern from a file. */
 void Pattern::injectPattern(const std::string fileName) {
-	// If region == UNKNOWN -> Do NOTHING.
+	/* If region == UNKNOWN -> Do NOTHING. */
 	if (this->region != WWRegion::UNKNOWN) {
 		if ((access(fileName.c_str(), F_OK) != 0)) return; // File not found. Do NOTHING.
+
 		bool allowInject = false;
-		u32 size = 0;
-		// Open file and get size.
+		
+		/* Open file and get size. */
 		FILE* ptrn = fopen(fileName.c_str(), "rb");
-		fseek(ptrn, 0, SEEK_END);
-		size = ftell(ptrn);
-		fseek(ptrn, 0, SEEK_SET);
+		if (ptrn) {
+			fseek(ptrn, 0, SEEK_END);
+			u32 size = ftell(ptrn);
+			fseek(ptrn, 0, SEEK_SET);
 
-		// Get size.
-		switch(this->region) {
-			case WWRegion::USA_REV0:
-			case WWRegion::USA_REV1:
-			case WWRegion::EUR_REV1:
-				if (size == 0x228) allowInject = true;
-				break;
-			case WWRegion::JPN_REV0:
-			case WWRegion::JPN_REV1:
-				if (size == 0x220) allowInject = true;
-				break;
-			case WWRegion::KOR_REV1:
-				if (size == 0x234) allowInject = true;
-				break;
-			case WWRegion::UNKNOWN:
-				break;
-		}
-
-		if (allowInject) {
-			u8 *patternData = new u8[size];
-			fread(patternData, 1, size, ptrn);
-
-			// Set Buffer data to save.
-			for(int i = 0; i < (int)size; i++) {
-				SaveUtils::Write<u8>(this->patternPointer(), i, patternData[i]);
+			/* Get size. */
+			switch(this->region) {
+				case WWRegion::USA_REV0:
+				case WWRegion::USA_REV1:
+				case WWRegion::EUR_REV1:
+					if (size == 0x228) allowInject = true;
+					break;
+				case WWRegion::JPN_REV0:
+				case WWRegion::JPN_REV1:
+					if (size == 0x220) allowInject = true;
+					break;
+				case WWRegion::KOR_REV1:
+					if (size == 0x234) allowInject = true;
+					break;
+				case WWRegion::UNKNOWN:
+					break;
 			}
 
-			// Free Buffer.
-			delete(patternData);
-		}
+			if (allowInject) {
+				u8 *patternData = new u8[size];
+				fread(patternData, 1, size, ptrn);
 
-		// Close File, cause we don't need it.
-		fclose(ptrn);
+				/* Set Buffer data to save. */
+				for(int i = 0; i < (int)size; i++) {
+					SaveUtils::Write<u8>(this->patternPointer(), i, patternData[i]);
+				}
+
+				/* Free Buffer. */
+				delete(patternData);
+
+			}
+
+			/* Close File, cause we don't need it. */
+			fclose(ptrn);
+		}
 	}
 }
 
+/* Get a Pattern Image. */
 std::shared_ptr<PatternImage> Pattern::image(const int pattern) {
 	u32 patternOffset = this->Offset + 0;
 	u32 pltOffset = this->Offset + 0;
@@ -406,7 +405,7 @@ std::shared_ptr<PatternImage> Pattern::image(const int pattern) {
 			pltOffset = this->Offset + 0x232;
 			break;
 		case WWRegion::UNKNOWN:
-			return nullptr; // What else should be returned? :P
+			return nullptr; // What else should be returned?
 			break;
 	}
 

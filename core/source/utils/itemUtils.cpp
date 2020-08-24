@@ -37,7 +37,7 @@
 std::map<u16, std::string> ItemDatabase;
 std::vector<std::pair<u16, std::string>> itemDB;
 
-// Load the Item Database. TODO: Multi-Lang.
+/* Load the Item Database. TODO: Multi-Lang. */
 void ItemUtils::LoadDatabase(int lang) {
 	ItemDatabase.clear();
 	itemDB.clear();
@@ -52,10 +52,10 @@ void ItemUtils::LoadDatabase(int lang) {
 			itemIdStr = currentLine.substr(2, 4); // skip the 0x hex specifier.
 			itemName = currentLine.substr(8, currentLine.size());
 
-			// Convert itemIdStr to a u16.
+			/* Convert itemIdStr to a u16. */
 			u16 itemId = StringUtils::strToU16(itemIdStr);
 
-			// Add item to the database.
+			/* Add item to the database. */
 			ItemDatabase.insert(std::make_pair(itemId, itemName));
 			itemDB.push_back(std::make_pair(itemId, itemName));
 		}
@@ -64,7 +64,7 @@ void ItemUtils::LoadDatabase(int lang) {
 	itemDatabase.close();
 }
 
-// Get an Item's name.
+/* Get an Item's name. */
 std::string ItemUtils::getName(u16 ID) {
 	if (ItemDatabase.empty()) return "???"; // Database empty.
 	for (auto const& entry : ItemDatabase) {

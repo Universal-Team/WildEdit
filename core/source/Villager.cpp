@@ -27,7 +27,7 @@
 #include "saveUtils.hpp"
 #include "Villager.hpp"
 
-// Villager ID.
+/* Villager ID. */
 u16 Villager::id() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -63,13 +63,13 @@ void Villager::id(u16 v) {
 	}
 }
 
-// Check if the Villager exist.
+/* Check if the Villager exist. */
 bool Villager::exist() {
 	if (this->id() == 0xFF)	return false;
 	return true;
 }
 
-// Villager Personality.
+/* Villager Personality. */
 u8 Villager::personality() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -106,7 +106,7 @@ void Villager::personality(u8 v) {
 	}
 }
 
-// Villager Song. This needs still to be researched.
+/* Villager Song. This needs still to be researched. */
 u8 Villager::song() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -143,7 +143,7 @@ void Villager::song(u8 sng) {
 	}
 }
 
-// Villager Shirt.
+/* Villager Shirt. */
 std::unique_ptr<Item> Villager::shirt() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -162,7 +162,7 @@ std::unique_ptr<Item> Villager::shirt() {
 	return nullptr;
 }
 
-// Villager Wallpaper.
+/* Villager Wallpaper. */
 u8 Villager::wallpaper() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -199,7 +199,7 @@ void Villager::wallpaper(u8 wlp) {
 	}
 }
 
-// Villager Carpet.
+/* Villager Carpet. */
 u8 Villager::carpet() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -236,7 +236,7 @@ void Villager::carpet(u8 crp) {
 	}
 }
 
-// Villager Umbrella.
+/* Villager Umbrella. */
 u8 Villager::umbrella() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -273,7 +273,7 @@ void Villager::umbrella(u8 umbr) {
 	}
 }
 
-// Villager Furniture.
+/* Villager Furniture. */
 std::unique_ptr<Item> Villager::furniture(int slot) {
 	if (slot > 9) return nullptr;
 	switch(this->region) {

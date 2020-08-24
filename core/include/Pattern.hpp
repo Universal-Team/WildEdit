@@ -60,12 +60,12 @@ public:
 	u8 designtype();
 	void designtype(u8 v);
 
-	// Pattern Misc.
+	/* Pattern Misc. */
 	void ownPattern(std::unique_ptr<Player> player);
 	void dumpPattern(const std::string fileName);
 	void injectPattern(const std::string fileName);
 
-	// Pattern Image.
+	/* Pattern Image. */
 	std::shared_ptr<PatternImage> image(const int pattern);
 private:
 	u8* patternPointer() const {

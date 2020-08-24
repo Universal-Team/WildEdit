@@ -29,7 +29,7 @@
 
 #include <cstring>
 
-// Get Player data.
+/* Get Player data. */
 std::unique_ptr<Player> Sav::player(int player, int index) {
 	if (player > 3 || index > 3) return nullptr; // Player goes out of scope.
 	switch (this->region) {
@@ -49,7 +49,7 @@ std::unique_ptr<Player> Sav::player(int player, int index) {
 	return nullptr; // Unknwon region.
 }
 
-// Get Villager data.
+/* Get Villager data. */
 std::unique_ptr<Villager> Sav::villager(int villager) {
 	if (villager > 7) return nullptr; // Villager goes out of scope.
 	switch (this->region) {
@@ -69,12 +69,12 @@ std::unique_ptr<Villager> Sav::villager(int villager) {
 	return nullptr; // Unknown region.
 }
 
-// Get Town data.
+/* Get Town data. */
 std::unique_ptr<Town> Sav::town() {
 	return std::make_unique<Town>(this->saveData, this->region);
 }
 
-// Last call before writing to file. Update Checksum.
+/* Last call before writing to file. Update Checksum. */
 void Sav::Finish(void) {
 	switch (this->region) {
 		case WWRegion::USA_REV0:

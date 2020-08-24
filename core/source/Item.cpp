@@ -28,22 +28,22 @@
 #include "Item.hpp"
 #include "saveUtils.hpp"
 
-// Item ID.
+/* Item ID. */
 u16 Item::id() { return SaveUtils::Read<u16>(itemPointer(), 0); }
 void Item::id(u16 v) { SaveUtils::Write<u16>(itemPointer(), 0, v); }
 
-// Item Flags. (Does not exist?)
+/* Item Flags. (Does not exist?) */
 u16 Item::flags() { return 0; }
 void Item::flags(u16 v) { }
 
-// Item Rotation. (Furniture / House)
+/* Item Rotation. (Furniture / House) */
 int Item::rotation() { return 0; }
 void Item::rotation(int Direction) { } // TODO.
 
-// Item Name.
+/* Item Name. */
 std::string Item::name() { return ItemUtils::getName(this->id()); }
 
-// Item Type / Category.
+/* Item Type / Category. */
 ItemType Item::itemtype() {
 	u16 ID = this->id(); // Only 1 time needed.
 

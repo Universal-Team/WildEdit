@@ -33,7 +33,11 @@
 
 extern std::map<u16, std::string> ItemDatabase;
 
-// Type of the Item.
+/*
+	We should sort that out for AC:WW only Category Items for WildEdit here.
+	Type of the Item.
+*/
+
 enum class ItemType {
 	Empty,
 	Furniture,

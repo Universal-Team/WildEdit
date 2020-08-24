@@ -28,7 +28,7 @@
 #include "saveUtils.hpp"
 #include "stringUtils.hpp"
 
-// Face.
+/* Player Face. */
 u8 Player::face() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -65,7 +65,7 @@ void Player::face(u8 v) {
 	}
 }
 
-// Tan.
+/* Player Tan. */
 u16 Player::tan() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -102,7 +102,7 @@ void Player::tan(u16 v) {
 	}
 }
 
-// Gender.
+/* Player Gender. */
 u8 Player::gender() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -138,7 +138,7 @@ void Player::gender(u8 v) {
 	}
 }
 
-// HairStyle.
+/* Player HairStyle. */
 u8 Player::hairstyle() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -174,7 +174,7 @@ void Player::hairstyle(u8 v) {
 	}
 }
 
-// HairColor.
+/* Player HairColor. */
 u8 Player::haircolor() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -210,7 +210,7 @@ void Player::haircolor(u8 v) {
 	}
 }
 
-// Player ID. Is that right? Check that!
+/* Player ID. Is that right? Check that! Edit: It's likely right. */
 u16 Player::playerid() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -247,7 +247,7 @@ void Player::playerid(u16 v) {
 	}
 }
 
-// Town ID. Is that right? Check that!
+/* Town ID. Is that right? Check that! Edit: It's likely right. */
 u16 Player::townid() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -284,13 +284,44 @@ void Player::townid(u16 v) {
 	}
 }
 
-// Town Name. TODO.
+/* Town Name. */
 std::u16string Player::townname() {
+	switch(this->region) {
+		case WWRegion::USA_REV0:
+		case WWRegion::USA_REV1:
+		case WWRegion::EUR_REV1:
+			return StringUtils::ReadUTF8String(playerPointer(), 0x2278, 8, this->region);
+		case WWRegion::JPN_REV0:
+		case WWRegion::JPN_REV1:
+			return StringUtils::ReadUTF8String(playerPointer(), 0x1CFE, 6, this->region); // Correct?
+		case WWRegion::KOR_REV1:
+			return StringUtils::ReadUTF16String(playerPointer(), 0x2480, 6); // Correct?
+		case WWRegion::UNKNOWN:
+			return StringUtils::UTF8toUTF16("?");
+	}
+
 	return StringUtils::UTF8toUTF16("?");
 }
-void Player::townname(std::u16string v) { }
+void Player::townname(std::u16string v) {
+	switch(this->region) {
+		case WWRegion::USA_REV0:
+		case WWRegion::USA_REV1:
+		case WWRegion::EUR_REV1:
+			StringUtils::WriteUTF8String(playerPointer(), v, 0x2278, 8, this->region);
+			break;
+		case WWRegion::JPN_REV0:
+		case WWRegion::JPN_REV1:
+			StringUtils::WriteUTF8String(playerPointer(), v, 0x1CFE, 6, this->region); // Correct?
+			break;
+		case WWRegion::KOR_REV1:
+			StringUtils::WriteUTF16String(playerPointer(), v, 0x2480, 6); // Correct?
+			break;
+		case WWRegion::UNKNOWN:
+			break;
+	}
+}
 
-// Player Exist.
+/* Player Exist? */
 bool Player::exist() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -309,7 +340,7 @@ bool Player::exist() {
 	return false;
 }
 
-// Player Name.
+/* Player Name. */
 std::u16string Player::name() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -346,7 +377,7 @@ void Player::name(std::u16string v) {
 	}
 }
 
-// Wallet Amount.
+/* Player Wallet Amount. */
 u32 Player::wallet() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -357,7 +388,7 @@ u32 Player::wallet() {
 		case WWRegion::JPN_REV1:
 			return SaveUtils::Read<u32>(playerPointer(), 0x16C4);
 		case WWRegion::KOR_REV1:
-			return SaveUtils::Read<u32>(playerPointer(), 0x1C10); // Right.
+			return SaveUtils::Read<u32>(playerPointer(), 0x1C10);
 		case WWRegion::UNKNOWN:
 			return 0;
 	}
@@ -383,7 +414,7 @@ void Player::wallet(u32 v) {
 	}
 }
 
-// Bank Amount.
+/* Player Bank Amount. */
 u32 Player::bank() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -420,7 +451,7 @@ void Player::bank(u32 v) {
 	}
 }
 
-// Player Pocket.
+/* Player Pocket. */
 std::unique_ptr<Item> Player::pocket(int slot) {
 	if (slot > 14) return nullptr;
 	switch(this->region) {
@@ -440,7 +471,7 @@ std::unique_ptr<Item> Player::pocket(int slot) {
 	return nullptr;
 }
 
-// Player Dresser.
+/* Player Dresser. */
 std::unique_ptr<Item> Player::dresser(int slot) {
 	if (slot > 89) return nullptr;
 	switch(this->region) {
@@ -460,7 +491,7 @@ std::unique_ptr<Item> Player::dresser(int slot) {
 	return nullptr;
 }
 
-// Player Pattern.
+/* Player Pattern. */
 std::unique_ptr<Pattern> Player::pattern(int slot) {
 	if (slot > 9) return nullptr;
 	switch(this->region) {
@@ -481,6 +512,7 @@ std::unique_ptr<Pattern> Player::pattern(int slot) {
 	
 }
 
-/* Other Offsets:
-Player Bed: playerPointer()[0x1C9E] // JPN.
+/* 
+	Other Offsets:
+	Player Bed: playerPointer()[0x1C9E] // JPN.
 */

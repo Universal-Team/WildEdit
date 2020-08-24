@@ -61,7 +61,7 @@ public:
 	void changesMade(bool v) { if (v != this->changes) this->changes = v; }
 	bool changesMade() { return this->changes; }
 
-	// return Sav stuff.
+	/* return Sav stuff. */
 	u32 getLength() const { return this->size; }
 	std::shared_ptr<u8[]> rawData() const { return this->saveData; }
 private:

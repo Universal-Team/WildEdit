@@ -31,7 +31,7 @@
 #include <cstring>
 #include <string>
 
-// Calculate AC:WW's Checksum.
+/* Calculate AC:WW's Checksum. */
 u16 Checksum::Calculate(const u16 *buffer, u64 size, uint checksumOffset) {
 	if ((checksumOffset & 1) == 1) return 0; // checksumOffset must be 16-bit aligned!
 
@@ -44,13 +44,13 @@ u16 Checksum::Calculate(const u16 *buffer, u64 size, uint checksumOffset) {
 	return (u16) -checksum;
 }
 
-// Verify AC:WW's Checksum.
+/* Verify AC:WW's Checksum. */
 bool Checksum::Verify(const u16 *buffer, u64 size, u16 currentChecksum, uint checksumOffset) {
 	if (Calculate(buffer, size, checksumOffset) == currentChecksum) return true;
 	else return false;
 }
 
-// Update AC:WW's Checksum.
+/* Update AC:WW's Checksum. */
 void Checksum::UpdateChecksum(WWRegion region, u8 *saveBuffer, u16 *buffer, u64 size) {
 	switch(region) {
 		case WWRegion::USA_REV0:

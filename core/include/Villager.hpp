@@ -67,7 +67,7 @@ public:
 	u8 personality();
 	void personality(u8 v);
 	
-	// Items.
+	/* Items. */
 	u8 song();
 	void song(u8 sng);
 	std::unique_ptr<Item> shirt();

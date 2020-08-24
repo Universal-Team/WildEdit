@@ -28,7 +28,7 @@
 #include "stringUtils.hpp"
 #include "Town.hpp"
 
-// Grasstype.
+/* Grasstype. */
 u8 Town::grasstype() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -59,7 +59,7 @@ void Town::grasstype(u8 v) {
 	}
 }
 
-// Town Name.
+/* Town Name. */
 std::u16string Town::name() {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -96,7 +96,7 @@ void Town::name(std::u16string v) {
 	}
 }
 
-// Town Acre.
+/* Town Acre. */
 std::unique_ptr<Acre> Town::acre(int acre) {
 	if (acre > 35) return nullptr; // Acre Index goes out of scope.
 	switch(this->region) {
@@ -116,7 +116,7 @@ std::unique_ptr<Acre> Town::acre(int acre) {
 	return nullptr;
 }
 
-// Town Item.
+/* Town Item. */
 std::unique_ptr<Item> Town::item(u32 index) {
 	if (index > 4095) return nullptr; // Item Index goes out of scope.
 	switch(this->region) {
@@ -136,14 +136,33 @@ std::unique_ptr<Item> Town::item(u32 index) {
 	return nullptr;
 }
 
-// Return if Town exist.
+/* Return if Town exist. */
 bool Town::exist() {
 	if (SaveUtils::Read<u16>(townPointer(), 0x2) == 0x0 || SaveUtils::Read<u16>(townPointer(), 0x2) == 0xFFFF)	return false;
 	return true;
 }
 
-// Turnip prices. TODO? I'm not sure where they exist yet.
+/* Turnip prices. TODO? I'm not sure where they exist yet. */
 u32 Town::turnipPrices(bool isAM, int day) {
 	return 0;
 }
 void Town::turnipPrices(bool isAM, int day, u32 v) { }
+
+/* Town Flag. */
+std::unique_ptr<Pattern> Town::townflag() {
+	switch(this->region) {
+		case WWRegion::USA_REV0:
+		case WWRegion::USA_REV1:
+		case WWRegion::EUR_REV1:
+			return std::make_unique<Pattern>(this->data, 0x15930, this->region);
+		case WWRegion::JPN_REV0:
+		case WWRegion::JPN_REV1:
+			return std::make_unique<Pattern>(this->data, 0x11C5C, this->region);
+		case WWRegion::KOR_REV1:
+			return std::make_unique<Pattern>(this->data, 0x16D0C, this->region);
+		case WWRegion::UNKNOWN:
+			return nullptr;
+	}
+
+	return nullptr;
+}

@@ -24,50 +24,26 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _WILDEDIT_CORE_PATTERN_IMAGE_HPP
-#define _WILDEDIT_CORE_PATTERN_IMAGE_HPP
+#include "saveUtils.hpp"
+#include "Shop.hpp"
 
-#include "PatternImage.hpp"
-#include "types.hpp"
+/* Return Able Sister Pattern. */
+std::unique_ptr<Pattern> Shop::ableSisterPattern(int pattern) {
+	if (pattern > 7) return nullptr;
 
-#include <memory>
-
-/* Pixel struct. */
-struct pixel {
-	u8 left: 4; // 0000.
-	u8 right: 4; // 1111.
-};
-
-class PatternImage {
-protected:
-	std::shared_ptr<u8[]> data;
-	u32 ptrnOffset;
-	u32 pltOffset;
-public:
-	PatternImage(std::shared_ptr<u8[]> dt, u32 patternOffset, u32 paletteOffset) : data(dt), ptrnOffset(patternOffset), pltOffset(paletteOffset) { 
-		this->valid = true; // TODO: Handle that differently?
+	switch(this->region) {
+		case WWRegion::USA_REV0:
+		case WWRegion::USA_REV1:
+		case WWRegion::EUR_REV1:
+			return std::make_unique<Pattern>(this->data, this->Offset + 0xFAFC + pattern * 0x228, this->region);
+		case WWRegion::JPN_REV0:
+		case WWRegion::JPN_REV1:
+			return std::make_unique<Pattern>(this->data, this->Offset + 0xDAF8 + pattern * 0x220, this->region);
+		case WWRegion::KOR_REV1:
+			return std::make_unique<Pattern>(this->data, this->Offset + 0x10AD0 + pattern * 0x234, this->region);
+		case WWRegion::UNKNOWN:
+			return nullptr;
 	}
 
-	PatternImage(const PatternImage& pi) = delete;
-	PatternImage& operator=(const PatternImage& pi) = delete;
-
-	bool isValid() { return this->valid; }
-	u8 getPaletteColor(u8 plt);
-	int getWWPaletteIndex();
-	void setPaletteColor(int index, u8 color);
-	pixel getPixel(int pixel);
-	void setPixel(int index, int color);
-	void setPixel(int x, int y, int color);
-private:
-	bool valid = false;
-
-	pixel *pixelPointer() const {
-		return (pixel *)(data.get() + ptrnOffset);
-	}
-
-	u8* paletteData() const {
-		return this->data.get() + this->pltOffset;
-	}
-};
-
-#endif
+	return nullptr;
+}

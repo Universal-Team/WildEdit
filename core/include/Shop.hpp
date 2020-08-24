@@ -24,49 +24,31 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _WILDEDIT_CORE_PATTERN_IMAGE_HPP
-#define _WILDEDIT_CORE_PATTERN_IMAGE_HPP
+#ifndef _WILDEDIT_CORE_SHOP_HPP
+#define _WILDEDIT_CORE_SHOP_HPP
 
-#include "PatternImage.hpp"
-#include "types.hpp"
+#include "Pattern.hpp"
 
 #include <memory>
+#include <vector>
 
-/* Pixel struct. */
-struct pixel {
-	u8 left: 4; // 0000.
-	u8 right: 4; // 1111.
-};
-
-class PatternImage {
+class Pattern;
+class Shop {
 protected:
+	u32 Offset;
 	std::shared_ptr<u8[]> data;
-	u32 ptrnOffset;
-	u32 pltOffset;
+	WWRegion region;
 public:
-	PatternImage(std::shared_ptr<u8[]> dt, u32 patternOffset, u32 paletteOffset) : data(dt), ptrnOffset(patternOffset), pltOffset(paletteOffset) { 
-		this->valid = true; // TODO: Handle that differently?
-	}
+	virtual ~Shop() {}
+	Shop(std::shared_ptr<u8[]> shopData, u32 offset, WWRegion rg) : Offset(offset), data(shopData), region(rg) { }
+	Shop(const Shop& shop) = delete;
+	Shop& operator=(const Shop& shop) = delete;
 
-	PatternImage(const PatternImage& pi) = delete;
-	PatternImage& operator=(const PatternImage& pi) = delete;
-
-	bool isValid() { return this->valid; }
-	u8 getPaletteColor(u8 plt);
-	int getWWPaletteIndex();
-	void setPaletteColor(int index, u8 color);
-	pixel getPixel(int pixel);
-	void setPixel(int index, int color);
-	void setPixel(int x, int y, int color);
+	
+	std::unique_ptr<Pattern> ableSisterPattern(int pattern);
 private:
-	bool valid = false;
-
-	pixel *pixelPointer() const {
-		return (pixel *)(data.get() + ptrnOffset);
-	}
-
-	u8* paletteData() const {
-		return this->data.get() + this->pltOffset;
+	u8* shopPointer() const {
+		return data.get() + Offset;
 	}
 };
 

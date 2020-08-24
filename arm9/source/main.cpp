@@ -34,27 +34,27 @@ bool exiting = false;
 int main(int argc, char **argv) {
 	//initGraphics();
 	keysSetRepeat(25,5);
-	sysSetCardOwner(BUS_OWNER_ARM9); // Give ARM9 access to Slot-1 (for dumping/injecting saves)
+	sysSetCardOwner(BUS_OWNER_ARM9); // Give ARM9 access to Slot-1 (for dumping/injecting saves).
 	defaultExceptionHandler();
-	//scanKeys(); // So it doesn't open the SD if A is held
+	//scanKeys(); // So it doesn't open the SD if A is held.
 
 	//drawRectangle(0, 0, 256, 192, DARKERER_GRAY, DARKER_GRAY, true, false);
 	//drawRectangle(0, 0, 256, 192, DARKERER_GRAY, DARKER_GRAY, false, false);
 
-	// Init filesystem
+	/* Init filesystem. */
 	if (!fatInitDefault()) {
-		// Prints error if fatInitDefault() fails
+		/* Prints error if fatInitDefault() fails. */
 		consoleDemoInit();
 		printf("fatInitDefault() failed...");
 		while(1) swiWaitForVBlank();
 	}
 
-	// Try to init NitroFS from argv provided to the game when it was launched
-	/*if (!nitroFSInit(argv[0])) {
-		// If that fails, try to init NitroFS on 'WildEdit.nds'
-		if (!nitroFSInit("WildEdit.nds")) {
+	/* Try to init NitroFS from argv provided to the game when it was launched. */
+	// if (!nitroFSInit(argv[0])) {
+		/* If that fails, try to init NitroFS on 'WildEdit.nds'. */
+		
+		/*if (!nitroFSInit("WildEdit.nds")) {
 			if (!nitroFSInit("/_nds/WildEdit/WildEdit.nds")) {
-				// Prints error if nitroFSInit() fails
 				consoleDemoInit();
 				printf("nitroFSInit() failed...\n\n");
 				printf("Please copy WildEdit.nds to:\n\n");

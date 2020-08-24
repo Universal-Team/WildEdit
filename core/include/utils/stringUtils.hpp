@@ -32,22 +32,23 @@
 #include <string>
 
 namespace StringUtils {
-	// Converters.
+	/* Converters. */
 	std::u16string UTF8toUTF16(const std::string& src);
 	std::string UTF16toUTF8(const std::u16string& src);
 
-	// Other utilities.
+	/* Other utilities. */
 	std::u16string& toFullWidth(std::u16string& in);
 	u16 strToU16(const std::string str);
 
-	// UTF-16 for Korean.
+	/* UTF-16 for Korean. */
 	std::u16string ReadUTF16String(u8* data, int ofs, int len);
 	void WriteUTF16String(u8 *data, const std::u16string &str, u32 offset, u32 maxSize);
 
-	// For the other regions.
+	/* For the other regions. */
 	std::u16string ReadUTF8String(u8 *data, u32 offset, u32 maxSize, WWRegion region);
 	void WriteUTF8String(u8 *data, const std::u16string &str, u32 offset, u32 maxSize, WWRegion region);
 
+	/* Wild World to unicode stuff. */
 	std::u16string wwToUnicode(const std::string &input, WWRegion region);
 	std::string unicodeToWW(const std::u16string &input, WWRegion region);
 }

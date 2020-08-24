@@ -35,13 +35,13 @@
 inline std::shared_ptr<Sav> save;
 
 namespace SaveUtils {
-	// Read.
+	/* Read. */
 	template <typename T>
 	T Read(u8 * Buffer, u32 offset) {
 		return *(T *)(Buffer + offset);
 	}
 
-	// Write.
+	/* Write. */
 	template <typename T>
 	void Write(u8 * Buffer, u32 offset, T data, const bool saveWrite = true) {
 		*reinterpret_cast<T*>(Buffer + offset) = data;

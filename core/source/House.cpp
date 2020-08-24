@@ -28,6 +28,6 @@
 #include "saveUtils.hpp"
 
 /* Get a room. */
-std::unique_ptr<Room> House::room(int room) {
+std::unique_ptr<Room> House::room(int room) const {
 	return nullptr;
 }

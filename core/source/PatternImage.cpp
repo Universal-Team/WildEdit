@@ -27,14 +27,14 @@
 #include "PatternImage.hpp"
 
 /* Get the palette color index. */
-u8 PatternImage::getPaletteColor(u8 plt) {
+u8 PatternImage::getPaletteColor(u8 plt) const {
 	if (plt > 15) return 0;
 	u8 paletteIndex = (u8)(((this->paletteData()[0]) & 0xF0) >> 4);
 	return (u8)((paletteIndex * 15) + plt);
 }
 
 /* Get the palette index. */
-int PatternImage::getWWPaletteIndex() {
+int PatternImage::getWWPaletteIndex() const {
 	return (u8)(((this->paletteData()[0]) & 0xF0) >> 4);
 }
 
@@ -45,7 +45,7 @@ void PatternImage::setPaletteColor(int index, u8 color) {
 }
 
 /* Get a left and right pixel */
-pixel PatternImage::getPixel(int index) {
+pixel PatternImage::getPixel(int index) const {
 	if (this->valid) {
 		if (this->pixelPointer()) {
 			return this->pixelPointer()[index];

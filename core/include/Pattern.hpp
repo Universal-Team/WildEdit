@@ -45,19 +45,19 @@ public:
 	Pattern(const Pattern& pattern) = delete;
 	Pattern& operator=(const Pattern& pattern) = delete;
 
-	std::u16string name();
+	std::u16string name() const;
 	void name(std::u16string v);
-	u16 creatorid();
+	u16 creatorid() const;
 	void creatorid(u16 v);
-	std::u16string creatorname();
+	std::u16string creatorname() const;
 	void creatorname(std::u16string v);
-	u8 creatorGender();
+	u8 creatorGender() const;
 	void creatorGender(u8 v);
-	u16 origtownid();
+	u16 origtownid() const;
 	void origtownid(u16 v);
-	std::u16string origtownname();
+	std::u16string origtownname() const;
 	void origtownname(std::u16string v);
-	u8 designtype();
+	u8 designtype() const;
 	void designtype(u8 v);
 
 	/* Pattern Misc. */
@@ -66,7 +66,7 @@ public:
 	void injectPattern(const std::string fileName);
 
 	/* Pattern Image. */
-	std::shared_ptr<PatternImage> image(const int pattern);
+	std::shared_ptr<PatternImage> image(const int pattern) const;
 private:
 	u8* patternPointer() const {
 		return data.get() + Offset;

@@ -45,7 +45,7 @@ public:
 	Shop& operator=(const Shop& shop) = delete;
 
 	
-	std::unique_ptr<Pattern> ableSisterPattern(int pattern);
+	std::unique_ptr<Pattern> ableSisterPattern(int pattern) const;
 private:
 	u8* shopPointer() const {
 		return data.get() + Offset;

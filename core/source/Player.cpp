@@ -29,7 +29,7 @@
 #include "stringUtils.hpp"
 
 /* Player Face. */
-u8 Player::face() {
+u8 Player::face() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -66,7 +66,7 @@ void Player::face(u8 v) {
 }
 
 /* Player Tan. */
-u16 Player::tan() {
+u16 Player::tan() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -103,7 +103,7 @@ void Player::tan(u16 v) {
 }
 
 /* Player Gender. */
-u8 Player::gender() {
+u8 Player::gender() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -139,7 +139,7 @@ void Player::gender(u8 v) {
 }
 
 /* Player HairStyle. */
-u8 Player::hairstyle() {
+u8 Player::hairstyle() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -175,7 +175,7 @@ void Player::hairstyle(u8 v) {
 }
 
 /* Player HairColor. */
-u8 Player::haircolor() {
+u8 Player::haircolor() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -211,7 +211,7 @@ void Player::haircolor(u8 v) {
 }
 
 /* Player ID. Is that right? Check that! Edit: It's likely right. */
-u16 Player::playerid() {
+u16 Player::playerid() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -248,7 +248,7 @@ void Player::playerid(u16 v) {
 }
 
 /* Town ID. Is that right? Check that! Edit: It's likely right. */
-u16 Player::townid() {
+u16 Player::townid() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -285,7 +285,7 @@ void Player::townid(u16 v) {
 }
 
 /* Town Name. */
-std::u16string Player::townname() {
+std::u16string Player::townname() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -322,7 +322,7 @@ void Player::townname(std::u16string v) {
 }
 
 /* Player Exist? */
-bool Player::exist() {
+bool Player::exist() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -341,7 +341,7 @@ bool Player::exist() {
 }
 
 /* Player Name. */
-std::u16string Player::name() {
+std::u16string Player::name() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -378,7 +378,7 @@ void Player::name(std::u16string v) {
 }
 
 /* Player Wallet Amount. */
-u32 Player::wallet() {
+u32 Player::wallet() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -415,7 +415,7 @@ void Player::wallet(u32 v) {
 }
 
 /* Player Bank Amount. */
-u32 Player::bank() {
+u32 Player::bank() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -452,7 +452,7 @@ void Player::bank(u32 v) {
 }
 
 /* Player Pocket. */
-std::unique_ptr<Item> Player::pocket(int slot) {
+std::unique_ptr<Item> Player::pocket(int slot) const {
 	if (slot > 14) return nullptr;
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -472,7 +472,7 @@ std::unique_ptr<Item> Player::pocket(int slot) {
 }
 
 /* Player Dresser. */
-std::unique_ptr<Item> Player::dresser(int slot) {
+std::unique_ptr<Item> Player::dresser(int slot) const {
 	if (slot > 89) return nullptr;
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -492,7 +492,7 @@ std::unique_ptr<Item> Player::dresser(int slot) {
 }
 
 /* Player Pattern. */
-std::unique_ptr<Pattern> Player::pattern(int slot) {
+std::unique_ptr<Pattern> Player::pattern(int slot) const {
 	if (slot > 9) return nullptr;
 	switch(this->region) {
 		case WWRegion::USA_REV0:

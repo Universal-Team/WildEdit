@@ -47,16 +47,16 @@ public:
 	Town(const Town& town) = delete;
 	Town& operator=(const Town& town) = delete;
 
-	u8 grasstype();
+	u8 grasstype() const;
 	void grasstype(u8 v);
-	std::u16string name();
+	std::u16string name() const;
 	void name(std::u16string v);
-	std::unique_ptr<Acre> acre(int acre);
-	std::unique_ptr<Item> item(u32 index);
-	bool exist();
-	u32 turnipPrices(bool isAM, int day);
+	std::unique_ptr<Acre> acre(int acre) const;
+	std::unique_ptr<Item> item(u32 index) const;
+	bool exist() const;
+	u32 turnipPrices(bool isAM, int day) const;
 	void turnipPrices(bool isAM, int day, u32 v);
-	std::unique_ptr<Pattern> townflag();
+	std::unique_ptr<Pattern> townflag() const;
 private:
 	u8* townPointer() const {
 		return data.get();

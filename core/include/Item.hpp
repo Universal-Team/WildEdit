@@ -42,13 +42,13 @@ public:
 	Item& operator=(const Item& item) = delete;
 
 	u32 maxItems() const { return 0; };
-	u16 id();
+	u16 id() const;
 	void id(u16 v);
-	u16 flags();
+	u16 flags() const;
 	void flags(u16 v);
-	std::string name();
-	ItemType itemtype();
-	int rotation();
+	std::string name() const;
+	ItemType itemtype() const;
+	int rotation() const;
 	void rotation(int Direction);
 private:
 	u8* itemPointer() const {

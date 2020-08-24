@@ -54,7 +54,7 @@ public:
 	House(const House& house) = delete;
 	House& operator=(const House& house) = delete;
 
-	std::unique_ptr<Room> room(int room);
+	std::unique_ptr<Room> room(int room) const;
 private:
 	u8* housePointer() const {
 		return this->data.get() + this->Offset;

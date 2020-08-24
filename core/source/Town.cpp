@@ -29,7 +29,7 @@
 #include "Town.hpp"
 
 /* Grasstype. */
-u8 Town::grasstype() {
+u8 Town::grasstype() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -60,7 +60,7 @@ void Town::grasstype(u8 v) {
 }
 
 /* Town Name. */
-std::u16string Town::name() {
+std::u16string Town::name() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -97,7 +97,7 @@ void Town::name(std::u16string v) {
 }
 
 /* Town Acre. */
-std::unique_ptr<Acre> Town::acre(int acre) {
+std::unique_ptr<Acre> Town::acre(int acre) const {
 	if (acre > 35) return nullptr; // Acre Index goes out of scope.
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -106,7 +106,7 @@ std::unique_ptr<Acre> Town::acre(int acre) {
 			return std::make_unique<Acre>(data, 0xC330 + acre * 1);
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			return std::make_unique<Acre>(data, 0xA32C + acre * 1); // 0xA32C - 0xA34E
+			return std::make_unique<Acre>(data, 0xA32C + acre * 1);
 		case WWRegion::KOR_REV1:
 			return std::make_unique<Acre>(data, 0xD304 + acre * 1);
 		case WWRegion::UNKNOWN:
@@ -117,7 +117,7 @@ std::unique_ptr<Acre> Town::acre(int acre) {
 }
 
 /* Town Item. */
-std::unique_ptr<Item> Town::item(u32 index) {
+std::unique_ptr<Item> Town::item(u32 index) const {
 	if (index > 4095) return nullptr; // Item Index goes out of scope.
 	switch(this->region) {
 		case WWRegion::USA_REV0:
@@ -137,19 +137,19 @@ std::unique_ptr<Item> Town::item(u32 index) {
 }
 
 /* Return if Town exist. */
-bool Town::exist() {
+bool Town::exist() const {
 	if (SaveUtils::Read<u16>(townPointer(), 0x2) == 0x0 || SaveUtils::Read<u16>(townPointer(), 0x2) == 0xFFFF)	return false;
 	return true;
 }
 
 /* Turnip prices. TODO? I'm not sure where they exist yet. */
-u32 Town::turnipPrices(bool isAM, int day) {
+u32 Town::turnipPrices(bool isAM, int day) const {
 	return 0;
 }
 void Town::turnipPrices(bool isAM, int day, u32 v) { }
 
 /* Town Flag. */
-std::unique_ptr<Pattern> Town::townflag() {
+std::unique_ptr<Pattern> Town::townflag() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:

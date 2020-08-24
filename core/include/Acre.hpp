@@ -41,7 +41,7 @@ public:
 	Acre& operator=(const Acre& acre) = delete;
 	
 	u32 maxAcre() const { return 131; }
-	u8 id();
+	u8 id() const;
 	void id(u8 v);
 private:
 	u8* acrePointer() const {

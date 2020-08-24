@@ -65,33 +65,33 @@ public:
 	}
 
 
-	u8 face();
+	u8 face() const;
 	void face(u8 v);
-	u8 gender();
+	u8 gender() const;
 	void gender(u8 v);
-	u16 tan();
+	u16 tan() const;
 	void tan(u16 v);
-	u8 hairstyle();
+	u8 hairstyle() const;
 	void hairstyle(u8 v);
-	u8 haircolor();
+	u8 haircolor() const;
 	void haircolor(u8 v);
-	u16 playerid();
+	u16 playerid() const;
 	void playerid(u16 v);
-	u16 townid();
+	u16 townid() const;
 	void townid(u16 v);
-	std::u16string townname();
+	std::u16string townname() const;
 	void townname(std::u16string v);
-	bool exist();
-	std::u16string name();
+	bool exist() const;
+	std::u16string name() const;
 	void name(std::u16string v);
-	u32 wallet();
+	u32 wallet() const;
 	void wallet(u32 v);
-	u32 bank();
+	u32 bank() const;
 	void bank(u32 v);
 	
-	std::unique_ptr<Item> pocket(int slot);
-	std::unique_ptr<Item> dresser(int slot);
-	std::unique_ptr<Pattern> pattern(int slot);
+	std::unique_ptr<Item> pocket(int slot) const;
+	std::unique_ptr<Item> dresser(int slot) const;
+	std::unique_ptr<Pattern> pattern(int slot) const;
 private:
 	u8* playerPointer() const {
 		return data.get() + offset;

@@ -28,7 +28,7 @@
 #include "Shop.hpp"
 
 /* Return Able Sister Pattern. */
-std::unique_ptr<Pattern> Shop::ableSisterPattern(int pattern) {
+std::unique_ptr<Pattern> Shop::ableSisterPattern(int pattern) const {
 	if (pattern > 7) return nullptr;
 
 	switch(this->region) {

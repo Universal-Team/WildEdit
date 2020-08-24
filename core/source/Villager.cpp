@@ -28,7 +28,7 @@
 #include "Villager.hpp"
 
 /* Villager ID. */
-u16 Villager::id() {
+u16 Villager::id() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -64,13 +64,13 @@ void Villager::id(u16 v) {
 }
 
 /* Check if the Villager exist. */
-bool Villager::exist() {
+bool Villager::exist() const {
 	if (this->id() == 0xFF)	return false;
 	return true;
 }
 
 /* Villager Personality. */
-u8 Villager::personality() {
+u8 Villager::personality() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -107,7 +107,7 @@ void Villager::personality(u8 v) {
 }
 
 /* Villager Song. This needs still to be researched. */
-u8 Villager::song() {
+u8 Villager::song() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -144,7 +144,7 @@ void Villager::song(u8 sng) {
 }
 
 /* Villager Shirt. */
-std::unique_ptr<Item> Villager::shirt() {
+std::unique_ptr<Item> Villager::shirt() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -163,7 +163,7 @@ std::unique_ptr<Item> Villager::shirt() {
 }
 
 /* Villager Wallpaper. */
-u8 Villager::wallpaper() {
+u8 Villager::wallpaper() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -200,7 +200,7 @@ void Villager::wallpaper(u8 wlp) {
 }
 
 /* Villager Carpet. */
-u8 Villager::carpet() {
+u8 Villager::carpet() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -237,7 +237,7 @@ void Villager::carpet(u8 crp) {
 }
 
 /* Villager Umbrella. */
-u8 Villager::umbrella() {
+u8 Villager::umbrella() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -274,18 +274,18 @@ void Villager::umbrella(u8 umbr) {
 }
 
 /* Villager Furniture. */
-std::unique_ptr<Item> Villager::furniture(int slot) {
+std::unique_ptr<Item> Villager::furniture(int slot) const {
 	if (slot > 9) return nullptr;
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			return std::make_unique<Item>(this->data, this->offset + 0x6AC + slot * 2); // 0x14
+			return std::make_unique<Item>(this->data, this->offset + 0x6AC + slot * 2);
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			return std::make_unique<Item>(this->data, this->offset + 0x578 + slot * 2); // 0x14
+			return std::make_unique<Item>(this->data, this->offset + 0x578 + slot * 2);
 		case WWRegion::KOR_REV1:
-			return std::make_unique<Item>(this->data, this->offset + 0x784 + slot * 2); // 0x14
+			return std::make_unique<Item>(this->data, this->offset + 0x784 + slot * 2);
 		case WWRegion::UNKNOWN:
 			return nullptr;
 	}

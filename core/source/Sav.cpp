@@ -30,7 +30,7 @@
 #include <cstring>
 
 /* Get Player data. */
-std::unique_ptr<Player> Sav::player(int player, int index) {
+std::unique_ptr<Player> Sav::player(int player, int index) const {
 	if (player > 3 || index > 3) return nullptr; // Player goes out of scope.
 	switch (this->region) {
 		case WWRegion::USA_REV0:
@@ -50,7 +50,7 @@ std::unique_ptr<Player> Sav::player(int player, int index) {
 }
 
 /* Get Villager data. */
-std::unique_ptr<Villager> Sav::villager(int villager) {
+std::unique_ptr<Villager> Sav::villager(int villager) const {
 	if (villager > 7) return nullptr; // Villager goes out of scope.
 	switch (this->region) {
 		case WWRegion::USA_REV0:
@@ -70,7 +70,7 @@ std::unique_ptr<Villager> Sav::villager(int villager) {
 }
 
 /* Get Town data. */
-std::unique_ptr<Town> Sav::town() {
+std::unique_ptr<Town> Sav::town() const {
 	return std::make_unique<Town>(this->saveData, this->region);
 }
 

@@ -51,11 +51,11 @@ public:
 	PatternImage(const PatternImage& pi) = delete;
 	PatternImage& operator=(const PatternImage& pi) = delete;
 
-	bool isValid() { return this->valid; }
-	u8 getPaletteColor(u8 plt);
-	int getWWPaletteIndex();
+	bool isValid() const { return this->valid; }
+	u8 getPaletteColor(u8 plt) const;
+	int getWWPaletteIndex() const;
 	void setPaletteColor(int index, u8 color);
-	pixel getPixel(int pixel);
+	pixel getPixel(int pixel) const;
 	void setPixel(int index, int color);
 	void setPixel(int x, int y, int color);
 private:

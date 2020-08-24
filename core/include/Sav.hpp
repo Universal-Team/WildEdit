@@ -50,16 +50,16 @@ public:
 	Sav& operator=(const Sav& sav) = delete;
 
 	void Finish(void);
-	std::unique_ptr<Player> player(int player, int index = 0);
-	std::unique_ptr<Villager> villager(int villager);
-	std::unique_ptr<Town> town();
+	std::unique_ptr<Player> player(int player, int index = 0) const;
+	std::unique_ptr<Villager> villager(int villager) const;
+	std::unique_ptr<Town> town() const;
 
 	WWRegion getRegion() { return region; }
 
-	int maxVillager() { return 7; }
+	int maxVillager() const { return 7; }
 
 	void changesMade(bool v) { if (v != this->changes) this->changes = v; }
-	bool changesMade() { return this->changes; }
+	bool changesMade() const { return this->changes; }
 
 	/* return Sav stuff. */
 	u32 getLength() const { return this->size; }

@@ -61,24 +61,24 @@ public:
 		return 0;
 	}
 
-	u16 id();
+	u16 id() const;
 	void id(u16 v);
-	bool exist();
-	u8 personality();
+	bool exist() const;
+	u8 personality() const;
 	void personality(u8 v);
 	
 	/* Items. */
-	u8 song();
+	u8 song() const;
 	void song(u8 sng);
-	std::unique_ptr<Item> shirt();
-	u8 wallpaper();
+	std::unique_ptr<Item> shirt() const;
+	u8 wallpaper() const;
 	void wallpaper(u8 wlp);
-	u8 carpet();
+	u8 carpet() const;
 	void carpet(u8 crp);
-	u8 umbrella();
+	u8 umbrella() const;
 	void umbrella(u8 umbr);
 	
-	std::unique_ptr<Item> furniture(int slot);
+	std::unique_ptr<Item> furniture(int slot) const;
 private:
 	u8* villagerPointer() const {
 		return data.get() + offset;

@@ -32,7 +32,7 @@
 #include <unistd.h>
 
 /* Pattern Name. */
-std::u16string Pattern::name() {
+std::u16string Pattern::name() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -69,7 +69,7 @@ void Pattern::name(std::u16string v) {
 }
 
 /* Creator ID. */
-u16 Pattern::creatorid() {
+u16 Pattern::creatorid() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -106,7 +106,7 @@ void Pattern::creatorid(u16 v) {
 }
 
 /* Creator Name. */
-std::u16string Pattern::creatorname() {
+std::u16string Pattern::creatorname() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -143,7 +143,7 @@ void Pattern::creatorname(std::u16string v) {
 }
 
 /* Creator Gender. */
-u8 Pattern::creatorGender() {
+u8 Pattern::creatorGender() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -180,7 +180,7 @@ void Pattern::creatorGender(u8 v) {
 }
 
 /* Town ID. */
-u16 Pattern::origtownid() {
+u16 Pattern::origtownid() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -211,7 +211,7 @@ void Pattern::origtownid(u16 v) {
 }
 
 /* Town Name. */
-std::u16string Pattern::origtownname() {
+std::u16string Pattern::origtownname() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -260,7 +260,7 @@ void Pattern::ownPattern(std::unique_ptr<Player> player) {
 }
 
 /* Design Type. */
-u8 Pattern::designtype() {
+u8 Pattern::designtype() const {
 	switch(this->region) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
@@ -384,7 +384,7 @@ void Pattern::injectPattern(const std::string fileName) {
 }
 
 /* Get a Pattern Image. */
-std::shared_ptr<PatternImage> Pattern::image(const int pattern) {
+std::shared_ptr<PatternImage> Pattern::image(const int pattern) const {
 	u32 patternOffset = this->Offset + 0;
 	u32 pltOffset = this->Offset + 0;
 

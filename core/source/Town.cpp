@@ -128,7 +128,7 @@ std::unique_ptr<Item> Town::item(u32 index) const {
 		case WWRegion::JPN_REV1:
 			return std::make_unique<Item>(data, 0xA350 + index * 2);
 		case WWRegion::KOR_REV1:
-			return std::make_unique<Item>(data, 0xD329 + index * 2);
+			return std::make_unique<Item>(data, 0xD328 + index * 2);
 		case WWRegion::UNKNOWN:
 			return nullptr;
 	}
@@ -165,4 +165,56 @@ std::unique_ptr<Pattern> Town::townflag() const {
 	}
 
 	return nullptr;
+}
+
+bool Town::itemBuried(int index) const {
+	if (index > 4095) return false;
+
+	u32 offset = 0;
+	switch(this->region) {
+		case WWRegion::JPN_REV0:
+		case WWRegion::JPN_REV1:
+			offset = 0xC350 + ((index / 255) * 256 + (index % 256)) / 8;
+			break;
+		case WWRegion::USA_REV0:
+		case WWRegion::USA_REV1:
+		case WWRegion::EUR_REV1:
+			offset = 0xE354 + ((index / 255) * 256 + (index % 256)) / 8;
+			break;
+		case WWRegion::KOR_REV1:
+			offset = 0xF328 + ((index / 255) * 256 + (index % 256)) / 8;
+			break;
+		case WWRegion::UNKNOWN:
+			return 0;
+	}
+
+	return SaveUtils::GetBit(this->townPointer(), offset, (index % 256) % 8);
+}
+
+void Town::itemBuried(int index, bool buried) {
+	if (index > 4095) return;
+
+	u32 offset = 0;
+	switch(this->region) {
+		case WWRegion::JPN_REV0:
+		case WWRegion::JPN_REV1:
+			offset = 0xC350 + ((index / 255) * 256 + (index % 256)) / 8;
+			break;
+		case WWRegion::USA_REV0:
+		case WWRegion::USA_REV1:
+		case WWRegion::EUR_REV1:
+			offset = 0xE354 + ((index / 255) * 256 + (index % 256)) / 8;
+			break;
+		case WWRegion::KOR_REV1:
+			offset = 0xF328 + ((index / 255) * 256 + (index % 256)) / 8;
+			break;
+		case WWRegion::UNKNOWN:
+			return;
+	}
+
+	std::unique_ptr<Item> item = this->item(index);
+
+	if (item->itemtype() == ItemType::Empty) return; // Do not allow buried on empty spots.
+
+	SaveUtils::SetBit(this->townPointer(), offset, (index % 256) % 8, buried);
 }

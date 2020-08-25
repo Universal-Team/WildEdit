@@ -67,3 +67,15 @@ std::unique_ptr<Sav> SaveUtils::check080000(std::shared_ptr<u8[]> dt, u32 length
 		return nullptr;
 	}
 }
+
+/* Credits: PKSM-Core: https://github.com/FlagBrew/PKSM-Core/blob/master/source/utils/flagUtil.cpp. */
+bool SaveUtils::GetBit(const u8 *data, int offset, u8 bitIndex) {
+	bitIndex &= 7; // ensure bit access is 0-7.
+	return (data[offset] >> bitIndex & 1) != 0;
+}
+
+void SaveUtils::SetBit(u8 *data, int offset, u8 bitIndex, bool bit) {
+	bitIndex &= 7; // ensure bit access is 0-7.
+	data[offset] &= ~(1 << bitIndex);
+	data[offset] |= (bit ? 1 : 0) << bitIndex;
+}

@@ -30,10 +30,21 @@ INCLUDECORE	:= ../core/include \
 			   ../core/include/utils
 
 SOURCES		:=	$(SOURCECORE) \
-				source
+				source \
+				source/graphics \
+				source/management \
+				source/saves \
+				source/screens \
+				source/utils
 
 INCLUDES	:=	$(INCLUDECORE) \
-				include
+				include \
+				include/graphics \
+				include/management \
+				include/saves \
+				include/screens \
+				include/utils
+
 MUSIC		:=
 
 #---------------------------------------------------------------------------------

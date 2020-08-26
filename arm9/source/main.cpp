@@ -24,22 +24,35 @@
 *         reasonable ways as different from the original version.
 */
 
-#include <cstdio>
 #include <fat.h>
-#include <nds.h>
+
+#include "config.hpp"
+#include "flashcard.hpp"
+#include "itemUtils.hpp"
+#include "lang.hpp"
+#include "mainMenu.hpp"
+#include "nitrofs.h"
+#include "screenCommon.hpp"
+#include "structs.hpp"
 
 touchPosition touch;
+std::unique_ptr<Config> config;
 bool exiting = false;
 
+/* If button Position pressed -> Do something. */
+bool touching(touchPosition touch, Structs::ButtonPos button) {
+	if (touch.px >= button.x && touch.px <= (button.x + button.w) && touch.py >= button.y && touch.py <= (button.y + button.h)) return true;
+	else return false;
+}
+
 int main(int argc, char **argv) {
-	//initGraphics();
+	initGraphics();
 	keysSetRepeat(25,5);
 	sysSetCardOwner(BUS_OWNER_ARM9); // Give ARM9 access to Slot-1 (for dumping/injecting saves).
 	defaultExceptionHandler();
-	//scanKeys(); // So it doesn't open the SD if A is held.
 
-	//drawRectangle(0, 0, 256, 192, DARKERER_GRAY, DARKER_GRAY, true, false);
-	//drawRectangle(0, 0, 256, 192, DARKERER_GRAY, DARKER_GRAY, false, false);
+	drawRectangle(0, 0, 256, 192, DARKERER_GRAY, DARKER_GRAY, true, false);
+	drawRectangle(0, 0, 256, 192, DARKERER_GRAY, DARKER_GRAY, false, false);
 
 	/* Init filesystem. */
 	if (!fatInitDefault()) {
@@ -49,12 +62,17 @@ int main(int argc, char **argv) {
 		while(1) swiWaitForVBlank();
 	}
 
+	/* Make directories. */
+	mkdir(sdFound() ? "sd:/_nds" : "fat:/_nds", 0777);
+	mkdir(sdFound() ? "sd:/_nds/WildEdit" : "fat:/_nds/WildEdit", 0777);
+	mkdir(sdFound() ? "sd:/_nds/WildEdit/backups" : "fat:/_nds/WildEdit/backups", 0777);
+
 	/* Try to init NitroFS from argv provided to the game when it was launched. */
-	// if (!nitroFSInit(argv[0])) {
+	if (!nitroFSInit(argv[0])) {
 		/* If that fails, try to init NitroFS on 'WildEdit.nds'. */
-		
-		/*if (!nitroFSInit("WildEdit.nds")) {
+		if (!nitroFSInit("WildEdit.nds")) {
 			if (!nitroFSInit("/_nds/WildEdit/WildEdit.nds")) {
+				/* Prints error if nitroFSInit() fails. */
 				consoleDemoInit();
 				printf("nitroFSInit() failed...\n\n");
 				printf("Please copy WildEdit.nds to:\n\n");
@@ -67,15 +85,30 @@ int main(int argc, char **argv) {
 				while(1) swiWaitForVBlank();
 			}
 		}
-	}*/
+	}
+
+	config = std::make_unique<Config>();
+	Colors::load();
+	ItemUtils::LoadDatabase();
+	loadFont();
+	Lang::load(config->language());
+
+	Gui::initSprites();
+	Gui::loadSprites();
 
 	u16 hDown = 0;
+	Gui::setScreen(std::make_unique<MainMenu>());
+	Gui::clearScreen(false, true);
+
+	/* Draw Screen. */
+	Gui::DrawScreen();
 
 	while(!exiting) {
 		scanKeys();
 		swiWaitForVBlank();
 		hDown = keysDown();
 		touchRead(&touch);
+		Gui::mainLoop(hDown, touch);
 	}
 	
 	return 0;

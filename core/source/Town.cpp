@@ -174,15 +174,15 @@ bool Town::itemBuried(int index) const {
 	switch(this->region) {
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			offset = 0xC350 + ((index / 255) * 256 + (index % 256)) / 8;
+			offset = 0xC350 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			offset = 0xE354 + ((index / 255) * 256 + (index % 256)) / 8;
+			offset = 0xE354 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
 		case WWRegion::KOR_REV1:
-			offset = 0xF328 + ((index / 255) * 256 + (index % 256)) / 8;
+			offset = 0xF328 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
 		case WWRegion::UNKNOWN:
 			return 0;
@@ -198,15 +198,15 @@ void Town::itemBuried(int index, bool buried) {
 	switch(this->region) {
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			offset = 0xC350 + ((index / 255) * 256 + (index % 256)) / 8;
+			offset = 0xC350 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			offset = 0xE354 + ((index / 255) * 256 + (index % 256)) / 8;
+			offset = 0xE354 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
 		case WWRegion::KOR_REV1:
-			offset = 0xF328 + ((index / 255) * 256 + (index % 256)) / 8;
+			offset = 0xF328 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
 		case WWRegion::UNKNOWN:
 			return;

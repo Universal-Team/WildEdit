@@ -384,7 +384,7 @@ void Pattern::injectPattern(const std::string fileName) {
 }
 
 /* Get a Pattern Image. */
-std::shared_ptr<PatternImage> Pattern::image(const int pattern) const {
+std::unique_ptr<PatternImage> Pattern::image(const int pattern) const {
 	u32 patternOffset = this->Offset + 0;
 	u32 pltOffset = this->Offset + 0;
 
@@ -409,5 +409,5 @@ std::shared_ptr<PatternImage> Pattern::image(const int pattern) const {
 			break;
 	}
 
-	return std::make_shared<PatternImage>(this->data, patternOffset, pltOffset);
+	return std::make_unique<PatternImage>(this->data, patternOffset, pltOffset);
 }

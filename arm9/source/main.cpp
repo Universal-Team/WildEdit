@@ -27,10 +27,10 @@
 #include <fat.h>
 
 #include "config.hpp"
+#include "editor.hpp"
 #include "flashcard.hpp"
 #include "itemUtils.hpp"
 #include "lang.hpp"
-#include "mainMenu.hpp"
 #include "nitrofs.h"
 #include "screenCommon.hpp"
 #include "structs.hpp"
@@ -97,11 +97,8 @@ int main(int argc, char **argv) {
 	Gui::loadSprites();
 
 	u16 hDown = 0;
-	Gui::setScreen(std::make_unique<MainMenu>());
 	Gui::clearScreen(false, true);
-
-	/* Draw Screen. */
-	Gui::DrawScreen();
+	Gui::setScreen(std::make_unique<Editor>());
 
 	while(!exiting) {
 		scanKeys();

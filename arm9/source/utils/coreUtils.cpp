@@ -29,6 +29,7 @@
 #include "coreUtils.hpp"
 #include "flashcard.hpp"
 #include "lang.hpp"
+#include "msg.hpp"
 #include "Sav.hpp"
 #include "saveUtils.hpp"
 #include "screenCommon.hpp"
@@ -92,6 +93,7 @@ void CoreUtils::saveChanges() {
 void CoreUtils::createBackup() {
 	if (save) {
 		if (config->createBackups()) {
+			Msg::DisplayWaitMsg("Create Backup... Please wait."); // Rewrite to an appearing message until the backup was successfully done.
 			char stringTime[15] = {0};
 			time_t unixTime = time(NULL);
 			struct tm* timeStruct = gmtime((const time_t*)&unixTime);
@@ -103,6 +105,10 @@ void CoreUtils::createBackup() {
 			FILE *file = fopen(path.c_str(), "w");
 			fwrite(save->rawData().get(), 1, save->getLength(), file);
 			fclose(file);
+
+			char message[200];
+			snprintf(message, sizeof(message), Lang::get("BACKUP_RESULT").c_str(), path.c_str());
+			Msg::DisplayWaitMsg(message);
 		}
 	}
 }

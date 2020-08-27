@@ -24,26 +24,17 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "mainMenu.hpp"
+#ifndef _WILDEDIT_MSG_HPP
+#define _WILDEDIT_MSG_HPP
 
-extern bool exiting;
+#include "graphics.hpp"
+#include "screen.hpp"
 
-void MainMenu::Draw(void) const {
-	Gui::DrawTop(true);
-	printTextCentered("WildEdit - MainMenu", 0, 1, true, true);
-	Gui::DrawBottom(true);
-}
+namespace Msg {
+	void DisplayWarnMsg(std::string Text);
+	void DisplayWaitMsg(std::string waitMsg);
+	bool promptMsg(std::string promptMsg);
+	void notImplemented();
+};
 
-void MainMenu::Logic(u16 hDown, touchPosition touch) {
-	if (hDown & KEY_START) {
-		exiting = true;
-	}
-
-	if (hDown & KEY_RIGHT) {
-		if (this->selection < 1) this->selection++;
-	}
-
-	if (hDown & KEY_LEFT) {
-		if (this->selection > 0) this->selection--;
-	}
-}
+#endif

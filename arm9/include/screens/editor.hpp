@@ -24,19 +24,38 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _WILDEDIT_MAINMENU_HPP
-#define _WILDEDIT_MAINMENU_HPP
+#ifndef _WILDEDIT_EDITOR_HPP
+#define _WILDEDIT_EDITOR_HPP
 
 #include "screenCommon.hpp"
 #include "structs.hpp"
+
 #include <vector>
 
-class MainMenu : public Screen {
+class Editor : public Screen {
 public:
 	void Draw(void) const override;
 	void Logic(u16 hDown, touchPosition touch) override;
+	Editor();
 private:
-	int selection = 0;
+	enum class SaveState {
+		Loaded,
+		Unloaded
+	};
+
+	bool hasSaved = false;
+	SaveState loadState = SaveState::Unloaded;
+	int Selection = 0;
+	void SaveInitialize();
+	void Saving();
+	std::string saveName;
+
+	const std::vector<Structs::ButtonPos> mainButtons = {
+		{80, 30, 88, 32, -1}, // Player.
+		{80, 80, 88, 32, -1}, // Villager.
+		{80, 130, 88, 32, -1}, // Misc.
+		{225, 172, 32, 32, -1} // Save.
+	};
 };
 
 #endif

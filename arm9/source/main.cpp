@@ -29,7 +29,6 @@
 #include "config.hpp"
 #include "editor.hpp"
 #include "flashcard.hpp"
-#include "itemUtils.hpp"
 #include "lang.hpp"
 #include "nitrofs.h"
 #include "screenCommon.hpp"
@@ -89,7 +88,6 @@ int main(int argc, char **argv) {
 
 	config = std::make_unique<Config>();
 	Colors::load();
-	ItemUtils::LoadDatabase();
 	loadFont();
 	Lang::load(config->language());
 

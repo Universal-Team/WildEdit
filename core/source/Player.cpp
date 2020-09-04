@@ -71,12 +71,12 @@ u16 Player::tan() const {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			return playerPointer()[0x223D] & 0xF;
+			return playerPointer()[0x223D] >> 4;
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			return playerPointer()[0x1CC7] & 0xF;
+			return playerPointer()[0x1CC7] >> 4;
 		case WWRegion::KOR_REV1:
-			return playerPointer()[0x243D] & 0xF;
+			return playerPointer()[0x243D] >> 4;
 		case WWRegion::UNKNOWN:
 			return 0;
 	}
@@ -88,14 +88,14 @@ void Player::tan(u16 v) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			SaveUtils::Write<u8>(this->playerPointer(), 0x223D, (playerPointer()[0x223D] & 0xF0) | (v & 0xF));
+			SaveUtils::Write<u8>(this->playerPointer(), 0x223D, (playerPointer()[0x223D] & 0x0F) | (v << 4));
 			break;
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			SaveUtils::Write<u8>(this->playerPointer(), 0x1CC7, (playerPointer()[0x1CC7] & 0xF0) | (v & 0xF));
+			SaveUtils::Write<u8>(this->playerPointer(), 0x1CC7, (playerPointer()[0x1CC7] & 0x0F) | (v << 4));
 			break;
 		case WWRegion::KOR_REV1:
-			SaveUtils::Write<u8>(this->playerPointer(), 0x243D, (playerPointer()[0x243D] & 0xF0) | (v & 0xF));
+			SaveUtils::Write<u8>(this->playerPointer(), 0x243D, (playerPointer()[0x243D] & 0x0F) | (v << 4));
 			break;
 		case WWRegion::UNKNOWN:
 			break;
@@ -161,14 +161,14 @@ void Player::hairstyle(u8 v) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			SaveUtils::Write<u8>(this->playerPointer(), 0x223C, (playerPointer()[0x223C] & 0xF0) | (v << 4));
+			SaveUtils::Write<u8>(this->playerPointer(), 0x223C, (playerPointer()[0x223C] & 0x0F) | (v << 4));
 			break;
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			SaveUtils::Write<u8>(this->playerPointer(), 0x1CC6, (playerPointer()[0x1CC6] & 0xF0) | (v << 4));
+			SaveUtils::Write<u8>(this->playerPointer(), 0x1CC6, (playerPointer()[0x1CC6] & 0x0F) | (v << 4));
 			break;
 		case WWRegion::KOR_REV1:
-			SaveUtils::Write<u8>(this->playerPointer(), 0x243C, (playerPointer()[0x243C] & 0xF0) | (v << 4));
+			SaveUtils::Write<u8>(this->playerPointer(), 0x243C, (playerPointer()[0x243C] & 0x0F) | (v << 4));
 		case WWRegion::UNKNOWN:
 			break;
 	}
@@ -180,12 +180,12 @@ u8 Player::haircolor() const {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			return playerPointer()[0x223D] >> 4;
+			return playerPointer()[0x223D] & 0xF;
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			return playerPointer()[0x1CC7] >> 4;
+			return playerPointer()[0x1CC7] & 0xF;
 		case WWRegion::KOR_REV1:
-			return playerPointer()[0x243D] >> 4;
+			return playerPointer()[0x243D] & 0xF;
 		case WWRegion::UNKNOWN:
 			return 0;
 	}
@@ -196,14 +196,14 @@ void Player::haircolor(u8 v) {
 		case WWRegion::USA_REV0:
 		case WWRegion::USA_REV1:
 		case WWRegion::EUR_REV1:
-			SaveUtils::Write<u8>(this->playerPointer(), 0x223D, (playerPointer()[0x223D] & 0xF) | (v << 4));
+			SaveUtils::Write<u8>(this->playerPointer(), 0x223D, (playerPointer()[0x223D] & 0xF0) | (v & 0xF));
 			break;
 		case WWRegion::JPN_REV0:
 		case WWRegion::JPN_REV1:
-			SaveUtils::Write<u8>(this->playerPointer(), 0x1CC7, (playerPointer()[0x1CC7] & 0xF) | (v << 4));
+			SaveUtils::Write<u8>(this->playerPointer(), 0x1CC7, (playerPointer()[0x1CC7] & 0xF0) | (v & 0xF));
 			break;
 		case WWRegion::KOR_REV1:
-			SaveUtils::Write<u8>(this->playerPointer(), 0x243D, (playerPointer()[0x243D] & 0xF) | (v << 4));
+			SaveUtils::Write<u8>(this->playerPointer(), 0x243D, (playerPointer()[0x243D] & 0xF0) | (v & 0xF));
 			break;
 		case WWRegion::UNKNOWN:
 			break;
@@ -449,6 +449,26 @@ void Player::bank(u32 v) {
 		case WWRegion::UNKNOWN:
 			break;
 	}
+}
+
+/* Player Letters. */
+std::unique_ptr<Letter> Player::letter(int slot) const {
+	if (slot > 9) return nullptr;
+	switch(this->region) {
+		case WWRegion::USA_REV0:
+		case WWRegion::USA_REV1:
+		case WWRegion::EUR_REV1:
+			return std::make_unique<Letter>(data, offset + 0x114C + slot * 0xF4, this->region);
+		case WWRegion::JPN_REV0:
+		case WWRegion::JPN_REV1:
+			return std::make_unique<Letter>(data, offset + 0x1108 + slot * 0x8C, this->region);
+		case WWRegion::KOR_REV1:
+			return std::make_unique<Letter>(data, offset + 0x116C + slot * 0x140, this->region);
+		case WWRegion::UNKNOWN:
+			return nullptr;
+	}
+
+	return nullptr;
 }
 
 /* Player Pocket. */

@@ -28,6 +28,7 @@
 #define _WILDEDIT_CORE_PLAYER_HPP
 
 #include "Item.hpp"
+#include "Letter.hpp"
 #include "Pattern.hpp"
 #include "types.hpp"
 
@@ -35,6 +36,7 @@
 #include <vector>
 
 class Item;
+class Letter;
 class Pattern;
 class Player {
 protected:
@@ -88,6 +90,7 @@ public:
 	void wallet(u32 v);
 	u32 bank() const;
 	void bank(u32 v);
+	std::unique_ptr<Letter> letter(int slot) const;
 	
 	std::unique_ptr<Item> pocket(int slot) const;
 	std::unique_ptr<Item> dresser(int slot) const;

@@ -28,10 +28,7 @@
 #define _WILDEDIT_CORE_ITEMUTILS_HPP
 
 #include "types.hpp"
-#include <map>
 #include <string>
-
-extern std::map<u16, std::string> ItemDatabase;
 
 /*
 	We should sort that out for AC:WW only Category Items for WildEdit here.
@@ -75,7 +72,6 @@ enum class ItemType {
 };
 
 namespace ItemUtils {
-	void LoadDatabase(int lang = 0); // Read Database.
 	std::string getName(u16 ID); // Get an Item's name.
 }
 

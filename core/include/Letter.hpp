@@ -24,24 +24,48 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "itemUtils.hpp"
-#include "stringUtils.hpp"
+#ifndef _WILDEDIT_CORE_LETTER_HPP
+#define _WILDEDIT_CORE_LETTER_HPP
+
+#include "item.hpp"
 #include "types.hpp"
 
-#include <string>
-#include <tuple>
+#include <memory>
 #include <vector>
 
-extern std::vector<std::tuple<u16, std::string, std::string>> itemDB;
+class Item;
+class Letter {
+protected:
+	std::shared_ptr<u8[]> data;
+	u32 Offset;
+	WWRegion region;
+public:
+	~Letter() {}
+	Letter(std::shared_ptr<u8[]> dt, u32 offset, WWRegion letterreg) : data(dt), Offset(offset), region(letterreg) { }
+	Letter(const Letter& letter) = delete;
+	Letter& operator=(const Letter& letter) = delete;
 
-// Get an Item's name.
-std::string ItemUtils::getName(u16 ID) {
-	if (itemDB.empty()) return "???"; // Database empty.
-	for (auto const& entry : itemDB) {
-		if (std::get<0>(entry) == ID) {
-			return std::get<1>(entry);
-		}
+	u16 playerid() const;
+	std::u16string playername() const;
+	u16 townid() const;
+	std::u16string townname() const;
+	u8 playerindex() const;
+
+	std::u16string intro() const;
+	std::u16string body() const;
+	std::u16string end() const;
+
+	u8 nameindex() const;
+	u8 paperid() const;
+	u8 flag() const;
+	u8 senderid() const;
+	u8 lettertype() const;
+
+	std::unique_ptr<Item> item() const;
+private:
+	u8 *letterPointer() const {
+		return data.get() + Offset;
 	}
+};
 
-	return std::string("???");
-}
+#endif

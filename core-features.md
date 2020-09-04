@@ -14,6 +14,11 @@ Here you can see all core features of WildEdit-Core, which are already implement
 - [x] Item Name
 - [x] Item Type // TODO: Sort out non existing AC:WW ones.
 
+## Letter
+- [x] Intro
+- [x] Body
+- [x] End
+
 ## Pattern
 - [x] Pattern Name
 - [x] Creator Name

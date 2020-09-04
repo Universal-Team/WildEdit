@@ -24,24 +24,18 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "itemUtils.hpp"
-#include "stringUtils.hpp"
+#ifndef _WILDEDIT_CORE_STRING_DB_HPP
+#define _WILDEDIT_CORE_STRING_DB_HPP
+
 #include "types.hpp"
 
 #include <string>
-#include <tuple>
 #include <vector>
 
-extern std::vector<std::tuple<u16, std::string, std::string>> itemDB;
-
-// Get an Item's name.
-std::string ItemUtils::getName(u16 ID) {
-	if (itemDB.empty()) return "???"; // Database empty.
-	for (auto const& entry : itemDB) {
-		if (std::get<0>(entry) == ID) {
-			return std::get<1>(entry);
-		}
-	}
-
-	return std::string("???");
+namespace StringDB {
+	void LoadItemDatabase();
+	void LoadVillagerDatabase();
+	std::vector<std::tuple<u16, std::string, std::string>> searchTuple(std::string searchResult, std::vector<std::string> searchCategory, std::vector<std::tuple<u16, std::string, std::string>> &searchType, bool compare = false);
 }
+
+#endif

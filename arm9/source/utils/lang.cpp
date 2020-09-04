@@ -1,4 +1,5 @@
 #include "lang.hpp"
+#include "stringDB.hpp"
 
 nlohmann::json appJson;
 /* Player. */
@@ -7,7 +8,6 @@ std::vector<std::string> g_hairColor;
 std::vector<std::string> g_hairStyle;
 /* Villager. */
 std::vector<std::string> g_personality;
-std::vector<std::string> g_villagerDatabase;
 
 void loadToVector(std::string path, std::vector<std::string> &vec) {
 	char* line = NULL;
@@ -36,11 +36,10 @@ std::string Lang::get(const std::string &key) {
 const std::string langs[] = {"de", "en", "es", "fr", "it", "lt", "pt", "jp"};
 
 void Lang::load(int lang) {
-	loadToVector("nitro:/lang/"+langs[lang]+"/faceType.txt", g_faceType);
-	loadToVector("nitro:/lang/"+langs[lang]+"/hairColor.txt", g_hairColor);
-	loadToVector("nitro:/lang/"+langs[lang]+"/hairStyle.txt", g_hairStyle);
-	loadToVector("nitro:/lang/"+langs[lang]+"/personalities.txt", g_personality);
-	loadToVector("nitro:/lang/"+langs[lang]+"/villager.txt", g_villagerDatabase);
+	loadToVector("nitro:/lang/strings/faceType.txt", g_faceType);
+	loadToVector("nitro:/lang/strings/hairColor.txt", g_hairColor);
+	loadToVector("nitro:/lang/strings/hairStyle.txt", g_hairStyle);
+	loadToVector("nitro:/lang/strings/personalities.txt", g_personality);
 
 	/* Load app strings. */
 	FILE* file = fopen(("nitro:/lang/"+langs[lang]+"/app.json").c_str(), "rt");
@@ -48,4 +47,7 @@ void Lang::load(int lang) {
 		appJson = nlohmann::json::parse(file, nullptr, false);
 		fclose(file);
 	}
+
+	StringDB::LoadItemDatabase();
+	StringDB::LoadVillagerDatabase();
 }

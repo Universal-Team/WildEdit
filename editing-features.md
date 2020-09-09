@@ -2,4 +2,10 @@
 
 Here you can see all current editing features from WildEdit.
 
-No progress has been made yet.
+### Player
+- [x] Edit Player Name.
+- [x] Edit Wallet Amount.
+- [x] View Pattern.
+
+### Town
+- [x] Edit Acres.

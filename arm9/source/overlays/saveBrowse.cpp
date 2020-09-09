@@ -184,6 +184,9 @@ static std::string topMenuSelect(void) {
 	int pressed, held;
 	touchPosition touch;
 
+	drawRectangle(0, 0, 256, 192, DARKER_GRAY, true, false);
+	drawRectangle(0, 0, 256, 192, DARKER_GRAY, false, false);
+	
 	/* Clear text. */
 	drawRectangle(0, 0, 256, 192, CLEAR, true, true);
 	drawRectangle(0, 0, 256, 192, CLEAR, false, true);
@@ -337,7 +340,7 @@ static std::string topMenuSelect(void) {
 
 static std::string browseForFile(const std::vector<std::string>& extensionList, bool accessSubdirectories, bool canChooseDirs) {
 	char startPath[PATH_MAX];
-	if(!accessSubdirectories)	getcwd(startPath, PATH_MAX);
+	if (!accessSubdirectories) getcwd(startPath, PATH_MAX);
 	int pressed, held, screenOffset = 0, fileOffset = 0;
 	touchPosition touch;
 	std::vector<DirEntry> dirContents;
@@ -440,7 +443,7 @@ static std::string browseForFile(const std::vector<std::string>& extensionList, 
 		
 		if(pressed & KEY_TOUCH) {
 			touchRead(&touch);
-			for(int i=0;i<std::min(ENTRIES_PER_SCREEN, (int)dirContents.size());i++) {
+			for(int i = 0; i < std::min(ENTRIES_PER_SCREEN, (int)dirContents.size()); i++) {
 				if (touch.py > (i+1)*16 && touch.py < (i+2)*16) {
 					fileOffset = i;
 					goto selection;
@@ -466,12 +469,12 @@ std::string Overlays::browseForSave(void) {
 		if (str != "") return str;
 	}
 
+	drawRectangle(0, 0, 256, 192, DARKER_GRAY, true, false);
+	drawRectangle(0, 0, 256, 192, DARKER_GRAY, false, false);
+
 	/* Clear text. */
 	drawRectangle(0, 0, 256, 192, CLEAR, true, true);
 	drawRectangle(0, 0, 256, 192, CLEAR, false, true);
-
-	/* Print version number. */
-	printText(VER_NUMBER, 256 - getTextWidth(VER_NUMBER) - 1, 176, true, true);
 
 	std::vector<std::string> extensionList;
 	extensionList.push_back("sav");

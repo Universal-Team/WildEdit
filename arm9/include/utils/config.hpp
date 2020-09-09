@@ -49,6 +49,19 @@ public:
 	int version() { return this->v_version; }
 	void version(int v) { this->v_version = v; if (!this->changesMade) this->changesMade = true; }
 
+	/* Keyboard Layout. */
+	int kbLayout() { return this->v_kbLayout; }
+	void kbLayout(int v) { this->v_kbLayout = v; if (!this->changesMade) this->changesMade = true; }
+	/* Keyboard X Position. */
+	int kbXPos() { return this->v_kbXPos; }
+	void kbXPos(int v) { this->v_kbXPos = v; if (!this->changesMade) this->changesMade = true; }
+	/* Keyboard Directions. */
+	int kbDirections() { return this->v_kbDirections; }
+	void kbDirections(int v) { this->v_kbDirections = v; if (!this->changesMade) this->changesMade = true; }
+	/* Keyboard Group Amount. */
+	int kbGroupAmount() { return this->v_kbGroupAmount; }
+	void kbGroupAmount(int v) { this->v_kbGroupAmount = v; if (!this->changesMade) this->changesMade = true; }
+
 	/* Mainly helper. */
 	bool getBool(const std::string &key);
 	void setBool(const std::string &key, bool v);
@@ -62,7 +75,7 @@ private:
 
 	/* variables for the config. */
 	bool v_createBackups;
-	int v_language, v_version;
+	int v_language, v_kbGroupAmount, v_kbLayout, v_kbXPos, v_kbDirections, v_version;
 
 	int configVersion = 1; // Update this by changes.
 };

@@ -42,6 +42,10 @@ void Config::initialize() {
 	this->setInt("Language", 1);
 	this->setBool("Create_Backups", true);
 	this->setInt("Version", this->configVersion);
+	this->setInt("KeyboardDirections", 0);
+	this->setInt("KeyboardGroupAmount", 0);
+	this->setInt("KeyboardXPos", 0);
+	this->setInt("KeyboardLayout", 0);
 
 	/* Write to file. */
 	const std::string dump = this->json.dump(1, '\t');
@@ -70,20 +74,52 @@ Config::Config() {
 
 	if (!this->json.contains("Language")) {
 		this->language(1);
+
 	} else {
 		this->language(this->getInt("Language"));
 	}
 
 	if (!this->json.contains("Create_Backups")) {
 		this->createBackups(true);
+
 	} else {
 		this->createBackups(this->getBool("Create_Backups"));
 	}
 
 	if (!this->json.contains("Version")) {
 		this->version(this->configVersion);
+
 	} else {
 		this->version(this->getInt("Version"));
+	}
+
+	if (!this->json.contains("KeyboardDirections")) {
+		this->kbDirections(0);
+
+	} else {
+		this->kbDirections(this->getInt("KeyboardDirections"));
+	}
+
+	if (!this->json.contains("KeyboardGroupAmount")) {
+		this->kbGroupAmount(0);
+
+	} else {
+		this->kbGroupAmount(this->getInt("KeyboardGroupAmount"));
+	}
+
+
+	if (!this->json.contains("KeyboardXPos")) {
+		this->kbXPos(0);
+
+	} else {
+		this->kbXPos(this->getInt("KeyboardXPos"));
+	}
+
+	if (!this->json.contains("KeyboardLayout")) {
+		this->kbLayout(0);
+
+	} else {
+		this->kbLayout(this->getInt("KeyboardLayout"));
 	}
 
 	this->changesMade = false; // No changes made yet.
@@ -98,6 +134,10 @@ void Config::save() {
 		this->setInt("Language", this->language());
 		this->setBool("Create_Backups", this->createBackups());
 		this->setInt("Version", this->version());
+		this->setInt("KeyboardDirections", this->kbDirections());
+		this->setInt("KeyboardGroupAmount", this->kbGroupAmount());
+		this->setInt("KeyboardXPos", this->kbXPos());
+		this->setInt("KeyboardLayout", this->kbLayout());
 		/* Write changes to file. */
 		const std::string dump = this->json.dump(1, '\t');
 		fwrite(dump.c_str(), 1, this->json.dump(1, '\t').size(), file);

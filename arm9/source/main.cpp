@@ -89,7 +89,7 @@ int main(int argc, char **argv) {
 	config = std::make_unique<Config>();
 	Colors::load();
 	loadFont();
-	Lang::load(config->language());
+	Lang::load(1);
 
 	Gui::initSprites();
 	Gui::loadSprites();

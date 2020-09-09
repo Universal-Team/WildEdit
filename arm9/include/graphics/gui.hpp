@@ -55,6 +55,10 @@ namespace Gui {
 
 	void initSprites(void);
 	void loadSprites(void);
+
+	/* Pointer stuff. */
+	void pointerUpdate(int x = 0, int y = 0);
+	void showPointer(bool show = true);
 }
 
 #endif

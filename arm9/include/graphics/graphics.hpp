@@ -54,6 +54,9 @@ struct Sprite {
 extern std::vector<u16> font;
 extern int bg3Main, bg2Main, bg3Sub, bg2Sub, bg1Sub;
 
+extern std::vector<Sprite> spritesSub, spritesMain;
+extern int maxSpriteSub, maxSpriteMain;
+
 /* Initializes the screens for drawing. */
 void initGraphics(void);
 

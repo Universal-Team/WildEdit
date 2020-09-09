@@ -78,7 +78,7 @@ std::string Overlays::SelectFile(const std::string initialPath, std::vector<std:
 			held = keysDownRepeat();
 		} while(!held);
 
-		// if directory changed -> Refresh it.
+		/* if directory changed -> Refresh it. */
 		if (dirChanged) {
 			dirChanged = false;
 			dirContents.clear();

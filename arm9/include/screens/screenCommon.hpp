@@ -35,5 +35,6 @@
 #include "screen.hpp"
 
 extern std::shared_ptr<Sav> save;
+extern bool updatePointer;
 
 #endif

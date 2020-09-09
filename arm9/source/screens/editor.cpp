@@ -24,14 +24,16 @@
 *         reasonable ways as different from the original version.
 */
 
+#include "acresEditor.hpp"
 #include "cardSaves.hpp"
 #include "coreUtils.hpp"
 #include "editor.hpp"
 #include "fileBrowse.hpp"
 #include "gui.hpp"
 #include "lang.hpp"
-#include "overlay.hpp"
 #include "msg.hpp"
+#include "overlay.hpp"
+#include "playerSelector.hpp"
 #include "Sav.hpp"
 
 bool changes = false;
@@ -53,6 +55,9 @@ extern bool touching(touchPosition touch, Structs::ButtonPos button);
 Editor::Editor() { }
 
 void Editor::SaveInitialize() {
+	Gui::showPointer(false);
+	Gui::pointerUpdate(0, 0);
+
 	this->saveName = Overlays::browseForSave();
 
 	if (this->saveName != "") {
@@ -60,6 +65,7 @@ void Editor::SaveInitialize() {
 			Msg::DisplayWarnMsg(Lang::get("INVALID_SAVEFILE"));
 		} else {
 			loadState = SaveState::Loaded;
+
 			/* Clear Both Screens. */
 			Gui::clearScreen(false, true);
 			Gui::clearScreen(true, true);
@@ -68,6 +74,7 @@ void Editor::SaveInitialize() {
 			/* Display Save icon. */
 			setSpriteVisibility(Gui::saveID, false, true);
 			setSpritePosition(Gui::saveID, false, 225, 172);
+			Gui::showPointer(true);
 			updateOam();
 		}
 	} else {
@@ -87,14 +94,25 @@ void Editor::Draw(void) const {
 
 		/* Region test. */
 		if (save) {
-			if (save->getRegion() == WWRegion::EUR_REV1) {
-				printTextCentered("Europe | USA", 0, 60, true, true);
-			} else if (save->getRegion() == WWRegion::JPN_REV0) {
-				printTextCentered("Japanese", 0, 60, true, true);
-			} else if (save->getRegion() == WWRegion::KOR_REV1) {
-				printTextCentered("Korean", 0, 60, true, true);
-			} else if (save->getRegion() == WWRegion::UNKNOWN) {
-				printTextCentered("Unknown", 0, 60, true, true);
+			switch(save->getRegion()) {
+				case WWRegion::USA_REV0:
+				case WWRegion::USA_REV1:
+				case WWRegion::EUR_REV1:
+					printTextCentered("Europe | USA", 0, 60, true, true);
+					break;
+
+				case WWRegion::JPN_REV0:
+				case WWRegion::JPN_REV1:
+					printTextCentered("Japanese", 0, 60, true, true);
+					break;
+
+				case WWRegion::KOR_REV1:
+					printTextCentered("Korean", 0, 60, true, true);
+					break;
+
+				case WWRegion::UNKNOWN:
+					printTextCentered("Unknown", 0, 60, true, true);
+					break;
 			}
 		}
 
@@ -113,19 +131,58 @@ void Editor::Draw(void) const {
 void Editor::Logic(u16 hDown, touchPosition touch) {
 	/* Only do Logic, if Save is loaded. */
 	if (loadState == SaveState::Loaded) {
+		if (updatePointer) Gui::pointerUpdate(mainButtons[this->Selection].x + 60, mainButtons[this->Selection].y + 12);
+
 		if (hDown & KEY_B) {
 			/* Hide save icon. */
 			setSpriteVisibility(Gui::saveID, false, false);
+			Gui::showPointer(false);
 			updateOam();
 			this->loadState = SaveState::Unloaded;
 		}
 		
 		if (hDown & KEY_DOWN) {
-			if (this->Selection < 2) this->Selection++;
+			if (this->Selection < 2) {
+				this->Selection++;
+				updatePointer = true;
+			}
+		}
+
+		if (hDown & KEY_START) {
+			this->Saving();
 		}
 		
 		if (hDown & KEY_UP) {
-			if (this->Selection > 0) this->Selection--;
+			if (this->Selection > 0) {
+				this->Selection--;
+				updatePointer = true;
+			}
+		}
+
+		if (hDown & KEY_A) {
+			switch(this->Selection) {
+				case 0:
+					/* Player. */
+					Gui::setScreen(std::make_unique<PlayerSelector>());
+					setSpriteVisibility(Gui::saveID, false, false);
+					Gui::DrawScreen();
+					Gui::showPointer(false);
+					updateOam();
+					break;
+
+				case 1:
+					/* Villager. */
+					break;
+
+				case 2:
+					/* Town. */
+					std::unique_ptr<Town> twn = save->town();
+					setSpriteVisibility(Gui::saveID, false, false);
+					Gui::setScreen(std::make_unique<AcresEditor>(twn));
+					Gui::DrawScreen();
+					updatePointer = true;
+					break;
+			}
 		}
 
 	} else {

@@ -90,3 +90,19 @@ void Gui::loadSprites(void) {
 	fillSpriteImage(pointerID, false, 32, 0, 0, pointerImg);
 	fillSpriteImage(saveID, false, 32, 0, 0, saveImg);
 }
+
+/* Pointer stuff. */
+bool updatePointer = false;
+
+void Gui::pointerUpdate(int x, int y) {
+	if (updatePointer) {
+		setSpritePosition(Gui::pointerID, false, x, y);
+		updatePointer = false;
+		updateOam();
+	}
+}
+
+void Gui::showPointer(bool show) {
+	setSpriteVisibility(Gui::pointerID, false, show);
+	updatePointer = true;
+}

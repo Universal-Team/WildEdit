@@ -24,23 +24,31 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "graphicManagement.hpp"
-#include "gui.hpp"
+#ifndef _WILDEDIT_PLAYER_SELECTOR_HPP
+#define _WILDEDIT_PLAYER_SELECTOR_HPP
 
-#include <nds.h>
+#include "screenCommon.hpp"
+#include "structs.hpp"
 
-/* Draw an Acre image. */
-void GraphicManagement::DrawAcre(u8 AcreID, int x, int y, float ScaleX, float ScaleY, bool top, bool Layer) {
-	Image AcreData = loadImage("/graphics/acres/" + std::to_string(AcreID) + ".gfx"); // Load Image.
-	drawImageScaled(x, y, ScaleX, ScaleY, AcreData, top, Layer, 0x20); // Draw Image.
-}
+#include <vector>
 
-/* Draw a villager image. */
-void GraphicManagement::DrawVillager(u8 villagerID, int x, int y, bool top) {
-	if (villagerID > 149) {
-		villagerID = 150; // 150 -> EMPTY.
-	}
+class PlayerSelector : public Screen {
+public:
+	void Draw(void) const override;
+	void Logic(u16 hDown, touchPosition touch) override;
+	PlayerSelector();
+private:
+	void DrawPlayerBoxes(void) const;
+	int maxPlayer = 0;
+	int selectedPlayer = 0;
 
-	Image villagerData = loadImage("/graphics/villagers/" + std::to_string(villagerID) + ".gfx"); // Load sprite.
-	drawImage(x, y, villagerData, top, true, 0x20); // Draw sprite.
-}
+	const std::vector<Structs::ButtonPos> pos = {
+		{20, 35, 100, 50},
+		{140, 35, 100, 50},
+
+		{20, 105, 100, 50},
+		{140, 105, 100, 50}
+	};
+};
+
+#endif

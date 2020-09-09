@@ -27,6 +27,8 @@
 #ifndef _WILDEDIT_CORE_UTILS_HPP
 #define _WILDEDIT_CORE_UTILS_HPP
 
+#include "graphics.hpp"
+#include "PatternImage.hpp"
 #include <nds.h>
 #include <string>
 
@@ -34,6 +36,8 @@ namespace CoreUtils {
 	bool loadSave(const std::string saveFile);
 	void saveChanges();
 	void createBackup();
+
+	Image patternimage(std::unique_ptr<PatternImage> &img, u16 paletteOffset);
 }
 
 #endif

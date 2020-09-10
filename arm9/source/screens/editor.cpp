@@ -24,7 +24,6 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "acresEditor.hpp"
 #include "cardSaves.hpp"
 #include "coreUtils.hpp"
 #include "editor.hpp"
@@ -35,6 +34,7 @@
 #include "overlay.hpp"
 #include "playerSelector.hpp"
 #include "Sav.hpp"
+#include "townEditor.hpp"
 
 bool changes = false;
 extern bool loadedFromCart;
@@ -176,11 +176,10 @@ void Editor::Logic(u16 hDown, touchPosition touch) {
 
 				case 2:
 					/* Town. */
-					std::unique_ptr<Town> twn = save->town();
 					setSpriteVisibility(Gui::saveID, false, false);
-					Gui::setScreen(std::make_unique<AcresEditor>(twn));
+					Gui::setScreen(std::make_unique<TownEditor>(save->town()));
 					Gui::DrawScreen();
-					updatePointer = true;
+					updateOam();
 					break;
 			}
 		}

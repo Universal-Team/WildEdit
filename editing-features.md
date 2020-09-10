@@ -16,3 +16,4 @@ Here you can see all current editing features from WildEdit.
 
 ### Town
 - [x] Edit Acres.
+- [x] Edit Town Map Items.

@@ -43,8 +43,24 @@ AcresEditor::AcresEditor(std::unique_ptr<Town> &refTown) : town(refTown) {
 
 	this->previewAcre = maxSpriteMain;
 	this->previewAcre = initSprite(true, SpriteSize_32x32, this->previewAcre);
-	prepareSprite(this->previewAcre, true, 90, 70, 0);
-	setSpriteVisibility(this->previewAcre, true, true);
+
+	oamSet(
+		(&oamMain), // Main/Sub display.
+		this->previewAcre, // Oam entry to set.
+		90, 70, // Position.
+		0, // Priority.
+		spritesMain[this->previewAcre].paletteAlpha, // Alpha for bmp sprite.
+		spritesMain[this->previewAcre].size,
+		spritesMain[this->previewAcre].format,
+		spritesMain[this->previewAcre].gfx,
+		1,
+		true, // Double.
+		false, // Don't hide the sprite.
+		false, false, // vflip, hflip.
+		false // Apply mosaic.
+	);
+
+	oamRotateScale(&oamMain, 1, 0, 1 << 7, 1 << 7);
 	fillSpriteImage(this->previewAcre, true, 32, 0, 0, loadImage("/graphics/acres/" + std::to_string(this->selectedAcre) + ".gfx"));
 }
 
@@ -57,34 +73,22 @@ AcresEditor::~AcresEditor() {
 		}
 	}
 
+	prepareSprite(this->previewAcre, true, 90, 70, 0);
+
 	if (spritesMain[this->previewAcre].gfx) {
 		oamFreeGfx(&oamMain, spritesMain[this->previewAcre].gfx);
 		setSpriteVisibility(this->previewAcre, true, false);
 	}
+
+	updateOam();
 }
 
 void AcresEditor::reloadSaveAcre(int acre) {
-	/* Free allocated acre. */
-	if (spritesSub[this->saveAcres[acre]].gfx) {
-		oamFreeGfx(&oamSub, spritesSub[this->saveAcres[acre]].gfx);
-	}
-
-	this->saveAcres[acre] = initSprite(false, SpriteSize_32x32, this->saveAcres[acre]);
-	prepareSprite(this->saveAcres[acre], false, MapPos[acre].x, MapPos[acre].y, 0);
-	setSpriteVisibility(this->saveAcres[acre], false, true);
 	fillSpriteImage(this->saveAcres[acre], false, 32, 0, 0, loadImage("/graphics/acres/" + std::to_string(this->acres[acre]->id()) + ".gfx"));
 	oamUpdate(&oamSub);
 }
 
 void AcresEditor::reloadTopAcre() {
-	/* Free allocated acre. */
-	if (spritesMain[this->previewAcre].gfx) {
-		oamFreeGfx(&oamMain, spritesMain[this->previewAcre].gfx);
-	}
-
-	this->previewAcre = initSprite(true, SpriteSize_32x32, this->previewAcre);
-	prepareSprite(this->previewAcre, true, 90, 70, 0);
-	setSpriteVisibility(this->previewAcre, true, true);
 	fillSpriteImage(this->previewAcre, true, 32, 0, 0, loadImage("/graphics/acres/" + std::to_string(this->selectedAcre) + ".gfx"));
 	oamUpdate(&oamMain);
 }

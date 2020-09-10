@@ -34,8 +34,9 @@
 
 namespace ItemManager {
 	u8 getColor(ItemType item);
-	/* Select an Item from a list. */
-	u16 selectItem(u16 current, const std::string Text);
+	
+	int getIndex(const u16 &v);
+	int getIndexString(const int &current, const std::string &v); 
 }
 
 #endif

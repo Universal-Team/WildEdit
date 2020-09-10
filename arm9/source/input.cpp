@@ -1205,9 +1205,9 @@ void processTouchKor(touchPosition touch, unsigned maxLength) {
 	}
 }
 
-std::string Input::getLine2(std::string Text, std::string currentString, bool showPointer) { return Input::getLine(Text, -1, currentString, showPointer); }
+std::string Input::getLine2(std::string Text, std::string currentString, bool showPointer, bool redrawScreen) { return Input::getLine(Text, -1, currentString, showPointer, redrawScreen); }
 
-std::string Input::getLine(std::string Text, unsigned maxLength, std::string currentString, bool showPointer) {
+std::string Input::getLine(std::string Text, unsigned maxLength, std::string currentString, bool showPointer, bool redrawScreen) {
 	Gui::showPointer(false);
 	updateOam();
 
@@ -1298,19 +1298,17 @@ std::string Input::getLine(std::string Text, unsigned maxLength, std::string cur
 		}
 	}
 
-	Gui::DrawScreen();
-
+	if (redrawScreen) Gui::DrawScreen();
 	if (showPointer) Gui::showPointer(true);
-	updatePointer = true;
 
 	if (StringUtils::UTF16toUTF8(string) == "") return currentString;
 	return StringUtils::UTF16toUTF8(string);
 }
 
-int Input::getInt2(std::string Text, int currentValue, bool showPointer) { return Input::getInt(Text, -1, currentValue, showPointer); }
+int Input::getInt2(std::string Text, int currentValue, bool showPointer, bool redrawScreen) { return Input::getInt(Text, -1, currentValue, showPointer, redrawScreen); }
 
 /* Returns -1 if nothing entered. */
-int Input::getInt(std::string Text, unsigned max, int currentValue, bool showPointer) {
+int Input::getInt(std::string Text, unsigned max, int currentValue, bool showPointer, bool redrawScreen) {
 	char str[4];
 	__itoa(max, str, 10);
 	unsigned maxLength = strlen(str);
@@ -1369,10 +1367,8 @@ int Input::getInt(std::string Text, unsigned max, int currentValue, bool showPoi
 		}
 	}
 
-	Gui::DrawScreen();
-
+	if (redrawScreen) Gui::DrawScreen();
 	if (showPointer) Gui::showPointer(true);
-	updatePointer = true;
 
 	if (string == u8u16("")) return currentValue;
 	unsigned i = std::stoi(StringUtils::UTF16toUTF8(string));

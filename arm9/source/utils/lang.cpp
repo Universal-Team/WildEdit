@@ -36,9 +36,9 @@ std::string Lang::get(const std::string &key) {
 const std::string langs[] = {"de", "en", "es", "fr", "it", "lt", "pt", "jp"};
 
 void Lang::load(int lang) {
-	loadToVector("nitro:/lang/strings/faceType.txt", g_faceType);
-	loadToVector("nitro:/lang/strings/hairColor.txt", g_hairColor);
-	loadToVector("nitro:/lang/strings/hairStyle.txt", g_hairStyle);
+	loadToVector("nitro:/lang/strings/facetype.txt", g_faceType);
+	loadToVector("nitro:/lang/strings/haircolor.txt", g_hairColor);
+	loadToVector("nitro:/lang/strings/hairstyle.txt", g_hairStyle);
 	loadToVector("nitro:/lang/strings/personalities.txt", g_personality);
 
 	/* Load app strings. */

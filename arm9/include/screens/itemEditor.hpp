@@ -24,68 +24,74 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _WILDEDIT_PLAYER_EDITOR_HPP
-#define _WILDEDIT_PLAYER_EDITOR_HPP
+#ifndef _WILDEDIT_ITEM_EDITOR_HPP
+#define _WILDEDIT_ITEM_EDITOR_HPP
 
-#include "Pattern.hpp"
-#include "PatternImage.hpp"
+#include "Item.hpp"
 #include "Player.hpp"
 #include "screenCommon.hpp"
 
 #include "structs.hpp"
 #include <vector>
 
-class PlayerEditor : public Screen {
+class ItemEditor : public Screen {
 protected:
-	std::unique_ptr<Player> player;
+	std::unique_ptr<Player> &player;
 public:
 	void Draw(void) const override;
 	void Logic(u16 hDown, touchPosition touch) override;
-	PlayerEditor(std::unique_ptr<Player> refPlayer);
-	~PlayerEditor();
+	ItemEditor(std::unique_ptr<Player> &refPlayer);
+	~ItemEditor();
 private:
+	std::unique_ptr<Item> pockets[15] = {nullptr};
+	std::unique_ptr<Item> dresser[90] = {nullptr};
+	int Selection = 0, Mode = 0, box = 0;
+
 	/* Draws. */
-	void DrawSubMenu(void) const;
-	void DrawPlayerScreen(void) const;
-	void DrawAppearance(void) const;
-	void DrawPattern(void) const;
+	void DrawSubMenu() const;
+	void DrawPocket() const;
+	void DrawDresser() const;
 
 	/* Logics. */
 	void SubMenuLogic(u16 hDown, touchPosition touch);
-	void PlayerLogic(u16 hDown, touchPosition touch);
-	void AppearanceLogic(u16 hDown, touchPosition touch);
-	void PatternLogic(u16 hDown, touchPosition touch);
+	void PocketLogic(u16 hDown, touchPosition touch);
+	void DresserLogic(u16 hDown, touchPosition touch);
 
-	/* Pattern Misc stuff. */
-	void FreePattern();
-	void DecodePattern();
-	
-	int selection = 0, Mode = 0;
-	bool accessPattern = false;
-	
-	int allocatedPattern[8] = {0};
-	std::unique_ptr<Pattern> ptrn[8] = {nullptr};
-	std::unique_ptr<PatternImage> ptrnImg[8] = {nullptr};
-
-	const std::vector<Structs::ButtonPos> patternPos = {
-		{16, 30, 32, 32, -1},
-		{80, 30, 32, 32, -1},
-		{144, 30, 32, 32, -1},
-		{208, 30, 32, 32, -1},
-
-		{16, 96, 32, 32, -1},
-		{80, 96, 32, 32, -1},
-		{144, 96, 32, 32, -1},
-		{208, 96, 32, 32, -1}
+	const std::vector<Structs::ButtonPos> mainButtons = {
+		{80, 30, 88, 32, -1},
+		{80, 80, 88, 32, -1},
+		{80, 130, 88, 32, -1}
 	};
 
-	const std::vector<Structs::ButtonPos> playerButtons = {
-		{20, 30, 88, 32, -1},
-		{20, 80, 88, 32, -1},
-		{20, 130, 88, 32, -1},
-		{148, 30, 88, 32, -1},
-		{148, 80, 88, 32, -1},
-		{148, 130, 88, 32, -1}
+	const std::vector<Structs::ButtonPos> pocketPos = {
+		{25, 40, 30, 30, -1},
+		{65, 40, 30, 30, -1},
+		{105, 40, 30, 30, -1},
+		{145, 40, 30, 30, -1},
+		{185, 40, 30, 30, -1},
+		{25, 80, 30, 30, -1}, 
+		{65, 80, 30, 30, -1}, 
+		{105, 80, 30, 30, -1},
+		{145, 80, 30, 30, -1},
+		{185, 80, 30, 30, -1},
+		{25, 120, 30, 30, -1},
+		{65, 120, 30, 30, -1},
+		{105, 120, 30, 30, -1},
+		{145, 120, 30, 30, -1},
+		{185, 120, 30, 30, -1}
+	};
+
+	const std::vector<Structs::ButtonPos> dresserPos = {
+		{25, 70, 30, 30, -1},
+		{65, 70, 30, 30, -1},
+		{105, 70, 30, 30, -1},
+		{145, 70, 30, 30, -1},
+		{185, 70, 30, 30, -1},
+		{25, 140, 30, 30, -1}, 
+		{65, 140, 30, 30, -1}, 
+		{105, 140, 30, 30, -1},
+		{145, 140, 30, 30, -1},
+		{185, 140, 30, 30, -1}
 	};
 };
 

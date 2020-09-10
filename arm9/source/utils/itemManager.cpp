@@ -29,7 +29,7 @@
 
 #include <vector>
 
-extern std::vector<std::pair<u16, std::string>> itemDB;
+extern std::vector<std::tuple<u16, std::string, std::string>> itemDB;
 
 /* Return color index of the ItemPalette array. */
 u8 ItemManager::getColor(ItemType item) {
@@ -106,25 +106,49 @@ u8 ItemManager::getColor(ItemType item) {
 }
 
 /* Get the index of the current Item for the selection. */
-int getIndex(std::vector<std::pair<u16, std::string>>& search, const u16& v) {
-	if (v == search[0].first || v >= 0xFFF1) {
-		return 0;
-	}
+int ItemManager::getIndex(const u16 &v) {
+	if (v == std::get<0>(itemDB[0]) || v >= 0xFFF1) return 0;
 
-	int index = -1, min = 0, mid = 0, max = search.size();
+	int index = -1, min = 0, mid = 0, max = itemDB.size();
 	while (min <= max) {
 		mid = min + (max - min) / 2;
-		if (search[mid].first == v) {
+		if (std::get<0>(itemDB[mid]) == v) {
 			index = mid;
 			break;
 		}
 
-		if (search[mid].first < v) {
+		if (std::get<0>(itemDB[mid]) < v) {
 			min = mid + 1;
+			
 		} else {
 			max = mid - 1;
 		}
 	}
-	
+
+	return index >= 0 ? index : 0;
+}
+
+/* Get the index of the current Item for the selection. */
+int ItemManager::getIndexString(const int &current, const std::string &v) {
+	if (v == "") return current;
+
+	if (v == std::get<1>(itemDB[0])) return 0;
+
+	int index = -1, min = 0, mid = 0, max = itemDB.size();
+	while (min <= max) {
+		mid = min + (max - min) / 2;
+		if (std::get<1>(itemDB[mid]) == v) {
+			index = mid;
+			break;
+		}
+		
+		if (std::get<1>(itemDB[mid]) < v) {
+			min = mid + 1;
+
+		} else {
+			max = mid - 1;
+		}
+	}
+
 	return index >= 0 ? index : 0;
 }

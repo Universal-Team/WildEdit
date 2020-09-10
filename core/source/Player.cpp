@@ -169,6 +169,7 @@ void Player::hairstyle(u8 v) {
 			break;
 		case WWRegion::KOR_REV1:
 			SaveUtils::Write<u8>(this->playerPointer(), 0x243C, (playerPointer()[0x243C] & 0x0F) | (v << 4));
+			break;
 		case WWRegion::UNKNOWN:
 			break;
 	}
@@ -189,6 +190,7 @@ u8 Player::haircolor() const {
 		case WWRegion::UNKNOWN:
 			return 0;
 	}
+	
 	return 0;
 }
 void Player::haircolor(u8 v) {

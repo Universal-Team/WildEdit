@@ -34,26 +34,30 @@
 
 class Item {
 protected:
+	std::shared_ptr<u8[]> ItemData;
 	u32 Offset;
-	std::shared_ptr<u8[]> data;
 public:
-	Item(std::shared_ptr<u8[]> itemData, u32 offset) : Offset(offset), data(itemData) { }
+	Item(std::shared_ptr<u8[]> itemData, u32 offset) :
+		ItemData(itemData), Offset(offset) { };
 	Item(const Item& item) = delete;
 	Item& operator=(const Item& item) = delete;
 
 	u32 maxItems() const { return 0; };
+
 	u16 id() const;
 	void id(u16 v);
+
 	u16 flags() const;
 	void flags(u16 v);
+
 	std::string name() const;
+
 	ItemType itemtype() const;
+
 	int rotation() const;
 	void rotation(int Direction);
 private:
-	u8* itemPointer() const {
-		return data.get() + Offset;
-	}
+	u8 *itemPointer() const { return this->ItemData.get() + this->Offset; };
 };
 
 #endif

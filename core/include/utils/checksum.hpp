@@ -30,9 +30,9 @@
 #include "types.hpp"
 
 namespace Checksum {
-	u16 Calculate(const u16 *buffer, u64 size, uint checksumOffset);
-	bool Verify(const u16 *buffer, u64 size, u16 currentChecksum, uint checksumOffset);
+	u16 Calculate(const u16 *buffer, u64 size, u16 checksumOffset);
+	bool Verify(const u16 *buffer, u64 size, u16 currentChecksum, u16 checksumOffset);
 	void UpdateChecksum(WWRegion region, u8 *saveBuffer, u16 *buffer, u64 size);
-}
+};
 
 #endif

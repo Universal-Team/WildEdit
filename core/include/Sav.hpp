@@ -41,34 +41,48 @@ class Villager;
 
 class Sav {
 protected:
-	std::shared_ptr<u8[]> saveData;
-	WWRegion region;
-	u32 size;
+	std::shared_ptr<u8[]> SaveData;
+	u32 SaveSize;
+	WWRegion SaveRegion;
+	bool Changes;
 public:
-	Sav(std::shared_ptr<u8[]> dt, WWRegion Region, u32 ssize) : saveData(dt), region(Region), size(ssize) { }
+	Sav(std::shared_ptr<u8[]> data, WWRegion Region, u32 ssize) :
+		SaveData(data), SaveSize(ssize), SaveRegion(Region) { };
 	Sav(const Sav& sav) = delete;
 	Sav& operator=(const Sav& sav) = delete;
 
+	/*
+		Call this when finished editing.
+	*/
 	void Finish(void);
-	std::unique_ptr<Player> player(int player, int index = 0) const;
-	std::unique_ptr<Villager> villager(int villager) const;
+
+	/*
+		Get Sav Contents.
+	*/
+	std::unique_ptr<Player> player(u8 player) const;
+	std::unique_ptr<Villager> villager(u8 villager) const;
 	std::unique_ptr<Town> town() const;
 
-	WWRegion getRegion() { return region; }
+	WWRegion getRegion() { return this->SaveRegion; };
 
-	int maxVillager() const { return 7; }
+	/*
+		Get max Values.
+	*/
+	int maxVillager() const { return 7; };
 
-	void changesMade(bool v) { if (v != this->changes) this->changes = v; }
-	bool changesMade() const { return this->changes; }
+	/*
+		Set Changes made and such.
+	*/
+	void setChangesMade(bool v = true) { if (v != this->Changes) this->Changes = v; };
+	bool changesMade() const { return this->Changes; };
 
-	/* return Sav stuff. */
-	u32 getLength() const { return this->size; }
-	std::shared_ptr<u8[]> rawData() const { return this->saveData; }
-private:
-	bool changes = false;
-	u8 *savePointer() const {
-		return this->saveData.get();
-	}
+	/*
+		return Sav stuff.
+	*/
+	u32 getLength() const { return this->SaveSize; };
+	std::shared_ptr<u8[]> rawData() const { return this->SaveData; };
+
+	u8 *savePointer() const { return this->SaveData.get(); };
 };
 
 #endif

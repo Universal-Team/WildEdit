@@ -15,9 +15,20 @@ Here you can see all core features of WildEdit-Core, which are already implement
 - [x] Item Type // TODO: Sort out non existing AC:WW ones.
 
 ## Letter
+- [x] Receiver Town ID
+- [x] Receiver Town Name
+- [x] Receiver Player ID
+- [x] Receiver Player Name
+- [x] Sender Town ID
+- [x] Sender Town Name
+- [x] Sender Player ID
+- [x] Sender Player Name
 - [x] Intro
 - [x] Body
 - [x] End
+- [x] PaperID
+- [x] LetterFlag
+- [x] Letter Attachment / Item
 
 ## Pattern
 - [x] Pattern Name
@@ -49,6 +60,8 @@ Here you can see all core features of WildEdit-Core, which are already implement
 - [x] Pocket Items
 - [x] Dresser Items
 - [x] Pattern Images
+- [x] Acorn Festival
+- [x] Attic bed (JPN only as of now.)
 
 ## Room
 
@@ -61,7 +74,7 @@ Here you can see all core features of WildEdit-Core, which are already implement
 - [x] Town Acres
 - [x] Town Map Items
 - [x] Town Exist
-- [ ] Turnip Prices // TODO.
+- [X] Turnip Prices
 - [x] Town Flag Pattern
 - [x] Item Buried
 

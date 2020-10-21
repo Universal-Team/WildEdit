@@ -27,41 +27,69 @@
 #include "saveUtils.hpp"
 #include "types.hpp"
 
-/* Return the Save class from a Buffer and load. */
+/*
+	NOTES for Wild World:
+
+	- The last 3-4 bytes of a savecopy CAN change when storing Letters into the Letter Storage for WHATEVER Reason.
+
+		Should we add a check for that? Like.. ignore the last 3 - 4 bytes?
+		Also how to handle it.. when updating the checksum?
+
+		Unsure yet, research and experimenting needs to be made.
+*/
+
+
+/*
+	Return the SaveType from a Buffer and load.
+
+	std::shared_ptr<u8[]> dt: The save buffer.
+	u32 length: The size of the buffer.
+*/
 std::unique_ptr<Sav> SaveUtils::getSave(std::shared_ptr<u8[]> dt, u32 length) {
 	switch (length) {
 		case 0x40000:
 		case 0x4007A:
 		case 0x8007A:
-			/* Check for AC:WW Saves and check their region. */
 			if (memcmp(dt.get(), dt.get() + 0x12224, 0x12224) == 0) {
-				return std::make_unique<Sav>(dt, WWRegion::JPN_REV0, length);
+				return std::make_unique<Sav>(dt, WWRegion::JPN, length);
+
 			} else if (memcmp(dt.get(), dt.get() + 0x15FE0, 0x15FE0) == 0) {
-				return std::make_unique<Sav>(dt, WWRegion::EUR_REV1, length);
+				return std::make_unique<Sav>(dt, WWRegion::EUR_USA, length);
+
 			} else if (memcmp(dt.get(), dt.get() + 0x173FC, 0x173FC) == 0) {
-				return std::make_unique<Sav>(dt, WWRegion::KOR_REV1, length);
+				return std::make_unique<Sav>(dt, WWRegion::KOR, length);
+
 			} else {
 				return nullptr;
 			}
 
 		case 0x80000:
 			return SaveUtils::check080000(dt, length);
+
 	default:
 		return nullptr;
 	}
 }
 
-/* Because 0x80000 can be an AC:NL & AC:WW save, check it here! */
+/*
+	Because 0x80000 can be an AC:NL & AC:WW save, check it here!
+
+	std::shared_ptr<u8[]> dt: The save buffer.
+	u32 length: The size of the buffer.
+*/
 std::unique_ptr<Sav> SaveUtils::check080000(std::shared_ptr<u8[]> dt, u32 length) {
-		/* Check for AC:WW Japanese. */
+	/* Check for AC:WW Japanese. */
 	if (memcmp(dt.get(), dt.get() + 0x12224, 0x12224) == 0) {
-		return std::make_unique<Sav>(dt, WWRegion::JPN_REV0, length);
-		/* Check for AC:WW Europe | USA. */
+		return std::make_unique<Sav>(dt, WWRegion::JPN, length);
+
+	/* Check for AC:WW Europe | USA. */
 	} else if (memcmp(dt.get(), dt.get() + 0x15FE0, 0x15FE0) == 0) {
-		return std::make_unique<Sav>(dt, WWRegion::EUR_REV1, length);
-		/* Check for AC:WW Korean. */
+		return std::make_unique<Sav>(dt, WWRegion::EUR_USA, length);
+
+	/* Check for AC:WW Korean. */
 	} else if (memcmp(dt.get(), dt.get() + 0x173FC, 0x173FC) == 0) {
-		return std::make_unique<Sav>(dt, WWRegion::KOR_REV1, length);
+		return std::make_unique<Sav>(dt, WWRegion::KOR, length);
+
 	} else {
 		/* No save checks matches, return nullptr. */
 		return nullptr;
@@ -69,13 +97,31 @@ std::unique_ptr<Sav> SaveUtils::check080000(std::shared_ptr<u8[]> dt, u32 length
 }
 
 /* Credits: PKSM-Core: https://github.com/FlagBrew/PKSM-Core/blob/master/source/utils/flagUtil.cpp. */
-bool SaveUtils::GetBit(const u8 *data, int offset, u8 bitIndex) {
+
+/*
+	Get a bit.
+
+	const u8 *data: The save buffer.
+	u32 offset: The offset.
+	u8 bitIndex: The index of the bit.
+*/
+bool SaveUtils::GetBit(const u8 *data, u32 offset, u8 bitIndex) {
 	bitIndex &= 7; // ensure bit access is 0-7.
 	return (data[offset] >> bitIndex & 1) != 0;
 }
 
-void SaveUtils::SetBit(u8 *data, int offset, u8 bitIndex, bool bit) {
+/*
+	Set a bit.
+
+	const u8 *data: The save buffer.
+	u32 offset: The offset.
+	u8 bitIndex: The index of the bit.
+	bool bit: if the bit is 1 (true) or 0 (false).
+*/
+void SaveUtils::SetBit(u8 *data, u32 offset, u8 bitIndex, bool bit) {
 	bitIndex &= 7; // ensure bit access is 0-7.
 	data[offset] &= ~(1 << bitIndex);
 	data[offset] |= (bit ? 1 : 0) << bitIndex;
+
+	if (save) save->setChangesMade();
 }

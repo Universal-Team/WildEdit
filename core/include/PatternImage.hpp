@@ -32,7 +32,9 @@
 
 #include <memory>
 
-/* Pixel struct. */
+/*
+	Pixel struct.
+*/
 struct pixel {
 	u8 left: 4; // 0000.
 	u8 right: 4; // 1111.
@@ -40,34 +42,34 @@ struct pixel {
 
 class PatternImage {
 protected:
-	std::shared_ptr<u8[]> data;
-	u32 ptrnOffset;
-	u32 pltOffset;
+	std::shared_ptr<u8[]> PatternData;
+	u32 PatternOffset;
+	u32 PaletteOffset;
 public:
-	PatternImage(std::shared_ptr<u8[]> dt, u32 patternOffset, u32 paletteOffset) : data(dt), ptrnOffset(patternOffset), pltOffset(paletteOffset) { 
-		this->valid = true; // TODO: Handle that differently?
-	}
+	PatternImage(std::shared_ptr<u8[]> data, u32 patternOffset, u32 paletteOffset) :
+		PatternData(data), PatternOffset(patternOffset), PaletteOffset(paletteOffset) { };
 
 	PatternImage(const PatternImage& pi) = delete;
 	PatternImage& operator=(const PatternImage& pi) = delete;
 
-	bool isValid() const { return this->valid; }
+	bool isValid() const { return this->Valid; };
+
 	u8 getPaletteColor(u8 plt) const;
-	int getWWPaletteIndex() const;
-	void setPaletteColor(int index, u8 color);
-	pixel getPixel(int pixel) const;
-	void setPixel(int index, int color);
-	void setPixel(int x, int y, int color);
+
+	u8 getWWPaletteIndex() const;
+
+	void setPaletteColor(u8 index, u8 color);
+
+	pixel getPixel(u16 pixel) const;
+
+	void setPixel(u16 index, u8 color);
+
+	void setPixel(u8 x, u8 y, u8 color);
 private:
-	bool valid = false;
+	bool Valid = true;
 
-	pixel *pixelPointer() const {
-		return (pixel *)(data.get() + ptrnOffset);
-	}
-
-	u8* paletteData() const {
-		return this->data.get() + this->pltOffset;
-	}
+	pixel *pixelPointer() const { return (pixel *)(this->PatternData.get() + this->PatternOffset); };
+	u8 *paletteData() const { return this->PatternData.get() + this->PaletteOffset; };
 };
 
 #endif

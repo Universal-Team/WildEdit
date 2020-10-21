@@ -36,7 +36,9 @@ std::vector<std::string> itemCategories;
 std::vector<std::tuple<u16, std::string, std::string>> villagerDB;
 std::vector<std::string> villagerSpecies;
 
-/* Load the Item Database. */
+/*
+	Load the Item Database.
+*/
 void StringDB::LoadItemDatabase() {
 	itemDB.clear();
 	itemCategories.clear();
@@ -55,7 +57,7 @@ void StringDB::LoadItemDatabase() {
 			itemCategories.push_back({categoryName});
 
 		/* confirm we don't have any comments. */
-		} else if (currentLine.size() > 8 && currentLine.find("//") == std::string::npos) { 
+		} else if (currentLine.size() > 8 && currentLine.find("//") == std::string::npos) {
 			itemIdStr = currentLine.substr(2, 4); // skip the 0x hex specifier.
 			itemName = currentLine.substr(8, currentLine.size());
 
@@ -70,7 +72,9 @@ void StringDB::LoadItemDatabase() {
 	itemDatabase.close();
 }
 
-/* Load the Villager Database. */
+/*
+	Load the Villager Database.
+*/
 void StringDB::LoadVillagerDatabase() {
 	villagerDB.clear();
 
@@ -88,7 +92,7 @@ void StringDB::LoadVillagerDatabase() {
 			villagerSpecies.push_back({categoryName});
 
 		/* confirm we don't have any comments. */
-		} else if (currentLine.size() > 8 && currentLine.find("//") == std::string::npos) { 
+		} else if (currentLine.size() > 8 && currentLine.find("//") == std::string::npos) {
 			villagerIdStr = currentLine.substr(2, 4); // skip the 0x hex specifier.
 			villagerName = currentLine.substr(8, currentLine.size());
 
@@ -103,7 +107,14 @@ void StringDB::LoadVillagerDatabase() {
 	villagerDatabase.close();
 }
 
-/* Searching. */
+/*
+	Searching for stuff in the tuple.
+
+	std::string searchResult: What to search for.
+	std::vector<std::string> searchCategory: Which categories should be included in the search.
+	std::vector<std::tuple<u16, std::string, std::string>> &searchType: From which tuple to search.
+	bool compare: If the search should EXACTLY match.
+*/
 std::vector<std::tuple<u16, std::string, std::string>> StringDB::searchTuple(std::string searchResult, std::vector<std::string> searchCategory, std::vector<std::tuple<u16, std::string, std::string>> &searchType, bool compare) {
 	std::vector<std::tuple<u16, std::string, std::string>> temp, tempEnd;
 
@@ -113,12 +124,13 @@ std::vector<std::tuple<u16, std::string, std::string>> StringDB::searchTuple(std
 	else temp = searchType;
 
 	if (search) {
-
 		for (int i = 0; i < (int)searchCategory.size(); i++) {
 			/* Push categories first. */
 			if (searchCategory[i] != "") {
+
 				for (int i2 = 0; i2 < (int)searchType.size(); i2++) {
 					if (std::get<2>(searchType[i2]).find(searchCategory[i]) != std::string::npos) {
+
 						if (compare) {
 							if (std::get<2>(searchType[i2]) == searchCategory[i]) {
 								temp.push_back({searchType[i2]});

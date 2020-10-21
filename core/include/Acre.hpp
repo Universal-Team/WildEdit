@@ -33,20 +33,20 @@
 
 class Acre {
 protected:
+	std::shared_ptr<u8[]> AcreData;
 	u32 Offset;
-	std::shared_ptr<u8[]> data;
 public:
-	Acre(std::shared_ptr<u8[]> acreData, u32 offset) : Offset(offset), data(acreData) { }
+	Acre(std::shared_ptr<u8[]> acreData, u32 offset) :
+		AcreData(acreData), Offset(offset) { };
 	Acre(const Acre& acre) = delete;
 	Acre& operator=(const Acre& acre) = delete;
-	
-	u32 maxAcre() const { return 131; }
+
+	u32 maxAcre() const { return 131; };
+
 	u8 id() const;
 	void id(u8 v);
 private:
-	u8* acrePointer() const {
-		return data.get() + Offset;
-	}
+	u8 *acrePointer() const { return this->AcreData.get() + this->Offset; };
 };
 
 #endif

@@ -38,31 +38,41 @@
 class Acre;
 class Item;
 class Pattern;
+
 class Town {
 protected:
-	WWRegion region;
-	std::shared_ptr<u8[]> data;
+	std::shared_ptr<u8[]> TownData;
+	WWRegion SaveRegion;
 public:
-	Town(std::shared_ptr<u8[]> townData, WWRegion Region) : region(Region), data(townData) { }
+	Town(std::shared_ptr<u8[]> townData, WWRegion Region) :
+		TownData(townData), SaveRegion(Region) { };
 	Town(const Town& town) = delete;
 	Town& operator=(const Town& town) = delete;
 
 	u8 grasstype() const;
 	void grasstype(u8 v);
+
 	std::u16string name() const;
 	void name(std::u16string v);
-	std::unique_ptr<Acre> acre(int acre) const;
-	std::unique_ptr<Item> item(u32 index) const;
+
+	std::unique_ptr<Acre> acre(u8 acre) const;
+
+	std::unique_ptr<Item> item(u16 index) const;
+
 	bool exist() const;
-	u32 turnipPrices(bool isAM, int day) const;
-	void turnipPrices(bool isAM, int day, u32 v);
+
+	u32 turnipPrices(bool isAM, u8 day) const;
+	void turnipPrices(bool isAM, u8 day, u32 v);
+
 	std::unique_ptr<Pattern> townflag() const;
-	bool itemBuried(int index) const;
-	void itemBuried(int index, bool buried);
+
+	bool itemBuried(u16 index) const;
+	void itemBuried(u16 index, bool buried);
+
+	std::unique_ptr<Item> recycleItem(u8 slot) const;
+	std::unique_ptr<Item> lostFoundItem(u8 slot) const;
 private:
-	u8* townPointer() const {
-		return data.get();
-	}
+	u8 *townPointer() const { return this->TownData.get(); };
 };
 
 #endif

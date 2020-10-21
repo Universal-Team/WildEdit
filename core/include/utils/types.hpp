@@ -34,15 +34,13 @@ typedef uint8_t u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
 
-/* Save Regions. */
-enum class WWRegion {
-	JPN_REV0,
-	JPN_REV1,
-	USA_REV0,
-	USA_REV1,
-	EUR_REV1,
-	KOR_REV1,
-	UNKNOWN
+/*
+	Save Regions.
+*/
+enum class WWRegion : u8 {
+	EUR_USA, // EUR + USA are the same.
+	JPN,
+	KOR
 };
 
 #endif

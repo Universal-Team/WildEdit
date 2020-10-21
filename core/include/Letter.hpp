@@ -29,43 +29,65 @@
 
 #include "item.hpp"
 #include "types.hpp"
-
 #include <memory>
 #include <vector>
 
 class Item;
+
 class Letter {
 protected:
-	std::shared_ptr<u8[]> data;
+	std::shared_ptr<u8[]> LetterData;
 	u32 Offset;
-	WWRegion region;
+	WWRegion SaveRegion;
 public:
-	~Letter() {}
-	Letter(std::shared_ptr<u8[]> dt, u32 offset, WWRegion letterreg) : data(dt), Offset(offset), region(letterreg) { }
+	~Letter() { };
+	Letter(std::shared_ptr<u8[]> dt, u32 offset, WWRegion letterreg) :
+		LetterData(dt), Offset(offset), SaveRegion(letterreg) { };
 	Letter(const Letter& letter) = delete;
 	Letter& operator=(const Letter& letter) = delete;
 
-	u16 playerid() const;
-	std::u16string playername() const;
-	u16 townid() const;
-	std::u16string townname() const;
+	u16 playerid(bool sender) const;
+	void playerid(u16 v, bool sender);
+
+	std::u16string playername(bool sender) const;
+	void playername(std::u16string v, bool sender);
+
+	u16 townid(bool sender) const;
+	void townid(u16 v, bool sender);
+
+	std::u16string townname(bool sender) const;
+	void townname(std::u16string v, bool sender);
+
 	u8 playerindex() const;
+	void playerindex(u8 v);
 
 	std::u16string intro() const;
+	void intro(std::u16string v);
+
 	std::u16string body() const;
+	void body(std::u16string v);
+
 	std::u16string end() const;
+	void end(std::u16string v);
 
 	u8 nameindex() const;
+	void nameindex(u8 v);
+
 	u8 paperid() const;
+	void paperid(u8 v);
+
 	u8 flag() const;
+	void flag(u8 v);
+
 	u8 senderid() const;
+	void senderid(u8 v);
+
 	u8 lettertype() const;
+	void lettertype(u8 v);
 
 	std::unique_ptr<Item> item() const;
 private:
-	u8 *letterPointer() const {
-		return data.get() + Offset;
-	}
+	u8 *letterPointer() const { return this->LetterData.get() + this->Offset; };
 };
 
 #endif

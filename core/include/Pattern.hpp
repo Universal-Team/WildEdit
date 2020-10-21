@@ -37,26 +37,33 @@
 class Player;
 class Pattern {
 protected:
+	std::shared_ptr<u8[]> PatternData;
 	u32 Offset;
-	std::shared_ptr<u8[]> data;
-	WWRegion region;
+	WWRegion SaveRegion;
 public:
-	Pattern(std::shared_ptr<u8[]> patternData, u32 offset, WWRegion Region) : Offset(offset), data(patternData), region(Region) { }
+	Pattern(std::shared_ptr<u8[]> patternData, u32 offset, WWRegion Region) :
+		PatternData(patternData), Offset(offset), SaveRegion(Region) { };
 	Pattern(const Pattern& pattern) = delete;
 	Pattern& operator=(const Pattern& pattern) = delete;
 
 	std::u16string name() const;
 	void name(std::u16string v);
+
 	u16 creatorid() const;
 	void creatorid(u16 v);
+
 	std::u16string creatorname() const;
 	void creatorname(std::u16string v);
+
 	u8 creatorGender() const;
 	void creatorGender(u8 v);
+
 	u16 origtownid() const;
 	void origtownid(u16 v);
+
 	std::u16string origtownname() const;
 	void origtownname(std::u16string v);
+
 	u8 designtype() const;
 	void designtype(u8 v);
 
@@ -66,11 +73,24 @@ public:
 	void injectPattern(const std::string fileName);
 
 	/* Pattern Image. */
-	std::unique_ptr<PatternImage> image(const int pattern) const;
+	std::unique_ptr<PatternImage> image() const;
 private:
-	u8* patternPointer() const {
-		return data.get() + Offset;
-	}
+	u8 *patternPointer() const { return this->PatternData.get() + this->Offset; };
+
+	u32 getPatternSize() const {
+		switch(this->SaveRegion) {
+			case WWRegion::EUR_USA:
+				return 0x228;
+
+			case WWRegion::JPN:
+				return 0x220;
+
+			case WWRegion::KOR:
+				return 0x234;
+		}
+
+		return 0;
+	};
 };
 
 #endif

@@ -29,140 +29,339 @@
 #include "stringUtils.hpp"
 
 /*
-	For now only notes.
+	Get and Set the Player ID.
 
-		Korean:
-			Begin: 0x1180. // 0x116C.
-			IntroSize: 0x10 * 2 beginning at 0x1200. // 0x11EC.
-			Bodysize: 0x40 * 2 beginning at 0x1213. // 0x1200.
-			End: 0xA * 2 beginning at 0x1294. // 0x1280.
-			Item: 0x12B8. // 0x12A4.
-			LetterSize: 0x140.
-
-		JPN:
-			Start: 0x1114. // 0x1108.
-			IntroSize: 0xA beginning at 0x1140. // 0x1134.
-			BodySize: 0x40 beginning at 0x114A. // 0x113E.
-			End: 0x10 beginning at 0x118A. // 0x117E.
-			Item: 0x119E. // 0x1192.
-			LetterSize: 0x8C.
-
-		EUR / USA:
-			Start: 0x1158(?). // 0x114C.
-			IntroSize: 0xF beginning at 0x1188. // 0x117C.
-			BodySize: 0x54 beginning at 0x11A0. // 0x1194.
-			EndSize: 0x1A beginning at 0x1220. // 0x1214.
-			Item: 0x1244. // 0x1238.
-			LetterSize: 0xF4.
+	bool sender: If sender (true) or receiver (false).
 */
+u16 Letter::playerid(bool sender) const {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			return SaveUtils::Read<u16>(this->letterPointer(), sender ? 0x22 : 0xA);
 
-u16 Letter::playerid() const {
+		case WWRegion::JPN:
+			return SaveUtils::Read<u16>(this->letterPointer(), sender ? 0x1C : 0x8);
+
+		case WWRegion::KOR:
+			return SaveUtils::Read<u16>(this->letterPointer(), sender ? 0x2E : 0xE);
+	}
+
 	return 0;
 }
+void Letter::playerid(u16 v, bool sender) {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			SaveUtils::Write<u16>(this->letterPointer(), sender ? 0x22 : 0xA, v);
 
-std::u16string Letter::playername() const {
+		case WWRegion::JPN:
+			SaveUtils::Write<u16>(this->letterPointer(), sender ? 0x1C : 0x8, v);
+
+		case WWRegion::KOR:
+			SaveUtils::Write<u16>(this->letterPointer(), sender ? 0x2E : 0xE, v);
+			break;
+	}
+}
+
+/*
+	Get and Set the Player Name.
+
+	bool sender: If sender (true) or receiver (false).
+*/
+std::u16string Letter::playername(bool sender) const {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			return StringUtils::ReadUTF8String(this->letterPointer(), sender ? 0x24 : 0xC, 8, this->SaveRegion);
+
+		case WWRegion::JPN:
+			return StringUtils::ReadUTF8String(this->letterPointer(), sender ? 0x1E : 0xA, 6, this->SaveRegion);
+
+		case WWRegion::KOR:
+			return StringUtils::ReadUTF16String(this->letterPointer(), sender ? 0x30 : 0x10, 6);
+	}
+
 	return StringUtils::UTF8toUTF16("?");
 }
+void Letter::playername(std::u16string v, bool sender) {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			StringUtils::WriteUTF8String(this->letterPointer(), v, sender ? 0x24 : 0xC, 8, this->SaveRegion);
+			break;
 
-u16 Letter::townid() const {
-	return 0;
+		case WWRegion::JPN:
+			StringUtils::WriteUTF8String(this->letterPointer(), v, sender ? 0x1E : 0xA, 6, this->SaveRegion);
+			break;
+
+		case WWRegion::KOR:
+			StringUtils::WriteUTF16String(this->letterPointer(), v, sender ? 0x30 : 0x10, 6);
+			break;
+	}
 }
 
-std::u16string Letter::townname() const {
+/*
+	Get and Set the Town ID.
+
+	bool sender: If sender (true) or receiver (false).
+*/
+u16 Letter::townid(bool sender) const {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			return SaveUtils::Read<u16>(this->letterPointer(), sender ? 0x18 : 0x0);
+
+		case WWRegion::JPN:
+			return SaveUtils::Read<u16>(this->letterPointer(), sender ? 0x14 : 0x0);
+
+		case WWRegion::KOR:
+			return SaveUtils::Read<u16>(this->letterPointer(), sender ? 0x20 : 0x0);
+	}
+
+	return 0;
+}
+void Letter::townid(u16 v, bool sender) {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			SaveUtils::Write<u16>(this->letterPointer(), sender ? 0x18 : 0x0, v);
+
+		case WWRegion::JPN:
+			SaveUtils::Write<u16>(this->letterPointer(), sender ? 0x14 : 0x0, v);
+
+		case WWRegion::KOR:
+			SaveUtils::Write<u16>(this->letterPointer(), sender ? 0x20 : 0x0, v);
+			break;
+	}
+}
+
+/*
+	Get and Set the Town Name.
+
+	bool sender: If sender (true) or receiver (false).
+*/
+std::u16string Letter::townname(bool sender) const {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			return StringUtils::ReadUTF8String(this->letterPointer(), sender ? 0x1A : 0x2, 8, this->SaveRegion);
+
+		case WWRegion::JPN:
+			return StringUtils::ReadUTF8String(this->letterPointer(), sender ? 0x16 : 0x2, 6, this->SaveRegion);
+
+		case WWRegion::KOR:
+			return StringUtils::ReadUTF16String(this->letterPointer(), sender ? 0x22 : 0x2, 6);
+	}
+
 	return StringUtils::UTF8toUTF16("?");
 }
+void Letter::townname(std::u16string v, bool sender) {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			StringUtils::WriteUTF8String(this->letterPointer(), v, sender ? 0x1A : 0x2, 8, this->SaveRegion);
+			break;
 
-u8 Letter::playerindex() const {
-	return 0;
+		case WWRegion::JPN:
+			StringUtils::WriteUTF8String(this->letterPointer(), v, sender ? 0x16 : 0x2, 6, this->SaveRegion);
+			break;
+
+		case WWRegion::KOR:
+			StringUtils::WriteUTF16String(this->letterPointer(), v, sender ? 0x22 : 0x2, 6);
+			break;
+	}
 }
 
+/*
+	Get and Set the Player Index.
+*/
+u8 Letter::playerindex() const { return 0; }
+void Letter::playerindex(u8 v) { }
+
+/*
+	Get and Set the Letter's intro part.
+*/
 std::u16string Letter::intro() const {
-	switch(this->region) {
-		case WWRegion::USA_REV0:
-		case WWRegion::USA_REV1:
-		case WWRegion::EUR_REV1:
-			return StringUtils::ReadUTF8String(letterPointer(), 0x30, 0xF, this->region);
-		case WWRegion::JPN_REV0:
-		case WWRegion::JPN_REV1:
-			return StringUtils::ReadUTF8String(letterPointer(), 0x2C, 0xA, this->region);
-		case WWRegion::KOR_REV1:
-			return StringUtils::ReadUTF16String(letterPointer(), 0x80, 0xF);
-		case WWRegion::UNKNOWN:
-			return StringUtils::UTF8toUTF16("?");
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			return StringUtils::ReadUTF8String(this->letterPointer(), 0x30, 24, this->SaveRegion);
+
+		case WWRegion::JPN:
+			return StringUtils::ReadUTF8String(this->letterPointer(), 0x28, 10, this->SaveRegion);
+
+		case WWRegion::KOR:
+			return StringUtils::ReadUTF16String(this->letterPointer(), 0x40, 10);
 	}
 
 	return StringUtils::UTF8toUTF16("?");
 }
+void Letter::intro(std::u16string v) {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			StringUtils::WriteUTF8String(this->letterPointer(), v, 0x30, 24, this->SaveRegion);
+			break;
 
+		case WWRegion::JPN:
+			StringUtils::WriteUTF8String(this->letterPointer(), v, 0x28, 10, this->SaveRegion);
+			break;
+
+		case WWRegion::KOR:
+			StringUtils::WriteUTF16String(this->letterPointer(), v, 0x40, 10);
+			break;
+	}
+}
+
+/*
+	Get and Set the Letter's body part.
+*/
 std::u16string Letter::body() const {
-	switch(this->region) {
-		case WWRegion::USA_REV0:
-		case WWRegion::USA_REV1:
-		case WWRegion::EUR_REV1:
-			return StringUtils::ReadUTF8String(letterPointer(), 0x48, 84, this->region);
-		case WWRegion::JPN_REV0:
-		case WWRegion::JPN_REV1:
-			return StringUtils::ReadUTF8String(letterPointer(), 0x36, 64, this->region);
-		case WWRegion::KOR_REV1:
-			return StringUtils::ReadUTF16String(letterPointer(), 0x93, 64); // 32 cause UTF-16.
-		case WWRegion::UNKNOWN:
-			return StringUtils::UTF8toUTF16("?");
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			return StringUtils::ReadUTF8String(this->letterPointer(), 0x48, 128, this->SaveRegion);
+
+		case WWRegion::JPN:
+			return StringUtils::ReadUTF8String(this->letterPointer(), 0x32, 64, this->SaveRegion);
+
+		case WWRegion::KOR:
+			return StringUtils::ReadUTF16String(this->letterPointer(), 0x54, 64);
 	}
 
 	return StringUtils::UTF8toUTF16("?");
 }
+void Letter::body(std::u16string v) {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			StringUtils::WriteUTF8String(this->letterPointer(), v, 0x48, 128, this->SaveRegion);
+			break;
 
+		case WWRegion::JPN:
+			StringUtils::WriteUTF8String(this->letterPointer(), v, 0x32, 64, this->SaveRegion);
+			break;
+
+		case WWRegion::KOR:
+			StringUtils::WriteUTF16String(this->letterPointer(), v, 0x54, 64);
+			break;
+	}
+}
+
+/*
+	Get and Set the Letter's ending part.
+*/
 std::u16string Letter::end() const {
-	switch(this->region) {
-		case WWRegion::USA_REV0:
-		case WWRegion::USA_REV1:
-		case WWRegion::EUR_REV1:
-			return StringUtils::ReadUTF8String(letterPointer(), 0xC8, 0x1A, this->region);
-		case WWRegion::JPN_REV0:
-		case WWRegion::JPN_REV1:
-			return StringUtils::ReadUTF8String(letterPointer(), 0x76, 0x10, this->region);
-		case WWRegion::KOR_REV1:
-			return StringUtils::ReadUTF16String(letterPointer(), 0x114, 0x1A);
-		case WWRegion::UNKNOWN:
-			return StringUtils::UTF8toUTF16("?");
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			return StringUtils::ReadUTF8String(this->letterPointer(), 0xC8, 32, this->SaveRegion);
+
+		case WWRegion::JPN:
+			return StringUtils::ReadUTF8String(this->letterPointer(), 0x72, 16, this->SaveRegion);
+
+		case WWRegion::KOR:
+			return StringUtils::ReadUTF16String(this->letterPointer(), 0xD4, 16);
 	}
 
 	return StringUtils::UTF8toUTF16("?");
 }
+void Letter::end(std::u16string v) {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			StringUtils::WriteUTF8String(this->letterPointer(), v, 0xC8, 32, this->SaveRegion);
+			break;
 
-u8 Letter::nameindex() const {
-	return 0;
+		case WWRegion::JPN:
+			StringUtils::WriteUTF8String(this->letterPointer(), v, 0x72, 16, this->SaveRegion);
+			break;
+
+		case WWRegion::KOR:
+			StringUtils::WriteUTF16String(this->letterPointer(), v, 0xD4, 16);
+			break;
+	}
 }
 
+/*
+	Get and Set the Name index.
+*/
+u8 Letter::nameindex() const { return 0; }
+void Letter::nameindex(u8 v) { }
+
+/*
+	Get and Set the Letter's Paper ID.
+*/
 u8 Letter::paperid() const {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			return this->letterPointer()[0xE9];
+
+		case WWRegion::JPN:
+			return this->letterPointer()[0x83];
+
+		case WWRegion::KOR:
+			return this->letterPointer()[0xF5];
+	}
+
 	return 0;
 }
+void Letter::paperid(u8 v) {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			SaveUtils::Write<u8>(this->letterPointer(), 0xE9, v);
 
+		case WWRegion::JPN:
+			SaveUtils::Write<u8>(this->letterPointer(), 0x83, v);
+
+		case WWRegion::KOR:
+			SaveUtils::Write<u8>(this->letterPointer(), 0xF5, v);
+			break;
+	}
+}
+
+/*
+	Get and Set the Letter's flags.
+*/
 u8 Letter::flag() const {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			return this->letterPointer()[0xEA];
+
+		case WWRegion::JPN:
+			return this->letterPointer()[0x84];
+
+		case WWRegion::KOR:
+			return this->letterPointer()[0xF6];
+	}
+
 	return 0;
 }
+void Letter::flag(u8 v) {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			SaveUtils::Write<u8>(this->letterPointer(), 0xEA, v);
 
-u8 Letter::senderid() const {
-	return 0;
+		case WWRegion::JPN:
+			SaveUtils::Write<u8>(this->letterPointer(), 0x84, v);
+
+		case WWRegion::KOR:
+			SaveUtils::Write<u8>(this->letterPointer(), 0xF6, v);
+			break;
+	}
 }
 
-u8 Letter::lettertype() const {
-	return 0;
-}
+/*
+	Get and Set the Sender ID.
+*/
+u8 Letter::senderid() const { return 0; }
+void Letter::senderid(u8 v) { }
 
+/*
+	Get and Set the Letter's type.
+*/
+u8 Letter::lettertype() const { return 0; }
+void Letter::lettertype(u8 v) { }
+
+/*
+	Return the Letter's Attachment item.
+*/
 std::unique_ptr<Item> Letter::item() const {
-	switch(this->region) {
-		case WWRegion::USA_REV0:
-		case WWRegion::USA_REV1:
-		case WWRegion::EUR_REV1:
-			return std::make_unique<Item>(data, Offset + 0x1238);
-		case WWRegion::JPN_REV0:
-		case WWRegion::JPN_REV1:
-			return std::make_unique<Item>(data, Offset + 0x1192);
-		case WWRegion::KOR_REV1:
-			return std::make_unique<Item>(data, Offset + 0x12A4);
-		case WWRegion::UNKNOWN:
-			return nullptr;
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			return std::make_unique<Item>(this->LetterData, this->Offset + 0xEC);
+
+		case WWRegion::JPN:
+			return std::make_unique<Item>(this->LetterData, this->Offset + 0x86);
+
+		case WWRegion::KOR:
+			return std::make_unique<Item>(this->LetterData, this->Offset + 0xF8);
 	}
 
 	return nullptr;

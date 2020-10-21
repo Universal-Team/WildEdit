@@ -40,16 +40,6 @@ bool changes = false;
 extern bool loadedFromCart;
 extern bool exiting;
 
-// Japanese | PAL.
-const std::vector<std::string> titleNames = {
-	"おいでよ どうぶつの森",
-	"Wild World",
-	"とびだせ どうぶつの森",
-	"New Leaf",
-	"とびだせ どうぶつの森 amiibo+",
-	"Welcome amiibo",
-};
-
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
 Editor::Editor() { }
@@ -95,23 +85,16 @@ void Editor::Draw(void) const {
 		/* Region test. */
 		if (save) {
 			switch(save->getRegion()) {
-				case WWRegion::USA_REV0:
-				case WWRegion::USA_REV1:
-				case WWRegion::EUR_REV1:
+				case WWRegion::EUR_USA:
 					printTextCentered("Europe | USA", 0, 60, true, true);
 					break;
 
-				case WWRegion::JPN_REV0:
-				case WWRegion::JPN_REV1:
+				case WWRegion::JPN:
 					printTextCentered("Japanese", 0, 60, true, true);
 					break;
 
-				case WWRegion::KOR_REV1:
+				case WWRegion::KOR:
 					printTextCentered("Korean", 0, 60, true, true);
-					break;
-
-				case WWRegion::UNKNOWN:
-					printTextCentered("Unknown", 0, 60, true, true);
 					break;
 			}
 		}
@@ -140,7 +123,7 @@ void Editor::Logic(u16 hDown, touchPosition touch) {
 			updateOam();
 			this->loadState = SaveState::Unloaded;
 		}
-		
+
 		if (hDown & KEY_DOWN) {
 			if (this->Selection < 2) {
 				this->Selection++;
@@ -151,7 +134,7 @@ void Editor::Logic(u16 hDown, touchPosition touch) {
 		if (hDown & KEY_START) {
 			this->Saving();
 		}
-		
+
 		if (hDown & KEY_UP) {
 			if (this->Selection > 0) {
 				this->Selection--;

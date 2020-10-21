@@ -33,23 +33,22 @@
 #include <vector>
 
 class Pattern;
+
 class Shop {
 protected:
+	std::shared_ptr<u8[]> ShopData;
 	u32 Offset;
-	std::shared_ptr<u8[]> data;
-	WWRegion region;
+	WWRegion SaveRegion;
 public:
-	virtual ~Shop() {}
-	Shop(std::shared_ptr<u8[]> shopData, u32 offset, WWRegion rg) : Offset(offset), data(shopData), region(rg) { }
+	virtual ~Shop() { };
+	Shop(std::shared_ptr<u8[]> shopData, u32 offset, WWRegion rg) :
+		ShopData(shopData), Offset(offset), SaveRegion(rg) { };
 	Shop(const Shop& shop) = delete;
 	Shop& operator=(const Shop& shop) = delete;
 
-	
-	std::unique_ptr<Pattern> ableSisterPattern(int pattern) const;
+	std::unique_ptr<Pattern> ableSisterPattern(u8 pattern) const;
 private:
-	u8* shopPointer() const {
-		return data.get() + Offset;
-	}
+	u8 *shopPointer() const { return this->ShopData.get() + this->Offset; };
 };
 
 #endif

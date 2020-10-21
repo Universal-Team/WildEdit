@@ -121,7 +121,7 @@ void PlayerEditor::DrawPlayerScreen(void) const {
 	for (int i = 0; i < 6; i++) {
 		drawRectangle(playerButtons[i].x, playerButtons[i].y, playerButtons[i].w, playerButtons[i].h, GRAY, false, true);
 	}
-	
+
 	printTextCentered(Lang::get("PLAYER_WALLET"), -64, 40, false, true);
 	printTextCentered(Lang::get("PLAYER_BANK"), -64, 90, false, true);
 }
@@ -141,7 +141,7 @@ void PlayerEditor::DrawAppearance(void) const {
 	for (int i = 0; i < 6; i++) {
 		drawRectangle(playerButtons[i].x, playerButtons[i].y, playerButtons[i].w, playerButtons[i].h, GRAY, false, true);
 	}
-	
+
 	printTextCentered(Lang::get("PLAYER_NAME"), -64, 40, false, true);
 	printTextCentered(Lang::get("PLAYER_GENDER"), -64, 90, false, true);
 	printTextCentered(Lang::get("PLAYER_TAN_VALUE"), -64, 140, false, true);
@@ -186,7 +186,7 @@ void PlayerEditor::SubMenuLogic(u16 hDown, touchPosition touch) {
 			updatePointer = true;
 		}
 	}
-	
+
 	if (hDown & KEY_DOWN) {
 		if (this->selection < 5) {
 			this->selection++;
@@ -216,7 +216,7 @@ void PlayerEditor::SubMenuLogic(u16 hDown, touchPosition touch) {
 				Gui::DrawScreen();
 				updatePointer = true;
 				break;
-			
+
 			case 1:
 				this->selection = 0;
 				this->Mode = 2;
@@ -258,7 +258,7 @@ void PlayerEditor::PlayerLogic(u16 hDown, touchPosition touch) {
 			updatePointer = true;
 		}
 	}
-	
+
 	if (hDown & KEY_DOWN) {
 		if (this->selection < 5) {
 			this->selection++;
@@ -313,7 +313,7 @@ void PlayerEditor::AppearanceLogic(u16 hDown, touchPosition touch) {
 			updatePointer = true;
 		}
 	}
-	
+
 	if (hDown & KEY_DOWN) {
 		if (this->selection < 5) {
 			this->selection++;
@@ -342,20 +342,14 @@ void PlayerEditor::AppearanceLogic(u16 hDown, touchPosition touch) {
 			case 0:
 				/* We need to check for the Name length here. */
 				switch(save->getRegion()) {
-					case WWRegion::USA_REV0:
-					case WWRegion::USA_REV1:
-					case WWRegion::EUR_REV1:
+					case WWRegion::EUR_USA:
 						length = 7;
 						break;
 
-					case WWRegion::JPN_REV0:
-					case WWRegion::JPN_REV1:
-					case WWRegion::KOR_REV1:
+					case WWRegion::JPN:
+					case WWRegion::KOR:
 						length = 6;
 						break;
-
-					case WWRegion::UNKNOWN:
-						return;
 				}
 
 				/* Name. */
@@ -374,7 +368,7 @@ void PlayerEditor::AppearanceLogic(u16 hDown, touchPosition touch) {
 				this->player->tan((u8)Overlays::SelectList(TanLevel, this->player->tan(), Lang::get("SELECT_TAN"), true, true));
 				Gui::DrawScreen(); // Redraw to update.
 				break;
-			
+
 			case 3:
 				/* Facetype. */
 				this->player->face((u8)Overlays::SelectList(g_faceType, this->player->face(), Lang::get("SELECT_FACETYPE"), true, true));
@@ -433,7 +427,7 @@ void PlayerEditor::DecodePattern() {
 		}
 
 		this->ptrn[i] = this->player->pattern(i);
-		this->ptrnImg[i] = this->ptrn[i]->image(0);
+		this->ptrnImg[i] = this->ptrn[i]->image();
 		fillSpriteImage(this->allocatedPattern[i], false, 32, 0, 0, CoreUtils::patternimage(this->ptrnImg[i], 0x0));
 		setSpriteVisibility(this->allocatedPattern[i], false, true);
 	}

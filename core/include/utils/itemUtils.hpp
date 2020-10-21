@@ -34,7 +34,6 @@
 	We should sort that out for AC:WW only Category Items for WildEdit here.
 	Type of the Item.
 */
-
 enum class ItemType {
 	Empty,
 	Furniture,
@@ -73,6 +72,6 @@ enum class ItemType {
 
 namespace ItemUtils {
 	std::string getName(u16 ID); // Get an Item's name.
-}
+};
 
 #endif

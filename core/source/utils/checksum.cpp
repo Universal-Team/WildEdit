@@ -31,8 +31,14 @@
 #include <cstring>
 #include <string>
 
-/* Calculate AC:WW's Checksum. */
-u16 Checksum::Calculate(const u16 *buffer, u64 size, uint checksumOffset) {
+/*
+	Calculate Animal Crossing: Wild World's Checksum.
+
+	const u16 *buffer: The save buffer.
+	u64 size: The size which should be calculated.
+	u16 checksumOffset: The offset of the checksum.
+*/
+u16 Checksum::Calculate(const u16 *buffer, u64 size, u16 checksumOffset) {
 	if ((checksumOffset & 1) == 1) return 0; // checksumOffset must be 16-bit aligned!
 
 	u16 checksum = 0;
@@ -44,28 +50,38 @@ u16 Checksum::Calculate(const u16 *buffer, u64 size, uint checksumOffset) {
 	return (u16) -checksum;
 }
 
-/* Verify AC:WW's Checksum. */
-bool Checksum::Verify(const u16 *buffer, u64 size, u16 currentChecksum, uint checksumOffset) {
-	if (Calculate(buffer, size, checksumOffset) == currentChecksum) return true;
-	else return false;
+/*
+	Verify Animal Crossing: Wild World's Checksum.
+
+	const u16 *buffer: The save buffer.
+	u64 size: The size which should be verified.
+	u16 currentChecksum: The current checksum.
+	u16 checksumOffset: The offset of the checksum.
+*/
+bool Checksum::Verify(const u16 *buffer, u64 size, u16 currentChecksum, u16 checksumOffset) {
+	return Checksum::Calculate(buffer, size, checksumOffset) == currentChecksum;
 }
 
-/* Update AC:WW's Checksum. */
+/*
+	Update Animal Crossing: Wild World's Checksum.
+
+	WWRegion region: The save region.
+	u8 *saveBuffer: The save buffer.
+	u16 *buffer: The save buffer again(?) (I forgot exactly for what it was..)
+	u64 size: The size which should be updated.
+*/
 void Checksum::UpdateChecksum(WWRegion region, u8 *saveBuffer, u16 *buffer, u64 size) {
 	switch(region) {
-		case WWRegion::USA_REV0:
-		case WWRegion::USA_REV1:
-		case WWRegion::EUR_REV1:
-			SaveUtils::Write<u16>(saveBuffer, 0x15FDC, Calculate(buffer, size, 0xAFEE));
+		case WWRegion::EUR_USA:
+			SaveUtils::Write<u16>(saveBuffer, 0x15FDC, Checksum::Calculate(buffer, size, 0xAFEE));
 			break;
-		case WWRegion::JPN_REV0:
-		case WWRegion::JPN_REV1:
-			SaveUtils::Write<u16>(saveBuffer, 0x12220, Calculate(buffer, size, 0x9110));
+
+		case WWRegion::JPN:
+			SaveUtils::Write<u16>(saveBuffer, 0x12220, Checksum::Calculate(buffer, size, 0x9110));
 			break;
-		case WWRegion::KOR_REV1:
-			SaveUtils::Write<u16>(saveBuffer, 0x173F8, Calculate(buffer, size, 0xB9FC));
-			break;
-		case WWRegion::UNKNOWN:
+
+		case WWRegion::KOR:
+			SaveUtils::Write<u16>(saveBuffer, 0x173F8, Checksum::Calculate(buffer, size, 0xB9FC));
 			break;
 	}
 }

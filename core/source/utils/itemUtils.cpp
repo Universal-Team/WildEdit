@@ -34,13 +34,16 @@
 
 extern std::vector<std::tuple<u16, std::string, std::string>> itemDB;
 
-// Get an Item's name.
+/*
+	Get an Item's name.
+
+	u16 ID: The Item ID.
+*/
 std::string ItemUtils::getName(u16 ID) {
 	if (itemDB.empty()) return "???"; // Database empty.
+
 	for (auto const& entry : itemDB) {
-		if (std::get<0>(entry) == ID) {
-			return std::get<1>(entry);
-		}
+		if (std::get<0>(entry) == ID) return std::get<1>(entry);
 	}
 
 	return std::string("???");

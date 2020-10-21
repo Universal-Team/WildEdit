@@ -33,32 +33,32 @@
 
 class Room {
 protected:
+	std::shared_ptr<u8[]> RoomData;
 	u32 Offset;
-	std::shared_ptr<u8[]> data;
+	WWRegion SaveRegion;
 public:
-	Room(std::shared_ptr<u8[]> roomData, u32 offset) : Offset(offset), data(roomData) { }
+	Room(std::shared_ptr<u8[]> roomData, u32 offset, WWRegion region) :
+		RoomData(roomData), Offset(offset), SaveRegion(region) { };
 	Room(const Room& room) = delete;
 	Room& operator=(const Room& room) = delete;
 private:
-	u8* roomPointer() const {
-		return this->data.get() + this->Offset;
-	}
+	u8 *roomPointer() const { return this->RoomData.get() + this->Offset; };
 };
 
 class House {
 protected:
+	std::shared_ptr<u8[]> HouseData;
 	u32 Offset;
-	std::shared_ptr<u8[]> data;
+	WWRegion SaveRegion;
 public:
-	House(std::shared_ptr<u8[]> houseData, u32 offset) : Offset(offset), data(houseData) { }
+	House(std::shared_ptr<u8[]> houseData, u32 offset, WWRegion region) :
+		HouseData(houseData), Offset(offset), SaveRegion(region) { };
 	House(const House& house) = delete;
 	House& operator=(const House& house) = delete;
 
 	std::unique_ptr<Room> room(int room) const;
 private:
-	u8* housePointer() const {
-		return this->data.get() + this->Offset;
-	}
+	u8 *housePointer() const { return this->HouseData.get() + this->Offset; };
 };
 
 #endif

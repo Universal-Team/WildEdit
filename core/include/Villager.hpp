@@ -34,55 +34,61 @@
 #include <vector>
 
 class Item;
+
 class Villager {
 protected:
-	std::shared_ptr<u8[]> data;
-	WWRegion region;
-	u32 offset;
+	std::shared_ptr<u8[]> VillagerData;
+	u32 Offset;
+	WWRegion SaveRegion;
 public:
-	Villager(std::shared_ptr<u8[]> villagerData, u32 villagerOffset, WWRegion Region) : data(villagerData), region(Region), offset(villagerOffset) { }
+	Villager(std::shared_ptr<u8[]> villagerData, u32 villagerOffset, WWRegion Region) :
+			VillagerData(villagerData), Offset(villagerOffset), SaveRegion(Region) { };
 	Villager(const Villager& villager) = delete;
 	Villager& operator=(const Villager& villager) = delete;
 
 	u32 getVillagerSize() const {
-		switch(this->region) {
-			case WWRegion::USA_REV0:
-			case WWRegion::USA_REV1:
-			case WWRegion::EUR_REV1:
+		switch(this->SaveRegion) {
+			case WWRegion::EUR_USA:
 				return 0x700;
-			case WWRegion::JPN_REV0:
-			case WWRegion::JPN_REV1:
+
+			case WWRegion::JPN:
 				return 0x5C0;
-			case WWRegion::KOR_REV1:
+
+			case WWRegion::KOR:
 				return 0x7EC;
-			case WWRegion::UNKNOWN:
-				return 0;
 		}
+
 		return 0;
-	}
+	};
 
 	u16 id() const;
 	void id(u16 v);
+
 	bool exist() const;
+
 	u8 personality() const;
 	void personality(u8 v);
-	
-	/* Items. */
+
+	/*
+		Items.
+	*/
 	u8 song() const;
 	void song(u8 sng);
+
 	std::unique_ptr<Item> shirt() const;
+
 	u8 wallpaper() const;
 	void wallpaper(u8 wlp);
+
 	u8 carpet() const;
 	void carpet(u8 crp);
+
 	u8 umbrella() const;
 	void umbrella(u8 umbr);
-	
-	std::unique_ptr<Item> furniture(int slot) const;
+
+	std::unique_ptr<Item> furniture(u8 slot) const;
 private:
-	u8* villagerPointer() const {
-		return data.get() + offset;
-	}
+	u8 *villagerPointer() const { return this->VillagerData.get() + this->Offset; };
 };
 
 #endif

@@ -27,10 +27,8 @@
 #include "Acre.hpp"
 #include "saveUtils.hpp"
 
-/* Acre ID. */
-u8 Acre::id() const {
-	return acrePointer()[0];
-}
-void Acre::id(u8 v) {
-	SaveUtils::Write<u8>(this->acrePointer(), 0x0, v);
-}
+/*
+	Get and Set for the Acre ID.
+*/
+u8 Acre::id() const { return acrePointer()[0]; };
+void Acre::id(u8 v) { SaveUtils::Write<u8>(this->acrePointer(), 0x0, v); };

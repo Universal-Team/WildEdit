@@ -28,193 +28,269 @@
 #include "stringUtils.hpp"
 #include "Town.hpp"
 
-/* Grasstype. */
+
+/*
+	Get and Set the Grasstype.
+*/
 u8 Town::grasstype() const {
-	switch(this->region) {
-		case WWRegion::USA_REV0:
-		case WWRegion::USA_REV1:
-		case WWRegion::EUR_REV1:
-			return townPointer()[0x2200];
-		case WWRegion::JPN_REV0:
-		case WWRegion::JPN_REV1:
-		case WWRegion::KOR_REV1:
-		case WWRegion::UNKNOWN:
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			return this->townPointer()[0x2200];
+
+		case WWRegion::JPN:
+		case WWRegion::KOR:
 			return 0;
 	}
-	
+
 	return 0;
 }
 void Town::grasstype(u8 v) {
-	switch(this->region) {
-		case WWRegion::USA_REV0:
-		case WWRegion::USA_REV1:
-		case WWRegion::EUR_REV1:
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
 			SaveUtils::Write<u8>(this->townPointer(), 0x2200, v);
 			break;
-		case WWRegion::JPN_REV0:
-		case WWRegion::JPN_REV1:
-		case WWRegion::KOR_REV1:
-		case WWRegion::UNKNOWN:
+
+		case WWRegion::JPN:
+		case WWRegion::KOR:
 			break;
 	}
 }
 
-/* Town Name. */
+/*
+	Get and Set the Town Name.
+*/
 std::u16string Town::name() const {
-	switch(this->region) {
-		case WWRegion::USA_REV0:
-		case WWRegion::USA_REV1:
-		case WWRegion::EUR_REV1:
-			return StringUtils::ReadUTF8String(townPointer(), 0x0004, 8, this->region);
-		case WWRegion::JPN_REV0:
-		case WWRegion::JPN_REV1:
-			return StringUtils::ReadUTF8String(townPointer(), 0x0004, 6, this->region);
-		case WWRegion::KOR_REV1:
-			return StringUtils::ReadUTF16String(townPointer(), 0x0004, 6);
-		case WWRegion::UNKNOWN:
-			return StringUtils::UTF8toUTF16("?");
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			return StringUtils::ReadUTF8String(this->townPointer(), 0x0004, 8, this->SaveRegion);
+
+		case WWRegion::JPN:
+			return StringUtils::ReadUTF8String(this->townPointer(), 0x0004, 6, this->SaveRegion);
+
+		case WWRegion::KOR:
+			return StringUtils::ReadUTF16String(this->townPointer(), 0x0004, 6);
 	}
 
 	return StringUtils::UTF8toUTF16("?");
 }
 void Town::name(std::u16string v) {
-	switch(this->region) {
-		case WWRegion::USA_REV0:
-		case WWRegion::USA_REV1:
-		case WWRegion::EUR_REV1:
-			StringUtils::WriteUTF8String(townPointer(), v, 0x0004, 8, this->region);
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			StringUtils::WriteUTF8String(this->townPointer(), v, 0x0004, 8, this->SaveRegion);
 			break;
-		case WWRegion::JPN_REV0:
-		case WWRegion::JPN_REV1:
-			StringUtils::WriteUTF8String(townPointer(), v, 0x0004, 6, this->region);
+
+		case WWRegion::JPN:
+			StringUtils::WriteUTF8String(this->townPointer(), v, 0x0004, 6, this->SaveRegion);
 			break;
-		case WWRegion::KOR_REV1:
-			StringUtils::WriteUTF16String(townPointer(), v, 0x0004, 6);
-			break;
-		case WWRegion::UNKNOWN:
+
+		case WWRegion::KOR:
+			StringUtils::WriteUTF16String(this->townPointer(), v, 0x0004, 6);
 			break;
 	}
 }
 
-/* Town Acre. */
-std::unique_ptr<Acre> Town::acre(int acre) const {
+/*
+	Return a Town Acre.
+
+	u8 acre: Acre Index.
+*/
+std::unique_ptr<Acre> Town::acre(u8 acre) const {
 	if (acre > 35) return nullptr; // Acre Index goes out of scope.
-	switch(this->region) {
-		case WWRegion::USA_REV0:
-		case WWRegion::USA_REV1:
-		case WWRegion::EUR_REV1:
-			return std::make_unique<Acre>(data, 0xC330 + acre * 1);
-		case WWRegion::JPN_REV0:
-		case WWRegion::JPN_REV1:
-			return std::make_unique<Acre>(data, 0xA32C + acre * 1);
-		case WWRegion::KOR_REV1:
-			return std::make_unique<Acre>(data, 0xD304 + acre * 1);
-		case WWRegion::UNKNOWN:
-			return nullptr;
+
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			return std::make_unique<Acre>(this->TownData, 0xC330 + acre * 1);
+
+		case WWRegion::JPN:
+			return std::make_unique<Acre>(this->TownData, 0xA32C + acre * 1);
+
+		case WWRegion::KOR:
+			return std::make_unique<Acre>(this->TownData, 0xD304 + acre * 1);
 	}
 
 	return nullptr;
 }
 
-/* Town Item. */
-std::unique_ptr<Item> Town::item(u32 index) const {
+/*
+	Return a Town Map Item.
+
+	u16 index: The Town Map Item index.
+*/
+std::unique_ptr<Item> Town::item(u16 index) const {
 	if (index > 4095) return nullptr; // Item Index goes out of scope.
-	switch(this->region) {
-		case WWRegion::USA_REV0:
-		case WWRegion::USA_REV1:
-		case WWRegion::EUR_REV1:
-			return std::make_unique<Item>(data, 0xC354 + index * 2);
-		case WWRegion::JPN_REV0:
-		case WWRegion::JPN_REV1:
-			return std::make_unique<Item>(data, 0xA350 + index * 2);
-		case WWRegion::KOR_REV1:
-			return std::make_unique<Item>(data, 0xD328 + index * 2);
-		case WWRegion::UNKNOWN:
-			return nullptr;
+
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			return std::make_unique<Item>(this->TownData, 0xC354 + index * 2);
+
+		case WWRegion::JPN:
+			return std::make_unique<Item>(this->TownData, 0xA350 + index * 2);
+
+		case WWRegion::KOR:
+			return std::make_unique<Item>(this->TownData, 0xD328 + index * 2);
 	}
 
 	return nullptr;
 }
 
-/* Return if Town exist. */
+/*
+	Return if Town exist.
+*/
 bool Town::exist() const {
-	if (SaveUtils::Read<u16>(townPointer(), 0x2) == 0x0 || SaveUtils::Read<u16>(townPointer(), 0x2) == 0xFFFF)	return false;
+	if (SaveUtils::Read<u16>(this->townPointer(), 0x2) == 0x0 || SaveUtils::Read<u16>(this->townPointer(), 0x2) == 0xFFFF) return false;
 	return true;
 }
 
-/* Turnip prices. TODO? I'm not sure where they exist yet. */
-u32 Town::turnipPrices(bool isAM, int day) const {
+/*
+	Get and Set the Turnip prices.
+
+	bool isAM: If the price is AM (true) or PM (false).
+	u8 day: The day index.
+
+	^ Both parameters are ignored, cause only one price seem to exist there.
+*/
+u32 Town::turnipPrices(bool isAM, u8 day) const {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			return this->townPointer()[0x15F5D];
+
+		case WWRegion::JPN:
+			return this->townPointer()[0x121A3];
+
+		case WWRegion::KOR:
+			return this->townPointer()[0x17370];
+	}
+
 	return 0;
 }
-void Town::turnipPrices(bool isAM, int day, u32 v) { }
+void Town::turnipPrices(bool isAM, u8 day, u32 v) {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			SaveUtils::Write<u8>(this->townPointer(), 0x15F5D, (u8)v);
+			break;
 
-/* Town Flag. */
+		case WWRegion::JPN:
+			SaveUtils::Write<u8>(this->townPointer(), 0x121A3, (u8)v);
+			break;
+
+		case WWRegion::KOR:
+			SaveUtils::Write<u8>(this->townPointer(), 0x17370, (u8)v);
+			break;
+	}
+}
+
+/*
+	Return the Townflag pattern.
+*/
 std::unique_ptr<Pattern> Town::townflag() const {
-	switch(this->region) {
-		case WWRegion::USA_REV0:
-		case WWRegion::USA_REV1:
-		case WWRegion::EUR_REV1:
-			return std::make_unique<Pattern>(this->data, 0x15930, this->region);
-		case WWRegion::JPN_REV0:
-		case WWRegion::JPN_REV1:
-			return std::make_unique<Pattern>(this->data, 0x11C5C, this->region);
-		case WWRegion::KOR_REV1:
-			return std::make_unique<Pattern>(this->data, 0x16D0C, this->region);
-		case WWRegion::UNKNOWN:
-			return nullptr;
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			return std::make_unique<Pattern>(this->TownData, 0x15930, this->SaveRegion);
+
+		case WWRegion::JPN:
+			return std::make_unique<Pattern>(this->TownData, 0x11C5C, this->SaveRegion);
+
+		case WWRegion::KOR:
+			return std::make_unique<Pattern>(this->TownData, 0x16D0C, this->SaveRegion);
 	}
 
 	return nullptr;
 }
 
-bool Town::itemBuried(int index) const {
+/*
+	Get and Set, if item is buried.
+
+	u16 index: Town Map Item index.
+*/
+bool Town::itemBuried(u16 index) const {
 	if (index > 4095) return false;
 
 	u32 offset = 0;
-	switch(this->region) {
-		case WWRegion::JPN_REV0:
-		case WWRegion::JPN_REV1:
+	switch(this->SaveRegion) {
+		case WWRegion::JPN:
 			offset = 0xC350 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
-		case WWRegion::USA_REV0:
-		case WWRegion::USA_REV1:
-		case WWRegion::EUR_REV1:
+
+		case WWRegion::EUR_USA:
 			offset = 0xE354 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
-		case WWRegion::KOR_REV1:
+
+		case WWRegion::KOR:
 			offset = 0xF328 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
-		case WWRegion::UNKNOWN:
-			return 0;
 	}
 
 	return SaveUtils::GetBit(this->townPointer(), offset, (index % 256) % 8);
 }
-
-void Town::itemBuried(int index, bool buried) {
+void Town::itemBuried(u16 index, bool buried) {
 	if (index > 4095) return;
 
+	/* Check, if already buried or not. */
+	if (this->itemBuried(index) == buried) return; // No need to set again.
+
 	u32 offset = 0;
-	switch(this->region) {
-		case WWRegion::JPN_REV0:
-		case WWRegion::JPN_REV1:
+	switch(this->SaveRegion) {
+		case WWRegion::JPN:
 			offset = 0xC350 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
-		case WWRegion::USA_REV0:
-		case WWRegion::USA_REV1:
-		case WWRegion::EUR_REV1:
+
+		case WWRegion::EUR_USA:
 			offset = 0xE354 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
-		case WWRegion::KOR_REV1:
+
+		case WWRegion::KOR:
 			offset = 0xF328 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
-		case WWRegion::UNKNOWN:
-			return;
 	}
 
 	std::unique_ptr<Item> item = this->item(index);
 
 	if (item->itemtype() == ItemType::Empty) return; // Do not allow buried on empty spots.
 
+	/* Write buried state. */
 	SaveUtils::SetBit(this->townPointer(), offset, (index % 256) % 8, buried);
+}
+
+/*
+	Return the Recycle bin (or whatever you would call that box inside the Townhall there) Items.
+
+	u8 slot: The slot of the item.
+*/
+std::unique_ptr<Item> Town::recycleItem(u8 slot) const {
+	if (slot > 14) return nullptr; // Item Index goes out of scope.
+
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			return std::make_unique<Item>(this->TownData, 0x15EDE + slot * 2);
+
+		case WWRegion::JPN:
+			return std::make_unique<Item>(this->TownData, 0x12132 + slot * 2);
+
+		case WWRegion::KOR:
+			return std::make_unique<Item>(this->TownData, 0x172DE + slot * 2);
+	}
+
+	return nullptr;
+}
+
+/*
+	Return the Lost and Found Items.
+
+	u8 slot: The slot of the item.
+*/
+std::unique_ptr<Item> Town::lostFoundItem(u8 slot) const {
+	if (slot > 14) return nullptr; // Item Index goes out of scope.
+
+	switch(this->SaveRegion) {
+		case WWRegion::EUR_USA:
+			return std::make_unique<Item>(this->TownData, 0x15EC0 + slot * 2);
+
+		case WWRegion::JPN:
+			return std::make_unique<Item>(this->TownData, 0x12114 + slot * 2);
+
+		case WWRegion::KOR:
+			return std::make_unique<Item>(this->TownData, 0x172C0 + slot * 2);
+	}
+
+	return nullptr;
 }

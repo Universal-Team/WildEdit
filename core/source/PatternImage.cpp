@@ -26,40 +26,58 @@
 
 #include "PatternImage.hpp"
 
-/* Get the palette color index. */
+/*
+	Return the palette color index as an uint8_t.
+
+	u8 plt: Index of the palette color.
+*/
 u8 PatternImage::getPaletteColor(u8 plt) const {
 	if (plt > 15) return 0;
-	u8 paletteIndex = (u8)(((this->paletteData()[0]) & 0xF0) >> 4);
+
+	const u8 paletteIndex = (u8)(((this->paletteData()[0]) & 0xF0) >> 4);
 	return (u8)((paletteIndex * 15) + plt);
 }
 
-/* Get the palette index. */
-int PatternImage::getWWPaletteIndex() const {
-	return (u8)(((this->paletteData()[0]) & 0xF0) >> 4);
-}
+/*
+	Return the Palette Index.
+*/
+u8 PatternImage::getWWPaletteIndex() const { return (u8)(((this->paletteData()[0]) & 0xF0) >> 4); };
 
-/* Set the palette index. */
-void PatternImage::setPaletteColor(int index, u8 color) {
+/*
+	Set the Palette Index instead of color for the palette.
+
+	u8 index: The new palette index. (0 - 14)
+	u8 color: The color index. (Unused)
+*/
+void PatternImage::setPaletteColor(u8 index, u8 color) {
 	if (index > 14) return;
+
 	this->paletteData()[0] = (u8)(((index) << 4) & 0xF0);
 }
 
-/* Get a left and right pixel */
-pixel PatternImage::getPixel(int index) const {
-	if (this->valid) {
-		if (this->pixelPointer()) {
-			return this->pixelPointer()[index];
-		} 
+/*
+	Return a pixel struct for the Left & Right pixel buffer.
+
+	u16 index: The pixel index of the pattern.
+*/
+pixel PatternImage::getPixel(u16 index) const {
+	if (this->Valid) {
+		if (this->pixelPointer()) return this->pixelPointer()[index];
 	}
 
-	return {0, 0};
+	return { 0, 0 };
 }
 
-/* Set a left and right pixel. */
-void PatternImage::setPixel(int index, int color) {
+/*
+	Set a pixel's color to the Pattern Image.
+
+	u16 index: The pixel index of the pattern.
+	u8 color: The color index.
+*/
+void PatternImage::setPixel(u16 index, u8 color) {
 	if (color > 15 || index > 0x3FF) return; // Out of scope.
-	
-	if (this->valid) {
+
+	if (this->Valid) {
 		if (this->pixelPointer()) {
 			if (index % 2 == 0) this->pixelPointer()[index / 2].left = color;
 			else this->pixelPointer()[index / 2].right = color;
@@ -67,7 +85,7 @@ void PatternImage::setPixel(int index, int color) {
 	}
 }
 
-/* Helper function for above with x & y. */
-void PatternImage::setPixel(int x, int y, int color) {
-	this->setPixel((x + (y * 32)), color);
-}
+/*
+	Same as above, just with X & Y position instead of index.
+*/
+void PatternImage::setPixel(u8 x, u8 y, u8 color) { this->setPixel((x + (y * 32)), color); };

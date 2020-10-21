@@ -38,67 +38,90 @@
 class Item;
 class Letter;
 class Pattern;
+
 class Player {
 protected:
-	std::shared_ptr<u8[]> data;
-	u32 offset;
-	WWRegion region;
-	int Index;
+	std::shared_ptr<u8[]> PlayerData;
+	u32 Offset;
+	u8 Index;
+	WWRegion SaveRegion;
 public:
-	Player(std::shared_ptr<u8[]> playerData, u32 playerOffset, WWRegion Region, int index) : data(playerData), offset(playerOffset), region(Region), Index(index) { }
+	Player(std::shared_ptr<u8[]> playerData, u32 playerOffset, WWRegion Region, u8 index) :
+			PlayerData(playerData), Offset(playerOffset), Index(index), SaveRegion(Region) { };
 	Player(const Player& player) = delete;
 	Player& operator=(const Player& player) = delete;
 
 	u32 getPlayerSize() const {
-		switch(this->region) {
-			case WWRegion::USA_REV0:
-			case WWRegion::USA_REV1:
-			case WWRegion::EUR_REV1:
+		switch(this->SaveRegion) {
+			case WWRegion::EUR_USA:
 				return 0x228C;
-			case WWRegion::JPN_REV0:
-			case WWRegion::JPN_REV1:
+
+			case WWRegion::JPN:
 				return 0x1D10;
-			case WWRegion::KOR_REV1:
+
+			case WWRegion::KOR:
 				return 0x249C;
-			case WWRegion::UNKNOWN:
-				return 0;
 		}
+
 		return 0;
-	}
+	};
 
 
 	u8 face() const;
 	void face(u8 v);
+
 	u8 gender() const;
 	void gender(u8 v);
+
 	u16 tan() const;
 	void tan(u16 v);
+
 	u8 hairstyle() const;
 	void hairstyle(u8 v);
+
 	u8 haircolor() const;
 	void haircolor(u8 v);
+
 	u16 playerid() const;
 	void playerid(u16 v);
+
 	u16 townid() const;
 	void townid(u16 v);
+
 	std::u16string townname() const;
 	void townname(std::u16string v);
+
 	bool exist() const;
+
 	std::u16string name() const;
 	void name(std::u16string v);
+
 	u32 wallet() const;
 	void wallet(u32 v);
+
 	u32 bank() const;
 	void bank(u32 v);
-	std::unique_ptr<Letter> letter(int slot) const;
-	
-	std::unique_ptr<Item> pocket(int slot) const;
-	std::unique_ptr<Item> dresser(int slot) const;
-	std::unique_ptr<Pattern> pattern(int slot) const;
+
+	std::unique_ptr<Letter> letter(u8 slot) const;
+
+	std::unique_ptr<Item> pocket(u8 slot) const;
+	std::unique_ptr<Item> dresser(u8 slot) const;
+
+	std::unique_ptr<Pattern> pattern(u8 slot) const;
+
+	/*
+		Dump & Inject.
+	*/
+	void dumpPlayer(const std::string fileName);
+	bool injectPlayer(const std::string fileName);
+
+	u8 acornFestival() const;
+	void acornFestival(u8 v);
+
+	u8 bed() const;
+	void bed(u8 v);
 private:
-	u8* playerPointer() const {
-		return data.get() + offset;
-	}
+	u8 *playerPointer() const { return this->PlayerData.get() + this->Offset; };
 };
 
 #endif

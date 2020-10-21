@@ -36,6 +36,6 @@ namespace StringDB {
 	void LoadItemDatabase();
 	void LoadVillagerDatabase();
 	std::vector<std::tuple<u16, std::string, std::string>> searchTuple(std::string searchResult, std::vector<std::string> searchCategory, std::vector<std::tuple<u16, std::string, std::string>> &searchType, bool compare = false);
-}
+};
 
 #endif

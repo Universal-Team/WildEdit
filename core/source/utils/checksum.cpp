@@ -67,21 +67,24 @@ bool Checksum::Verify(const u16 *buffer, u64 size, u16 currentChecksum, u16 chec
 
 	WWRegion region: The save region.
 	u8 *saveBuffer: The save buffer.
-	u16 *buffer: The save buffer again(?) (I forgot exactly for what it was..)
 	u64 size: The size which should be updated.
 */
-void Checksum::UpdateChecksum(WWRegion region, u8 *saveBuffer, u16 *buffer, u64 size) {
+void Checksum::UpdateChecksum(WWRegion region, u8 *saveBuffer, u64 size) {
 	switch(region) {
-		case WWRegion::EUR_USA:
-			SaveUtils::Write<u16>(saveBuffer, 0x15FDC, Checksum::Calculate(buffer, size, 0xAFEE));
+		case WWRegion::EUR:
+		case WWRegion::USA:
+			SaveUtils::Write<u16>(saveBuffer, 0x15FDC, Checksum::Calculate(reinterpret_cast<u16 *>(saveBuffer), size, 0xAFEE));
 			break;
 
 		case WWRegion::JPN:
-			SaveUtils::Write<u16>(saveBuffer, 0x12220, Checksum::Calculate(buffer, size, 0x9110));
+			SaveUtils::Write<u16>(saveBuffer, 0x12220, Checksum::Calculate(reinterpret_cast<u16 *>(saveBuffer), size, 0x9110));
 			break;
 
 		case WWRegion::KOR:
-			SaveUtils::Write<u16>(saveBuffer, 0x173F8, Checksum::Calculate(buffer, size, 0xB9FC));
+			SaveUtils::Write<u16>(saveBuffer, 0x173F8, Checksum::Calculate(reinterpret_cast<u16 *>(saveBuffer), size, 0xB9FC));
+			break;
+
+		case WWRegion::UNKNOWN:
 			break;
 	}
 }

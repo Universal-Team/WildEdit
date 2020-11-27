@@ -46,14 +46,13 @@ namespace SaveUtils {
 	/* Write. */
 	template <typename T>
 	void Write(u8 *Buffer, u32 offset, T data, const bool saveWrite = true) {
-		*reinterpret_cast<T*>(Buffer + offset) = data;
+		*reinterpret_cast<T *>(Buffer + offset) = data;
 
 		if (saveWrite) {
 			if (save) save->setChangesMade(true);
 		}
 	};
 
-	std::unique_ptr<Sav> check080000(std::shared_ptr<u8[]> dt, u32 length);
 	std::unique_ptr<Sav> getSave(std::shared_ptr<u8[]> dt, u32 length);
 };
 

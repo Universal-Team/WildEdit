@@ -38,6 +38,8 @@
 		Unsure yet, research and experimenting needs to be made.
 */
 
+const uint8_t GameCodes[4] = { 0xC5, 0x8A, 0x32, 0x32 }; // The Gamecodes.
+const int SavCopyOffsets[4] = { 0x15FE0, 0x15FE0, 0x12224, 0x173FC }; // The Savcopy offsets.
 
 /*
 	Return the SaveType from a Buffer and load.
@@ -49,50 +51,18 @@ std::unique_ptr<Sav> SaveUtils::getSave(std::shared_ptr<u8[]> dt, u32 length) {
 	switch (length) {
 		case 0x40000:
 		case 0x4007A:
+		case 0x80000:
 		case 0x8007A:
-			if (memcmp(dt.get(), dt.get() + 0x12224, 0x12224) == 0) {
-				return std::make_unique<Sav>(dt, WWRegion::JPN, length);
-
-			} else if (memcmp(dt.get(), dt.get() + 0x15FE0, 0x15FE0) == 0) {
-				return std::make_unique<Sav>(dt, WWRegion::EUR_USA, length);
-
-			} else if (memcmp(dt.get(), dt.get() + 0x173FC, 0x173FC) == 0) {
-				return std::make_unique<Sav>(dt, WWRegion::KOR, length);
-
-			} else {
-				return nullptr;
+			for (uint8_t i = 0; i < 4; i++) {
+				if (dt.get()[0] == GameCodes[i] && dt.get()[SavCopyOffsets[i]] == GameCodes[i]) {
+					return std::make_unique<Sav>(dt, (WWRegion)i, length);
+				}
 			}
 
-		case 0x80000:
-			return SaveUtils::check080000(dt, length);
+			return nullptr; // If doesn't go through, it's invalid, hence nullptr.
 
-	default:
-		return nullptr;
-	}
-}
-
-/*
-	Because 0x80000 can be an AC:NL & AC:WW save, check it here!
-
-	std::shared_ptr<u8[]> dt: The save buffer.
-	u32 length: The size of the buffer.
-*/
-std::unique_ptr<Sav> SaveUtils::check080000(std::shared_ptr<u8[]> dt, u32 length) {
-	/* Check for AC:WW Japanese. */
-	if (memcmp(dt.get(), dt.get() + 0x12224, 0x12224) == 0) {
-		return std::make_unique<Sav>(dt, WWRegion::JPN, length);
-
-	/* Check for AC:WW Europe | USA. */
-	} else if (memcmp(dt.get(), dt.get() + 0x15FE0, 0x15FE0) == 0) {
-		return std::make_unique<Sav>(dt, WWRegion::EUR_USA, length);
-
-	/* Check for AC:WW Korean. */
-	} else if (memcmp(dt.get(), dt.get() + 0x173FC, 0x173FC) == 0) {
-		return std::make_unique<Sav>(dt, WWRegion::KOR, length);
-
-	} else {
-		/* No save checks matches, return nullptr. */
-		return nullptr;
+		default:
+			return nullptr;
 	}
 }
 

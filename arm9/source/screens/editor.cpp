@@ -85,8 +85,12 @@ void Editor::Draw(void) const {
 		/* Region test. */
 		if (save) {
 			switch(save->getRegion()) {
-				case WWRegion::EUR_USA:
-					printTextCentered("Europe | USA", 0, 60, true, true);
+				case WWRegion::EUR:
+					printTextCentered("Europe", 0, 60, true, true);
+					break;
+
+				case WWRegion::USA:
+					printTextCentered("USA", 0, 60, true, true);
 					break;
 
 				case WWRegion::JPN:
@@ -95,6 +99,10 @@ void Editor::Draw(void) const {
 
 				case WWRegion::KOR:
 					printTextCentered("Korean", 0, 60, true, true);
+					break;
+
+				case WWRegion::UNKNOWN:
+					printTextCentered("Unknown", 0, 60, true, true);
 					break;
 			}
 		}

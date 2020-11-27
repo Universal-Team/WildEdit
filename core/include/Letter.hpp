@@ -58,9 +58,6 @@ public:
 	std::u16string townname(bool sender) const;
 	void townname(std::u16string v, bool sender);
 
-	u8 playerindex() const;
-	void playerindex(u8 v);
-
 	std::u16string intro() const;
 	void intro(std::u16string v);
 
@@ -69,9 +66,6 @@ public:
 
 	std::u16string end() const;
 	void end(std::u16string v);
-
-	u8 nameindex() const;
-	void nameindex(u8 v);
 
 	u8 paperid() const;
 	void paperid(u8 v);

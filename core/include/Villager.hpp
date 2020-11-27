@@ -48,7 +48,8 @@ public:
 
 	u32 getVillagerSize() const {
 		switch(this->SaveRegion) {
-			case WWRegion::EUR_USA:
+			case WWRegion::EUR:
+			case WWRegion::USA:
 				return 0x700;
 
 			case WWRegion::JPN:
@@ -56,13 +57,16 @@ public:
 
 			case WWRegion::KOR:
 				return 0x7EC;
+
+			case WWRegion::UNKNOWN:
+				return 0;
 		}
 
 		return 0;
 	};
 
-	u16 id() const;
-	void id(u16 v);
+	u8 id() const;
+	void id(u8 v);
 
 	bool exist() const;
 

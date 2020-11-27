@@ -61,8 +61,8 @@ public:
 
 	bool exist() const;
 
-	u32 turnipPrices(bool isAM, u8 day) const;
-	void turnipPrices(bool isAM, u8 day, u32 v);
+	u8 turnipPrice() const;
+	void turnipPrice(u8 v);
 
 	std::unique_ptr<Pattern> townflag() const;
 

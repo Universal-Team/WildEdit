@@ -86,17 +86,15 @@ constexpr std::array<char16_t, 256> wwCharacterDictionaryJapanese = {
 	NOTE: For Korean, please use UTF-16. This is only for EUR | USA | JPN.
 */
 std::u16string StringUtils::wwToUnicode(const std::string &input, WWRegion region) {
-	if (region == WWRegion::KOR) return StringUtils::UTF8toUTF16("?"); // Korean should not be supported there.
+	if (region == WWRegion::KOR || region == WWRegion::UNKNOWN) return StringUtils::UTF8toUTF16("?"); // Korean should not be supported there.
 	std::u16string output;
 
-	const std::array<char16_t, 256> *characters = region == WWRegion::EUR_USA ? &wwCharacterDictionary : &wwCharacterDictionaryJapanese;
+	const std::array<char16_t, 256> *characters = region == WWRegion::JPN ? &wwCharacterDictionaryJapanese : &wwCharacterDictionary;
 
 	for (char16_t character : input) {
 		if ((*characters)[character] == '\0') break;
 
-		if (character < characters->size()) {
-			output += (*characters)[character];
-		}
+		if (character < characters->size()) output += (*characters)[character];
 	}
 
 	return output;
@@ -111,17 +109,15 @@ std::u16string StringUtils::wwToUnicode(const std::string &input, WWRegion regio
 	NOTE: For Korean, please use UTF-16. This is only for EUR | USA | JPN.
 */
 std::string StringUtils::unicodeToWW(const std::u16string &input, WWRegion region) {
-	if (region == WWRegion::KOR) return "?"; // Korean should not be supported there.
+	if (region == WWRegion::KOR || region == WWRegion::UNKNOWN) return "?"; // Korean should not be supported there.
 
 	std::string output;
-	const std::array<char16_t, 256> *characters = region == WWRegion::EUR_USA ? &wwCharacterDictionary : &wwCharacterDictionaryJapanese;
+	const std::array<char16_t, 256> *characters = region == WWRegion::JPN ? &wwCharacterDictionaryJapanese : &wwCharacterDictionary;
 
 	for(char16_t character : input) {
 		auto it = std::find(characters->begin(), characters->end(), character);
 
-		if (it != characters->end()) {
-			output += std::distance(characters->begin(), it);
-		}
+		if (it != characters->end()) output += std::distance(characters->begin(), it);
 	}
 
 	return output;
@@ -170,6 +166,7 @@ std::u16string StringUtils::UTF8toUTF16(const std::string &src) {
 	for (size_t i = 0; i < src.size(); i++) {
 		u16 codepoint	= 0xFFFD;
 		int iMod		= 0;
+
 		if (src[i] & 0x80 && src[i] & 0x40 && src[i] & 0x20 && !(src[i] & 0x10) && i + 2 < src.size()) {
 			codepoint	= src[i] & 0x0F;
 			codepoint	= codepoint << 6 | (src[i + 1] & 0x3F);

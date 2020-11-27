@@ -34,11 +34,13 @@
 */
 u8 Town::grasstype() const {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return this->townPointer()[0x2200];
 
 		case WWRegion::JPN:
 		case WWRegion::KOR:
+		case WWRegion::UNKNOWN:
 			return 0;
 	}
 
@@ -46,12 +48,14 @@ u8 Town::grasstype() const {
 }
 void Town::grasstype(u8 v) {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			SaveUtils::Write<u8>(this->townPointer(), 0x2200, v);
 			break;
 
 		case WWRegion::JPN:
 		case WWRegion::KOR:
+		case WWRegion::UNKNOWN:
 			break;
 	}
 }
@@ -61,7 +65,8 @@ void Town::grasstype(u8 v) {
 */
 std::u16string Town::name() const {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return StringUtils::ReadUTF8String(this->townPointer(), 0x0004, 8, this->SaveRegion);
 
 		case WWRegion::JPN:
@@ -69,13 +74,17 @@ std::u16string Town::name() const {
 
 		case WWRegion::KOR:
 			return StringUtils::ReadUTF16String(this->townPointer(), 0x0004, 6);
+
+		case WWRegion::UNKNOWN:
+			return StringUtils::UTF8toUTF16("?");
 	}
 
 	return StringUtils::UTF8toUTF16("?");
 }
 void Town::name(std::u16string v) {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			StringUtils::WriteUTF8String(this->townPointer(), v, 0x0004, 8, this->SaveRegion);
 			break;
 
@@ -85,6 +94,9 @@ void Town::name(std::u16string v) {
 
 		case WWRegion::KOR:
 			StringUtils::WriteUTF16String(this->townPointer(), v, 0x0004, 6);
+			break;
+
+		case WWRegion::UNKNOWN:
 			break;
 	}
 }
@@ -98,7 +110,8 @@ std::unique_ptr<Acre> Town::acre(u8 acre) const {
 	if (acre > 35) return nullptr; // Acre Index goes out of scope.
 
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return std::make_unique<Acre>(this->TownData, 0xC330 + acre * 1);
 
 		case WWRegion::JPN:
@@ -106,6 +119,9 @@ std::unique_ptr<Acre> Town::acre(u8 acre) const {
 
 		case WWRegion::KOR:
 			return std::make_unique<Acre>(this->TownData, 0xD304 + acre * 1);
+
+		case WWRegion::UNKNOWN:
+			return nullptr;
 	}
 
 	return nullptr;
@@ -120,7 +136,8 @@ std::unique_ptr<Item> Town::item(u16 index) const {
 	if (index > 4095) return nullptr; // Item Index goes out of scope.
 
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return std::make_unique<Item>(this->TownData, 0xC354 + index * 2);
 
 		case WWRegion::JPN:
@@ -128,6 +145,9 @@ std::unique_ptr<Item> Town::item(u16 index) const {
 
 		case WWRegion::KOR:
 			return std::make_unique<Item>(this->TownData, 0xD328 + index * 2);
+
+		case WWRegion::UNKNOWN:
+			return nullptr;
 	}
 
 	return nullptr;
@@ -137,21 +157,19 @@ std::unique_ptr<Item> Town::item(u16 index) const {
 	Return if Town exist.
 */
 bool Town::exist() const {
+	if (this->SaveRegion == WWRegion::UNKNOWN) return false;
+
 	if (SaveUtils::Read<u16>(this->townPointer(), 0x2) == 0x0 || SaveUtils::Read<u16>(this->townPointer(), 0x2) == 0xFFFF) return false;
 	return true;
 }
 
 /*
-	Get and Set the Turnip prices.
-
-	bool isAM: If the price is AM (true) or PM (false).
-	u8 day: The day index.
-
-	^ Both parameters are ignored, cause only one price seem to exist there.
+	Get and Set the Turnip price.
 */
-u32 Town::turnipPrices(bool isAM, u8 day) const {
+u8 Town::turnipPrice() const {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return this->townPointer()[0x15F5D];
 
 		case WWRegion::JPN:
@@ -159,22 +177,29 @@ u32 Town::turnipPrices(bool isAM, u8 day) const {
 
 		case WWRegion::KOR:
 			return this->townPointer()[0x17370];
+
+		case WWRegion::UNKNOWN:
+			return 0;
 	}
 
 	return 0;
 }
-void Town::turnipPrices(bool isAM, u8 day, u32 v) {
+void Town::turnipPrice(u8 v) {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
-			SaveUtils::Write<u8>(this->townPointer(), 0x15F5D, (u8)v);
+		case WWRegion::EUR:
+		case WWRegion::USA:
+			SaveUtils::Write<u8>(this->townPointer(), 0x15F5D, v);
 			break;
 
 		case WWRegion::JPN:
-			SaveUtils::Write<u8>(this->townPointer(), 0x121A3, (u8)v);
+			SaveUtils::Write<u8>(this->townPointer(), 0x121A3, v);
 			break;
 
 		case WWRegion::KOR:
-			SaveUtils::Write<u8>(this->townPointer(), 0x17370, (u8)v);
+			SaveUtils::Write<u8>(this->townPointer(), 0x17370, v);
+			break;
+
+		case WWRegion::UNKNOWN:
 			break;
 	}
 }
@@ -184,7 +209,8 @@ void Town::turnipPrices(bool isAM, u8 day, u32 v) {
 */
 std::unique_ptr<Pattern> Town::townflag() const {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return std::make_unique<Pattern>(this->TownData, 0x15930, this->SaveRegion);
 
 		case WWRegion::JPN:
@@ -192,6 +218,9 @@ std::unique_ptr<Pattern> Town::townflag() const {
 
 		case WWRegion::KOR:
 			return std::make_unique<Pattern>(this->TownData, 0x16D0C, this->SaveRegion);
+
+		case WWRegion::UNKNOWN:
+			return nullptr;
 	}
 
 	return nullptr;
@@ -211,18 +240,24 @@ bool Town::itemBuried(u16 index) const {
 			offset = 0xC350 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
 
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			offset = 0xE354 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
 
 		case WWRegion::KOR:
 			offset = 0xF328 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
+
+		case WWRegion::UNKNOWN:
+			return false;
 	}
 
 	return SaveUtils::GetBit(this->townPointer(), offset, (index % 256) % 8);
 }
 void Town::itemBuried(u16 index, bool buried) {
+	if (this->SaveRegion == WWRegion::UNKNOWN) return;
+
 	if (index > 4095) return;
 
 	/* Check, if already buried or not. */
@@ -234,13 +269,17 @@ void Town::itemBuried(u16 index, bool buried) {
 			offset = 0xC350 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
 
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			offset = 0xE354 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
 
 		case WWRegion::KOR:
 			offset = 0xF328 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
+
+		case WWRegion::UNKNOWN:
+			return;
 	}
 
 	std::unique_ptr<Item> item = this->item(index);
@@ -260,7 +299,8 @@ std::unique_ptr<Item> Town::recycleItem(u8 slot) const {
 	if (slot > 14) return nullptr; // Item Index goes out of scope.
 
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return std::make_unique<Item>(this->TownData, 0x15EDE + slot * 2);
 
 		case WWRegion::JPN:
@@ -268,6 +308,9 @@ std::unique_ptr<Item> Town::recycleItem(u8 slot) const {
 
 		case WWRegion::KOR:
 			return std::make_unique<Item>(this->TownData, 0x172DE + slot * 2);
+
+		case WWRegion::UNKNOWN:
+			return nullptr;
 	}
 
 	return nullptr;
@@ -282,7 +325,8 @@ std::unique_ptr<Item> Town::lostFoundItem(u8 slot) const {
 	if (slot > 14) return nullptr; // Item Index goes out of scope.
 
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return std::make_unique<Item>(this->TownData, 0x15EC0 + slot * 2);
 
 		case WWRegion::JPN:
@@ -290,6 +334,9 @@ std::unique_ptr<Item> Town::lostFoundItem(u8 slot) const {
 
 		case WWRegion::KOR:
 			return std::make_unique<Item>(this->TownData, 0x172C0 + slot * 2);
+
+		case WWRegion::UNKNOWN:
+			return nullptr;
 	}
 
 	return nullptr;

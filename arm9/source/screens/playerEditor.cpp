@@ -342,7 +342,8 @@ void PlayerEditor::AppearanceLogic(u16 hDown, touchPosition touch) {
 			case 0:
 				/* We need to check for the Name length here. */
 				switch(save->getRegion()) {
-					case WWRegion::EUR_USA:
+					case WWRegion::EUR:
+					case WWRegion::USA:
 						length = 7;
 						break;
 
@@ -350,6 +351,9 @@ void PlayerEditor::AppearanceLogic(u16 hDown, touchPosition touch) {
 					case WWRegion::KOR:
 						length = 6;
 						break;
+
+					case WWRegion::UNKNOWN:
+						return;
 				}
 
 				/* Name. */

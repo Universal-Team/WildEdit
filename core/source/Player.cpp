@@ -34,7 +34,8 @@
 */
 u8 Player::face() const {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return this->playerPointer()[0x223C] & 0xF;
 
 		case WWRegion::JPN:
@@ -42,13 +43,17 @@ u8 Player::face() const {
 
 		case WWRegion::KOR:
 			return this->playerPointer()[0x243C] & 0xF;
+
+		case WWRegion::UNKNOWN:
+			return 0;
 	}
 
 	return 0;
 }
 void Player::face(u8 v) {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			SaveUtils::Write<u8>(this->playerPointer(), 0x223C, (this->playerPointer()[0x223C] & 0xF0) | (v & 0xF));
 			break;
 
@@ -59,6 +64,9 @@ void Player::face(u8 v) {
 		case WWRegion::KOR:
 			SaveUtils::Write<u8>(this->playerPointer(), 0x243C, (this->playerPointer()[0x243C] & 0xF0) | (v & 0xF));
 			break;
+
+		case WWRegion::UNKNOWN:
+			break;
 	}
 }
 
@@ -67,7 +75,8 @@ void Player::face(u8 v) {
 */
 u16 Player::tan() const {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return this->playerPointer()[0x223D] >> 4;
 
 		case WWRegion::JPN:
@@ -75,13 +84,17 @@ u16 Player::tan() const {
 
 		case WWRegion::KOR:
 			return this->playerPointer()[0x243D] >> 4;
+
+		case WWRegion::UNKNOWN:
+			return 0;
 	}
 
 	return 0;
 }
 void Player::tan(u16 v) {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			SaveUtils::Write<u8>(this->playerPointer(), 0x223D, (this->playerPointer()[0x223D] & 0x0F) | (v << 4));
 			break;
 
@@ -92,6 +105,9 @@ void Player::tan(u16 v) {
 		case WWRegion::KOR:
 			SaveUtils::Write<u8>(this->playerPointer(), 0x243D, (this->playerPointer()[0x243D] & 0x0F) | (v << 4));
 			break;
+
+		case WWRegion::UNKNOWN:
+			break;
 	}
 }
 
@@ -100,7 +116,8 @@ void Player::tan(u16 v) {
 */
 u8 Player::gender() const {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return this->playerPointer()[0x228A];
 
 		case WWRegion::JPN:
@@ -108,13 +125,17 @@ u8 Player::gender() const {
 
 		case WWRegion::KOR:
 			return this->playerPointer()[0x249A];
+
+		case WWRegion::UNKNOWN:
+			return 0;
 	}
 
 	return 0;
 }
 void Player::gender(u8 v) {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			SaveUtils::Write<u8>(this->playerPointer(), 0x228A, v);
 			break;
 
@@ -125,6 +146,9 @@ void Player::gender(u8 v) {
 		case WWRegion::KOR:
 			SaveUtils::Write<u8>(this->playerPointer(), 0x249A, v);
 			break;
+
+		case WWRegion::UNKNOWN:
+			break;
 	}
 }
 
@@ -133,7 +157,8 @@ void Player::gender(u8 v) {
 */
 u8 Player::hairstyle() const {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return this->playerPointer()[0x223C] >> 4;
 
 		case WWRegion::JPN:
@@ -141,13 +166,17 @@ u8 Player::hairstyle() const {
 
 		case WWRegion::KOR:
 			return this->playerPointer()[0x243C] >> 4;
+
+		case WWRegion::UNKNOWN:
+			return 0;
 	}
 
 	return 0;
 }
 void Player::hairstyle(u8 v) {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			SaveUtils::Write<u8>(this->playerPointer(), 0x223C, (this->playerPointer()[0x223C] & 0x0F) | (v << 4));
 			break;
 
@@ -158,6 +187,9 @@ void Player::hairstyle(u8 v) {
 		case WWRegion::KOR:
 			SaveUtils::Write<u8>(this->playerPointer(), 0x243C, (this->playerPointer()[0x243C] & 0x0F) | (v << 4));
 			break;
+
+		case WWRegion::UNKNOWN:
+			break;
 	}
 }
 
@@ -166,7 +198,8 @@ void Player::hairstyle(u8 v) {
 */
 u8 Player::haircolor() const {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return this->playerPointer()[0x223D] & 0xF;
 
 		case WWRegion::JPN:
@@ -174,13 +207,17 @@ u8 Player::haircolor() const {
 
 		case WWRegion::KOR:
 			return this->playerPointer()[0x243D] & 0xF;
+
+		case WWRegion::UNKNOWN:
+			return 0;
 	}
 
 	return 0;
 }
 void Player::haircolor(u8 v) {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			SaveUtils::Write<u8>(this->playerPointer(), 0x223D, (this->playerPointer()[0x223D] & 0xF0) | (v & 0xF));
 			break;
 
@@ -191,6 +228,9 @@ void Player::haircolor(u8 v) {
 		case WWRegion::KOR:
 			SaveUtils::Write<u8>(this->playerPointer(), 0x243D, (this->playerPointer()[0x243D] & 0xF0) | (v & 0xF));
 			break;
+
+		case WWRegion::UNKNOWN:
+			break;
 	}
 }
 
@@ -199,7 +239,8 @@ void Player::haircolor(u8 v) {
 */
 u16 Player::playerid() const {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return SaveUtils::Read<u16>(this->playerPointer(), 0x2280);
 
 		case WWRegion::JPN:
@@ -207,13 +248,17 @@ u16 Player::playerid() const {
 
 		case WWRegion::KOR:
 			return SaveUtils::Read<u16>(this->playerPointer(), 0x248C);
+
+		case WWRegion::UNKNOWN:
+			return 0;
 	}
 
 	return 0;
 }
 void Player::playerid(u16 v) {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			SaveUtils::Write<u16>(this->playerPointer(), 0x2280, v);
 			break;
 
@@ -224,6 +269,9 @@ void Player::playerid(u16 v) {
 		case WWRegion::KOR:
 			SaveUtils::Write<u16>(this->playerPointer(), 0x248C, v);
 			break;
+
+		case WWRegion::UNKNOWN:
+			break;
 	}
 }
 
@@ -232,7 +280,8 @@ void Player::playerid(u16 v) {
 */
 u16 Player::townid() const {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return SaveUtils::Read<u16>(this->playerPointer(), 0x2276);
 
 		case WWRegion::JPN:
@@ -240,13 +289,17 @@ u16 Player::townid() const {
 
 		case WWRegion::KOR:
 			return SaveUtils::Read<u16>(this->playerPointer(), 0x247E);
+
+		case WWRegion::UNKNOWN:
+			return 0;
 	}
 
 	return 0;
 }
 void Player::townid(u16 v) {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			SaveUtils::Write<u16>(this->playerPointer(), 0x2276, v);
 			break;
 
@@ -257,6 +310,9 @@ void Player::townid(u16 v) {
 		case WWRegion::KOR:
 			SaveUtils::Write<u16>(this->playerPointer(), 0x247E, v);
 			break;
+
+		case WWRegion::UNKNOWN:
+			break;
 	}
 }
 
@@ -265,7 +321,8 @@ void Player::townid(u16 v) {
 */
 std::u16string Player::townname() const {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return StringUtils::ReadUTF8String(this->playerPointer(), 0x2278, 8, this->SaveRegion);
 
 		case WWRegion::JPN:
@@ -273,6 +330,9 @@ std::u16string Player::townname() const {
 
 		case WWRegion::KOR:
 			return StringUtils::ReadUTF16String(this->playerPointer(), 0x2480, 6);
+
+		case WWRegion::UNKNOWN:
+			return StringUtils::UTF8toUTF16("?");
 	}
 
 	return StringUtils::UTF8toUTF16("?");
@@ -280,7 +340,8 @@ std::u16string Player::townname() const {
 
 void Player::townname(std::u16string v) {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			StringUtils::WriteUTF8String(this->playerPointer(), v, 0x2278, 8, this->SaveRegion);
 			break;
 
@@ -291,6 +352,9 @@ void Player::townname(std::u16string v) {
 		case WWRegion::KOR:
 			StringUtils::WriteUTF16String(this->playerPointer(), v, 0x2480, 6);
 			break;
+
+		case WWRegion::UNKNOWN:
+			break;
 	}
 }
 
@@ -299,7 +363,8 @@ void Player::townname(std::u16string v) {
 */
 bool Player::exist() const {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return SaveUtils::Read<u16>(this->playerPointer(), 0x2280) != 0;
 
 		case WWRegion::JPN:
@@ -307,6 +372,9 @@ bool Player::exist() const {
 
 		case WWRegion::KOR:
 			return SaveUtils::Read<u16>(this->playerPointer(), 0x248C) != 0;
+
+		case WWRegion::UNKNOWN:
+			return false;
 	}
 
 	return false;
@@ -317,7 +385,8 @@ bool Player::exist() const {
 */
 std::u16string Player::name() const {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return StringUtils::ReadUTF8String(this->playerPointer(), 0x2282, 8, this->SaveRegion);
 
 		case WWRegion::JPN:
@@ -325,13 +394,17 @@ std::u16string Player::name() const {
 
 		case WWRegion::KOR:
 			return StringUtils::ReadUTF16String(this->playerPointer(), 0x248E, 6);
+
+		case WWRegion::UNKNOWN:
+			return StringUtils::UTF8toUTF16("?");
 	}
 
 	return StringUtils::UTF8toUTF16("?");
 }
 void Player::name(std::u16string v) {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			StringUtils::WriteUTF8String(this->playerPointer(), v, 0x2282, 8, this->SaveRegion);
 			break;
 
@@ -342,6 +415,9 @@ void Player::name(std::u16string v) {
 		case WWRegion::KOR:
 			StringUtils::WriteUTF16String(this->playerPointer(), v, 0x248E, 6);
 			break;
+
+		case WWRegion::UNKNOWN:
+			break;
 	}
 }
 
@@ -350,7 +426,8 @@ void Player::name(std::u16string v) {
 */
 u32 Player::wallet() const {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return SaveUtils::Read<u32>(this->playerPointer(), 0x1B40);
 
 		case WWRegion::JPN:
@@ -358,13 +435,17 @@ u32 Player::wallet() const {
 
 		case WWRegion::KOR:
 			return SaveUtils::Read<u32>(this->playerPointer(), 0x1C10);
+
+		case WWRegion::UNKNOWN:
+			return 0;
 	}
 
 	return 0;
 }
 void Player::wallet(u32 v) {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			SaveUtils::Write<u32>(this->playerPointer(), 0x1B40, v);
 			break;
 
@@ -375,6 +456,9 @@ void Player::wallet(u32 v) {
 		case WWRegion::KOR:
 			SaveUtils::Write<u32>(this->playerPointer(), 0x1C10, v);
 			break;
+
+		case WWRegion::UNKNOWN:
+			break;
 	}
 }
 
@@ -383,7 +467,8 @@ void Player::wallet(u32 v) {
 */
 u32 Player::bank() const {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return SaveUtils::Read<u32>(this->playerPointer(), 0x21E4);
 
 		case WWRegion::JPN:
@@ -391,13 +476,17 @@ u32 Player::bank() const {
 
 		case WWRegion::KOR:
 			return SaveUtils::Read<u32>(this->playerPointer(), 0x23E0);
+
+		case WWRegion::UNKNOWN:
+			return 0;
 	}
 
 	return 0;
 }
 void Player::bank(u32 v) {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			SaveUtils::Write<u32>(this->playerPointer(), 0x21E4, v);
 			break;
 
@@ -407,6 +496,9 @@ void Player::bank(u32 v) {
 
 		case WWRegion::KOR:
 			SaveUtils::Write<u32>(this->playerPointer(), 0x23E0, v);
+			break;
+
+		case WWRegion::UNKNOWN:
 			break;
 	}
 }
@@ -420,7 +512,8 @@ std::unique_ptr<Letter> Player::letter(u8 slot) const {
 	if (slot > 9) return nullptr;
 
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return std::make_unique<Letter>(this->PlayerData, this->Offset + 0x114C + slot * 0xF4, this->SaveRegion);
 
 		case WWRegion::JPN:
@@ -428,6 +521,9 @@ std::unique_ptr<Letter> Player::letter(u8 slot) const {
 
 		case WWRegion::KOR:
 			return std::make_unique<Letter>(this->PlayerData, this->Offset + 0x11AC + slot * 0x100, this->SaveRegion);
+
+		case WWRegion::UNKNOWN:
+			return nullptr;
 	}
 
 	return nullptr;
@@ -442,7 +538,8 @@ std::unique_ptr<Item> Player::pocket(u8 slot) const {
 	if (slot > 14) return nullptr;
 
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return std::make_unique<Item>(this->PlayerData, this->Offset + 0x1B22 + slot * 2);
 
 		case WWRegion::JPN:
@@ -450,6 +547,9 @@ std::unique_ptr<Item> Player::pocket(u8 slot) const {
 
 		case WWRegion::KOR:
 			return std::make_unique<Item>(this->PlayerData, this->Offset + 0x1BF2 + slot * 2);
+
+		case WWRegion::UNKNOWN:
+			return nullptr;
 	}
 
 	return nullptr;
@@ -464,7 +564,8 @@ std::unique_ptr<Item> Player::dresser(u8 slot) const {
 	if (slot > 89) return nullptr;
 
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return std::make_unique<Item>(this->PlayerData, 0x15430 + (0xB4 * Index) + slot * 2);
 
 		case WWRegion::JPN:
@@ -472,6 +573,9 @@ std::unique_ptr<Item> Player::dresser(u8 slot) const {
 
 		case WWRegion::KOR:
 			return std::make_unique<Item>(this->PlayerData, 0x16800 + (0xB4 * Index) + slot * 2);
+
+		case WWRegion::UNKNOWN:
+			return nullptr;
 	}
 
 	return nullptr;
@@ -486,7 +590,8 @@ std::unique_ptr<Pattern> Player::pattern(u8 slot) const {
 	if (slot > 7) return nullptr;
 
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return std::make_unique<Pattern>(this->PlayerData, this->Offset + 0 + slot * 0x228, this->SaveRegion);
 
 		case WWRegion::JPN:
@@ -494,6 +599,9 @@ std::unique_ptr<Pattern> Player::pattern(u8 slot) const {
 
 		case WWRegion::KOR:
 			return std::make_unique<Pattern>(this->PlayerData, this->Offset + 0 + slot * 0x234, this->SaveRegion);
+
+		case WWRegion::UNKNOWN:
+			return nullptr;
 	}
 
 	return nullptr;
@@ -506,6 +614,8 @@ std::unique_ptr<Pattern> Player::pattern(u8 slot) const {
 	const std::string filename: The filename where the dump should be stored at.
 */
 void Player::dumpPlayer(const std::string fileName) {
+	if (this->SaveRegion == WWRegion::UNKNOWN) return;
+
 	/* Open File. */
 	FILE *pl = fopen(fileName.c_str(), "w");
 
@@ -522,6 +632,8 @@ void Player::dumpPlayer(const std::string fileName) {
 	const std::string fileName: The location of the file.
 */
 bool Player::injectPlayer(const std::string fileName) {
+	if (this->SaveRegion == WWRegion::UNKNOWN) return false;
+
 	bool isGood = false;
 	if ((access(fileName.c_str(), F_OK) != 0)) return isGood; // File not found. Do NOTHING.
 
@@ -561,7 +673,8 @@ bool Player::injectPlayer(const std::string fileName) {
 */
 u8 Player::acornFestival() const {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return this->playerPointer()[0x2225];
 
 		case WWRegion::JPN:
@@ -569,13 +682,17 @@ u8 Player::acornFestival() const {
 
 		case WWRegion::KOR:
 			return this->playerPointer()[0x2421];
+
+		case WWRegion::UNKNOWN:
+			return 0;
 	}
 
 	return 0;
 }
 void Player::acornFestival(u8 v) {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			SaveUtils::Write<u8>(this->playerPointer(), 0x2225, v);
 			break;
 
@@ -586,6 +703,9 @@ void Player::acornFestival(u8 v) {
 		case WWRegion::KOR:
 			SaveUtils::Write<u8>(this->playerPointer(), 0x2421, v);
 			break;
+
+		case WWRegion::UNKNOWN:
+			break;
 	}
 }
 
@@ -594,7 +714,8 @@ void Player::acornFestival(u8 v) {
 */
 u8 Player::bed() const {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			return 0;
 
 		case WWRegion::JPN:
@@ -602,13 +723,17 @@ u8 Player::bed() const {
 
 		case WWRegion::KOR:
 			return 0;
+
+		case WWRegion::UNKNOWN:
+			return 0;
 	}
 
 	return 0;
 }
 void Player::bed(u8 v) {
 	switch(this->SaveRegion) {
-		case WWRegion::EUR_USA:
+		case WWRegion::EUR:
+		case WWRegion::USA:
 			break;
 
 		case WWRegion::JPN:
@@ -616,6 +741,9 @@ void Player::bed(u8 v) {
 			break;
 
 		case WWRegion::KOR:
+			break;
+
+		case WWRegion::UNKNOWN:
 			break;
 	}
 }

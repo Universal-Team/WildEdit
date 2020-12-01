@@ -24,7 +24,7 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "letterStorage.hpp"
+#include "LetterStorage.hpp"
 
 /*
 	Return a Letter from Player 1.

@@ -27,7 +27,7 @@
 #ifndef _WILDEDIT_CORE_LETTER_STORAGE_HPP
 #define _WILDEDIT_CORE_LETTER_STORAGE_HPP
 
-#include "letter.hpp"
+#include "Letter.hpp"
 #include "types.hpp"
 
 class LetterStorage {

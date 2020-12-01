@@ -62,9 +62,6 @@ public:
 
 			case WWRegion::KOR:
 				return 0x249C;
-
-			case WWRegion::UNKNOWN:
-				return 0;
 		}
 
 		return 0;
@@ -77,8 +74,8 @@ public:
 	u8 gender() const;
 	void gender(u8 v);
 
-	u16 tan() const;
-	void tan(u16 v);
+	u8 tan() const;
+	void tan(u8 v);
 
 	u8 hairstyle() const;
 	void hairstyle(u8 v);

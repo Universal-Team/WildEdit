@@ -53,6 +53,8 @@ namespace SaveUtils {
 		}
 	};
 
+	void WriteNibble(u8 *Buffer, u32 offset, bool first, u8 data, const bool SaveWrite = true);
+
 	std::unique_ptr<Sav> getSave(std::shared_ptr<u8[]> dt, u32 length);
 };
 

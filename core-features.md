@@ -30,6 +30,10 @@ Here you can see all core features of WildEdit-Core, which are already implement
 - [x] LetterFlag
 - [x] Letter Attachment / Item
 
+## Letter Storage
+- [x] Player 1 - 4 Letters
+- [x] Fix Letter Storage Checksum
+
 ## Pattern
 - [x] Pattern Name
 - [x] Creator Name

@@ -43,9 +43,6 @@ std::unique_ptr<Player> Sav::player(u8 player) const {
 
 		case WWRegion::KOR:
 			return std::make_unique<Player>(this->SaveData, 0x0014 + (player * 0x249C), this->SaveRegion, player);
-
-		case WWRegion::UNKNOWN:
-			return nullptr;
 	}
 
 	return nullptr;
@@ -65,20 +62,30 @@ std::unique_ptr<Villager> Sav::villager(u8 villager) const {
 
 		case WWRegion::KOR:
 			return std::make_unique<Villager>(this->SaveData, 0x9284 + (villager * 0x7EC), this->SaveRegion);
-
-		case WWRegion::UNKNOWN:
-			return nullptr;
 	}
 
 	return nullptr;
 }
 
 /* Get Town data. */
-std::unique_ptr<Town> Sav::town() const {
-	if (this->SaveRegion == WWRegion::UNKNOWN) return nullptr;
+std::unique_ptr<Town> Sav::town() const { return std::make_unique<Town>(this->SaveData, this->SaveRegion); };
 
-	return std::make_unique<Town>(this->SaveData, this->SaveRegion);
-};
+/* Get Letter Storage Data. */
+std::unique_ptr<LetterStorage> Sav::letterstorage() const {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR:
+		case WWRegion::USA:
+			return std::make_unique<LetterStorage>(this->SaveData, 0x2E20C, this->SaveRegion);
+
+		case WWRegion::JPN:
+			return std::make_unique<LetterStorage>(this->SaveData, 0x35BEC, this->SaveRegion);
+
+		case WWRegion::KOR:
+			return std::make_unique<LetterStorage>(this->SaveData, 0x337FC, this->SaveRegion);
+	}
+
+	return nullptr;
+}
 
 /* Last call before writing to file. Update Checksum. */
 void Sav::Finish(void) {
@@ -97,9 +104,6 @@ void Sav::Finish(void) {
 		case WWRegion::KOR:
 			Checksum::UpdateChecksum(this->SaveRegion, this->savePointer(), 0x173FC / sizeof(u16));
 			memcpy(this->savePointer() + 0x173FC, this->savePointer(), 0x173FC); // Copy SaveData to the second save copy.
-			break;
-
-		case WWRegion::UNKNOWN:
 			break;
 	}
 }

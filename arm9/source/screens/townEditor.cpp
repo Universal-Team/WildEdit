@@ -51,7 +51,7 @@ void TownEditor::Logic(u16 hDown, touchPosition touch) {
 	if (updatePointer) Gui::pointerUpdate(townButtons[this->selection].x+60, townButtons[this->selection].y+12);
 
 	if (hDown & KEY_B) {
-		setSpriteVisibility(Gui::saveID, false, false);
+		setSpriteVisibility(Gui::saveID, false, true);
 		Gui::screenBack();
 		Gui::DrawScreen();
 		updatePointer = true;
@@ -79,7 +79,7 @@ void TownEditor::Logic(u16 hDown, touchPosition touch) {
 				Gui::DrawScreen();
 				updatePointer = true;
 				break;
-			
+
 			case 1:
 				Gui::setScreen(std::make_unique<TownMapEditor>(this->town));
 				Gui::DrawScreen();

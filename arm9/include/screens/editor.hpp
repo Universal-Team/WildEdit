@@ -51,10 +51,10 @@ private:
 	std::string saveName;
 
 	const std::vector<Structs::ButtonPos> mainButtons = {
-		{80, 30, 88, 32, -1}, // Player.
-		{80, 80, 88, 32, -1}, // Villager.
-		{80, 130, 88, 32, -1}, // Misc.
-		{225, 172, 32, 32, -1} // Save.
+		{ 80, 30, 88, 32 }, // Player.
+		{ 80, 80, 88, 32 }, // Villager.
+		{ 80, 130, 88, 32 }, // Misc.
+		{ 225, 172, 32, 32 } // Save.
 	};
 };
 

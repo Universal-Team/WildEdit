@@ -34,7 +34,6 @@ public:
 		int y;
 		int w;
 		int h;
-		int link;
 	};
 };
 

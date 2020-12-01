@@ -58,7 +58,7 @@ void PlayerSelector::Logic(u16 hDown, touchPosition touch) {
 		if (this->selectedPlayer > this->maxPlayer) this->selectedPlayer = 0;
 		Gui::DrawScreen();
 	}
-	
+
 	if (hDown & KEY_LEFT) {
 		this->selectedPlayer--;
 		if (this->selectedPlayer < 0) this->selectedPlayer = this->maxPlayer;
@@ -75,9 +75,10 @@ void PlayerSelector::Logic(u16 hDown, touchPosition touch) {
 
 	if (hDown & KEY_B) {
 		Gui::screenBack();
-		
+
 		/* Display Save icon. */
 		setSpriteVisibility(Gui::saveID, false, true);
+		updateOam();
 		Gui::DrawScreen();
 		Gui::showPointer(true);
 		return;

@@ -44,9 +44,9 @@ private:
 	int selection = 0;
 
 	const std::vector<Structs::ButtonPos> townButtons = {
-		{80, 30, 88, 32, -1},
-		{80, 80, 88, 32, -1},
-		{80, 130, 88, 32, -1}
+		{ 80, 30, 88, 32 },
+		{ 80, 80, 88, 32 },
+		{ 80, 130, 88, 32 }
 	};
 };
 

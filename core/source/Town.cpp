@@ -40,7 +40,6 @@ u8 Town::grasstype() const {
 
 		case WWRegion::JPN:
 		case WWRegion::KOR:
-		case WWRegion::UNKNOWN:
 			return 0;
 	}
 
@@ -55,7 +54,6 @@ void Town::grasstype(u8 v) {
 
 		case WWRegion::JPN:
 		case WWRegion::KOR:
-		case WWRegion::UNKNOWN:
 			break;
 	}
 }
@@ -74,9 +72,6 @@ std::u16string Town::name() const {
 
 		case WWRegion::KOR:
 			return StringUtils::ReadUTF16String(this->townPointer(), 0x0004, 6);
-
-		case WWRegion::UNKNOWN:
-			return StringUtils::UTF8toUTF16("?");
 	}
 
 	return StringUtils::UTF8toUTF16("?");
@@ -94,9 +89,6 @@ void Town::name(std::u16string v) {
 
 		case WWRegion::KOR:
 			StringUtils::WriteUTF16String(this->townPointer(), v, 0x0004, 6);
-			break;
-
-		case WWRegion::UNKNOWN:
 			break;
 	}
 }
@@ -119,9 +111,6 @@ std::unique_ptr<Acre> Town::acre(u8 acre) const {
 
 		case WWRegion::KOR:
 			return std::make_unique<Acre>(this->TownData, 0xD304 + acre * 1);
-
-		case WWRegion::UNKNOWN:
-			return nullptr;
 	}
 
 	return nullptr;
@@ -145,9 +134,6 @@ std::unique_ptr<Item> Town::item(u16 index) const {
 
 		case WWRegion::KOR:
 			return std::make_unique<Item>(this->TownData, 0xD328 + index * 2);
-
-		case WWRegion::UNKNOWN:
-			return nullptr;
 	}
 
 	return nullptr;
@@ -157,8 +143,6 @@ std::unique_ptr<Item> Town::item(u16 index) const {
 	Return if Town exist.
 */
 bool Town::exist() const {
-	if (this->SaveRegion == WWRegion::UNKNOWN) return false;
-
 	if (SaveUtils::Read<u16>(this->townPointer(), 0x2) == 0x0 || SaveUtils::Read<u16>(this->townPointer(), 0x2) == 0xFFFF) return false;
 	return true;
 }
@@ -177,9 +161,6 @@ u8 Town::turnipPrice() const {
 
 		case WWRegion::KOR:
 			return this->townPointer()[0x17370];
-
-		case WWRegion::UNKNOWN:
-			return 0;
 	}
 
 	return 0;
@@ -198,9 +179,6 @@ void Town::turnipPrice(u8 v) {
 		case WWRegion::KOR:
 			SaveUtils::Write<u8>(this->townPointer(), 0x17370, v);
 			break;
-
-		case WWRegion::UNKNOWN:
-			break;
 	}
 }
 
@@ -218,9 +196,6 @@ std::unique_ptr<Pattern> Town::townflag() const {
 
 		case WWRegion::KOR:
 			return std::make_unique<Pattern>(this->TownData, 0x16D0C, this->SaveRegion);
-
-		case WWRegion::UNKNOWN:
-			return nullptr;
 	}
 
 	return nullptr;
@@ -248,16 +223,11 @@ bool Town::itemBuried(u16 index) const {
 		case WWRegion::KOR:
 			offset = 0xF328 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
-
-		case WWRegion::UNKNOWN:
-			return false;
 	}
 
 	return SaveUtils::GetBit(this->townPointer(), offset, (index % 256) % 8);
 }
 void Town::itemBuried(u16 index, bool buried) {
-	if (this->SaveRegion == WWRegion::UNKNOWN) return;
-
 	if (index > 4095) return;
 
 	/* Check, if already buried or not. */
@@ -277,9 +247,6 @@ void Town::itemBuried(u16 index, bool buried) {
 		case WWRegion::KOR:
 			offset = 0xF328 + ((index / 256) * 256 + (index % 256)) / 8;
 			break;
-
-		case WWRegion::UNKNOWN:
-			return;
 	}
 
 	std::unique_ptr<Item> item = this->item(index);
@@ -308,9 +275,6 @@ std::unique_ptr<Item> Town::recycleItem(u8 slot) const {
 
 		case WWRegion::KOR:
 			return std::make_unique<Item>(this->TownData, 0x172DE + slot * 2);
-
-		case WWRegion::UNKNOWN:
-			return nullptr;
 	}
 
 	return nullptr;
@@ -334,9 +298,6 @@ std::unique_ptr<Item> Town::lostFoundItem(u8 slot) const {
 
 		case WWRegion::KOR:
 			return std::make_unique<Item>(this->TownData, 0x172C0 + slot * 2);
-
-		case WWRegion::UNKNOWN:
-			return nullptr;
 	}
 
 	return nullptr;

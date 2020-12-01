@@ -34,6 +34,11 @@ typedef uint8_t u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
 
+struct Byte {
+	u8 Nibble1: 4; // 0 - 3.
+	u8 Nibble2: 4; // 4 - 7.
+};
+
 /*
 	Save Regions.
 */
@@ -41,8 +46,7 @@ enum class WWRegion : u8 {
 	EUR,
 	USA,
 	JPN,
-	KOR,
-	UNKNOWN
+	KOR
 };
 
 #endif

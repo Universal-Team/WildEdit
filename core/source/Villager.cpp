@@ -41,9 +41,6 @@ u8 Villager::id() const {
 
 		case WWRegion::KOR:
 			return villagerPointer()[0x79F];
-
-		case WWRegion::UNKNOWN:
-			return 0;
 	}
 
 	return 0;
@@ -62,21 +59,13 @@ void Villager::id(u8 v) {
 		case WWRegion::KOR:
 			SaveUtils::Write<u8>(this->villagerPointer(), 0x79F, v);
 			break;
-
-		case WWRegion::UNKNOWN:
-			break;
 	}
 }
 
 /*
 	Return if the Villager exist.
 */
-bool Villager::exist() const {
-	if (this->SaveRegion == WWRegion::UNKNOWN) return false;
-
-	if (this->id() == 0xFF)	return false;
-	return true;
-}
+bool Villager::exist() const { return (this->id() != 0xFF); };
 
 /*
 	Get and Set for the Villager Personality.
@@ -92,9 +81,6 @@ u8 Villager::personality() const {
 
 		case WWRegion::KOR:
 			return villagerPointer()[0x79E];
-
-		case WWRegion::UNKNOWN:
-			return 0;
 	}
 
 	return 0;
@@ -112,9 +98,6 @@ void Villager::personality(u8 v) {
 
 		case WWRegion::KOR:
 			SaveUtils::Write<u8>(this->villagerPointer(), 0x79E, v);
-			break;
-
-		case WWRegion::UNKNOWN:
 			break;
 	}
 }
@@ -136,9 +119,6 @@ u8 Villager::song() const {
 
 		case WWRegion::KOR:
 			return this->villagerPointer()[0x7A4];
-
-		case WWRegion::UNKNOWN:
-			return 0;
 	}
 
 	return 0;
@@ -157,9 +137,6 @@ void Villager::song(u8 sng) {
 		case WWRegion::KOR:
 			SaveUtils::Write<u8>(this->villagerPointer(), 0x7A4, sng);
 			break;
-
-		case WWRegion::UNKNOWN:
-			break;
 	}
 }
 
@@ -177,9 +154,6 @@ std::unique_ptr<Item> Villager::shirt() const {
 
 		case WWRegion::KOR:
 			return std::make_unique<Item>(this->VillagerData, this->Offset + 0x7C2);
-
-		case WWRegion::UNKNOWN:
-			return nullptr;
 	}
 
 	return nullptr;
@@ -201,9 +175,6 @@ u8 Villager::wallpaper() const {
 
 		case WWRegion::KOR:
 			return this->villagerPointer()[0x7C4];
-
-		case WWRegion::UNKNOWN:
-			return 0;
 	}
 
 	return 0;
@@ -221,9 +192,6 @@ void Villager::wallpaper(u8 wlp) {
 
 		case WWRegion::KOR:
 			SaveUtils::Write<u8>(this->villagerPointer(), 0x7C4, wlp);
-			break;
-
-		case WWRegion::UNKNOWN:
 			break;
 	}
 }
@@ -244,9 +212,6 @@ u8 Villager::carpet() const {
 
 		case WWRegion::KOR:
 			return this->villagerPointer()[0x7C5];
-
-		case WWRegion::UNKNOWN:
-			return 0;
 	}
 
 	return 0;
@@ -264,9 +229,6 @@ void Villager::carpet(u8 crp) {
 
 		case WWRegion::KOR:
 			SaveUtils::Write<u8>(this->villagerPointer(), 0x7C5, crp);
-			break;
-
-		case WWRegion::UNKNOWN:
 			break;
 	}
 }
@@ -287,9 +249,6 @@ u8 Villager::umbrella() const {
 
 		case WWRegion::KOR:
 			return this->villagerPointer()[0x7CA];
-
-		case WWRegion::UNKNOWN:
-			return 0;
 	}
 
 	return 0;
@@ -307,9 +266,6 @@ void Villager::umbrella(u8 umbr) {
 
 		case WWRegion::KOR:
 			SaveUtils::Write<u8>(this->villagerPointer(), 0x7CA, umbr);
-			break;
-
-		case WWRegion::UNKNOWN:
 			break;
 	}
 }
@@ -332,9 +288,6 @@ std::unique_ptr<Item> Villager::furniture(u8 slot) const {
 
 		case WWRegion::KOR:
 			return std::make_unique<Item>(this->VillagerData, this->Offset + 0x77C + slot * 2);
-
-		case WWRegion::UNKNOWN:
-			return nullptr;
 	}
 
 	return nullptr;

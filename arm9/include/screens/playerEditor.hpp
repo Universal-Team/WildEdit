@@ -59,33 +59,32 @@ private:
 	/* Pattern Misc stuff. */
 	void FreePattern();
 	void DecodePattern();
-	
+
 	int selection = 0, Mode = 0;
 	bool accessPattern = false;
-	
 	int allocatedPattern[8] = {0};
-	std::unique_ptr<Pattern> ptrn[8] = {nullptr};
-	std::unique_ptr<PatternImage> ptrnImg[8] = {nullptr};
+	std::unique_ptr<Pattern> ptrn[8] = { nullptr };
+	std::unique_ptr<PatternImage> ptrnImg[8] = { nullptr };
 
 	const std::vector<Structs::ButtonPos> patternPos = {
-		{16, 30, 32, 32, -1},
-		{80, 30, 32, 32, -1},
-		{144, 30, 32, 32, -1},
-		{208, 30, 32, 32, -1},
+		{ 16, 30, 32, 32 },
+		{ 80, 30, 32, 32 },
+		{ 144, 30, 32, 32 },
+		{ 208, 30, 32, 32 },
 
-		{16, 96, 32, 32, -1},
-		{80, 96, 32, 32, -1},
-		{144, 96, 32, 32, -1},
-		{208, 96, 32, 32, -1}
+		{ 16, 96, 32, 32 },
+		{ 80, 96, 32, 32 },
+		{ 144, 96, 32, 32 },
+		{ 208, 96, 32, 32 }
 	};
 
 	const std::vector<Structs::ButtonPos> playerButtons = {
-		{20, 30, 88, 32, -1},
-		{20, 80, 88, 32, -1},
-		{20, 130, 88, 32, -1},
-		{148, 30, 88, 32, -1},
-		{148, 80, 88, 32, -1},
-		{148, 130, 88, 32, -1}
+		{ 20, 30, 88, 32 },
+		{ 20, 80, 88, 32 },
+		{ 20, 130, 88, 32 },
+		{ 148, 30, 88, 32 },
+		{ 148, 80, 88, 32 },
+		{ 148, 130, 88, 32 }
 	};
 };
 

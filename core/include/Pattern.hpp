@@ -88,9 +88,6 @@ private:
 
 			case WWRegion::KOR:
 				return 0x234;
-
-			case WWRegion::UNKNOWN:
-				return 0;
 		}
 
 		return 0;

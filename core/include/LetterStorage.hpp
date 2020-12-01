@@ -24,72 +24,46 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _WILDEDIT_CORE_VILLAGER_HPP
-#define _WILDEDIT_CORE_VILLAGER_HPP
+#ifndef _WILDEDIT_CORE_LETTER_STORAGE_HPP
+#define _WILDEDIT_CORE_LETTER_STORAGE_HPP
 
-#include "Item.hpp"
+#include "letter.hpp"
 #include "types.hpp"
 
-#include <memory>
-#include <vector>
-
-class Item;
-
-class Villager {
+class LetterStorage {
 protected:
-	std::shared_ptr<u8[]> VillagerData;
+	std::shared_ptr<u8[]> StorageData;
 	u32 Offset;
-	WWRegion SaveRegion;
+	WWRegion Region;
 public:
-	Villager(std::shared_ptr<u8[]> villagerData, u32 villagerOffset, WWRegion Region) :
-			VillagerData(villagerData), Offset(villagerOffset), SaveRegion(Region) { };
-	Villager(const Villager& villager) = delete;
-	Villager& operator=(const Villager& villager) = delete;
+	LetterStorage(std::shared_ptr<u8[]> storageData, u32 offset, WWRegion region) :
+		StorageData(storageData), Offset(offset), Region(region) { };
 
-	u32 getVillagerSize() const {
-		switch(this->SaveRegion) {
+	/* Player Letters. */
+	std::unique_ptr<Letter> Player1(uint8_t Slot) const;
+	std::unique_ptr<Letter> Player2(uint8_t Slot) const;
+	std::unique_ptr<Letter> Player3(uint8_t Slot) const;
+	std::unique_ptr<Letter> Player4(uint8_t Slot) const;
+
+	/* Checksum things. */
+	u16 CalculateChecksum();
+	bool ChecksumValid();
+	void FixChecksum();
+private:
+	/* Return amount of letters per player. */
+	uint8_t LetterAmount() const {
+		switch(this->Region) {
 			case WWRegion::EUR:
 			case WWRegion::USA:
-				return 0x700;
-
 			case WWRegion::JPN:
-				return 0x5C0;
+				return 75;
 
 			case WWRegion::KOR:
-				return 0x7EC;
+				return 50;
 		}
 
 		return 0;
 	};
-
-	u8 id() const;
-	void id(u8 v);
-
-	bool exist() const;
-
-	u8 personality() const;
-	void personality(u8 v);
-
-	/*
-		Items.
-	*/
-	u8 song() const;
-	void song(u8 sng);
-
-	std::unique_ptr<Item> shirt() const;
-
-	u8 wallpaper() const;
-	void wallpaper(u8 wlp);
-
-	u8 carpet() const;
-	void carpet(u8 crp);
-
-	u8 umbrella() const;
-	void umbrella(u8 umbr);
-
-	std::unique_ptr<Item> furniture(u8 slot) const;
-private:
-	u8 *villagerPointer() const { return this->VillagerData.get() + this->Offset; };
 };
 
 #endif

@@ -100,10 +100,6 @@ void Editor::Draw(void) const {
 				case WWRegion::KOR:
 					printTextCentered("Korean", 0, 60, true, true);
 					break;
-
-				case WWRegion::UNKNOWN:
-					printTextCentered("Unknown", 0, 60, true, true);
-					break;
 			}
 		}
 
@@ -121,7 +117,7 @@ void Editor::Draw(void) const {
 
 void Editor::Logic(u16 hDown, touchPosition touch) {
 	/* Only do Logic, if Save is loaded. */
-	if (loadState == SaveState::Loaded) {
+	if (this->loadState == SaveState::Loaded) {
 		if (updatePointer) Gui::pointerUpdate(mainButtons[this->Selection].x + 60, mainButtons[this->Selection].y + 12);
 
 		if (hDown & KEY_B) {
@@ -139,9 +135,7 @@ void Editor::Logic(u16 hDown, touchPosition touch) {
 			}
 		}
 
-		if (hDown & KEY_START) {
-			this->Saving();
-		}
+		if (hDown & KEY_START) this->Saving();
 
 		if (hDown & KEY_UP) {
 			if (this->Selection > 0) {
@@ -170,6 +164,7 @@ void Editor::Logic(u16 hDown, touchPosition touch) {
 					setSpriteVisibility(Gui::saveID, false, false);
 					Gui::setScreen(std::make_unique<TownEditor>(save->town()));
 					Gui::DrawScreen();
+					updatePointer = true;
 					updateOam();
 					break;
 			}

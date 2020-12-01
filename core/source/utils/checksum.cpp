@@ -42,7 +42,7 @@ u16 Checksum::Calculate(const u16 *buffer, u64 size, u16 checksumOffset) {
 	if ((checksumOffset & 1) == 1) return 0; // checksumOffset must be 16-bit aligned!
 
 	u16 checksum = 0;
-	for (uint i = 0; i < size; i++) {
+	for (u16 i = 0; i < size; i++) {
 		if (i == checksumOffset) continue;
 		checksum += buffer[i];
 	}
@@ -82,9 +82,6 @@ void Checksum::UpdateChecksum(WWRegion region, u8 *saveBuffer, u64 size) {
 
 		case WWRegion::KOR:
 			SaveUtils::Write<u16>(saveBuffer, 0x173F8, Checksum::Calculate(reinterpret_cast<u16 *>(saveBuffer), size, 0xB9FC));
-			break;
-
-		case WWRegion::UNKNOWN:
 			break;
 	}
 }

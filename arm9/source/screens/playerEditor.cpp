@@ -351,9 +351,6 @@ void PlayerEditor::AppearanceLogic(u16 hDown, touchPosition touch) {
 					case WWRegion::KOR:
 						length = 6;
 						break;
-
-					case WWRegion::UNKNOWN:
-						return;
 				}
 
 				/* Name. */

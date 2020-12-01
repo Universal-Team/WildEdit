@@ -25,6 +25,7 @@
 */
 
 #include "PatternImage.hpp"
+#include "saveUtils.hpp"
 
 /*
 	Return the palette color index as an uint8_t.
@@ -34,14 +35,13 @@
 u8 PatternImage::getPaletteColor(u8 plt) const {
 	if (plt > 15) return 0;
 
-	const u8 paletteIndex = (u8)(((this->paletteData()[0]) & 0xF0) >> 4);
-	return (u8)((paletteIndex * 15) + plt);
+	return ((reinterpret_cast<Byte *>(this->paletteData())->Nibble2) * 15) + plt;
 }
 
 /*
 	Return the Palette Index.
 */
-u8 PatternImage::getWWPaletteIndex() const { return (u8)(((this->paletteData()[0]) & 0xF0) >> 4); };
+u8 PatternImage::getWWPaletteIndex() const { return reinterpret_cast<Byte *>(this->paletteData())->Nibble2; };
 
 /*
 	Set the Palette Index instead of color for the palette.
@@ -52,7 +52,7 @@ u8 PatternImage::getWWPaletteIndex() const { return (u8)(((this->paletteData()[0
 void PatternImage::setPaletteColor(u8 index, u8 color) {
 	if (index > 14) return;
 
-	this->paletteData()[0] = (u8)(((index) << 4) & 0xF0);
+	SaveUtils::WriteNibble(this->paletteData(), 0x0, false, index);
 }
 
 /*

@@ -40,7 +40,7 @@ u8 Villager::id() const {
 			return villagerPointer()[0x595];
 
 		case WWRegion::KOR:
-			return villagerPointer()[0x79F];
+			return villagerPointer()[0x7AF];
 	}
 
 	return 0;
@@ -57,7 +57,7 @@ void Villager::id(u8 v) {
 			break;
 
 		case WWRegion::KOR:
-			SaveUtils::Write<u8>(this->villagerPointer(), 0x79F, v);
+			SaveUtils::Write<u8>(this->villagerPointer(), 0x7AF, v);
 			break;
 	}
 }
@@ -80,7 +80,7 @@ u8 Villager::personality() const {
 			return villagerPointer()[0x594];
 
 		case WWRegion::KOR:
-			return villagerPointer()[0x79E];
+			return villagerPointer()[0x7AE];
 	}
 
 	return 0;
@@ -97,7 +97,7 @@ void Villager::personality(u8 v) {
 			break;
 
 		case WWRegion::KOR:
-			SaveUtils::Write<u8>(this->villagerPointer(), 0x79E, v);
+			SaveUtils::Write<u8>(this->villagerPointer(), 0x7AE, v);
 			break;
 	}
 }
@@ -109,6 +109,8 @@ void Villager::personality(u8 v) {
 	This needs still to be researched.
 */
 u8 Villager::song() const {
+	return 0; // Just a return for now.
+
 	switch(this->SaveRegion) {
 		case WWRegion::EUR:
 		case WWRegion::USA:
@@ -124,6 +126,8 @@ u8 Villager::song() const {
 	return 0;
 }
 void Villager::song(u8 sng) {
+	return; // Just a return for now.
+
 	switch(this->SaveRegion) {
 		case WWRegion::EUR:
 		case WWRegion::USA:
@@ -153,7 +157,7 @@ std::unique_ptr<Item> Villager::shirt() const {
 			return std::make_unique<Item>(this->VillagerData, this->Offset + 0x5AE);
 
 		case WWRegion::KOR:
-			return std::make_unique<Item>(this->VillagerData, this->Offset + 0x7C2);
+			return std::make_unique<Item>(this->VillagerData, this->Offset + 0x7D2);
 	}
 
 	return nullptr;
@@ -174,7 +178,7 @@ u8 Villager::wallpaper() const {
 			return this->villagerPointer()[0x5B0];
 
 		case WWRegion::KOR:
-			return this->villagerPointer()[0x7C4];
+			return this->villagerPointer()[0x7D4];
 	}
 
 	return 0;
@@ -191,7 +195,7 @@ void Villager::wallpaper(u8 wlp) {
 			break;
 
 		case WWRegion::KOR:
-			SaveUtils::Write<u8>(this->villagerPointer(), 0x7C4, wlp);
+			SaveUtils::Write<u8>(this->villagerPointer(), 0x7D4, wlp);
 			break;
 	}
 }
@@ -211,7 +215,7 @@ u8 Villager::carpet() const {
 			return this->villagerPointer()[0x5B1];
 
 		case WWRegion::KOR:
-			return this->villagerPointer()[0x7C5];
+			return this->villagerPointer()[0x7D5];
 	}
 
 	return 0;
@@ -228,7 +232,7 @@ void Villager::carpet(u8 crp) {
 			break;
 
 		case WWRegion::KOR:
-			SaveUtils::Write<u8>(this->villagerPointer(), 0x7C5, crp);
+			SaveUtils::Write<u8>(this->villagerPointer(), 0x7D5, crp);
 			break;
 	}
 }
@@ -248,7 +252,7 @@ u8 Villager::umbrella() const {
 			return this->villagerPointer()[0x544];
 
 		case WWRegion::KOR:
-			return this->villagerPointer()[0x7CA];
+			return this->villagerPointer()[0x7DA];
 	}
 
 	return 0;
@@ -265,7 +269,7 @@ void Villager::umbrella(u8 umbr) {
 			break;
 
 		case WWRegion::KOR:
-			SaveUtils::Write<u8>(this->villagerPointer(), 0x7CA, umbr);
+			SaveUtils::Write<u8>(this->villagerPointer(), 0x7DA, umbr);
 			break;
 	}
 }
@@ -287,7 +291,45 @@ std::unique_ptr<Item> Villager::furniture(u8 slot) const {
 			return std::make_unique<Item>(this->VillagerData, this->Offset + 0x578 + slot * 2);
 
 		case WWRegion::KOR:
-			return std::make_unique<Item>(this->VillagerData, this->Offset + 0x77C + slot * 2);
+			return std::make_unique<Item>(this->VillagerData, this->Offset + 0x78C + slot * 2);
+	}
+
+	return nullptr;
+}
+
+/*
+	Return the Villager Pattern.
+*/
+std::unique_ptr<Pattern> Villager::pattern() const {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR:
+		case WWRegion::USA:
+			return std::make_unique<Pattern>(this->VillagerData, this->Offset + 0x340, this->SaveRegion);
+
+		case WWRegion::JPN:
+			return std::make_unique<Pattern>(this->VillagerData, this->Offset + 0x280, this->SaveRegion);
+
+		case WWRegion::KOR:
+			return std::make_unique<Pattern>(this->VillagerData, this->Offset + 0x400, this->SaveRegion);
+	}
+
+	return nullptr;
+}
+
+/*
+	Return the Villager's last Letter.
+*/
+std::unique_ptr<Letter> Villager::letter() const {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR:
+		case WWRegion::USA:
+			return std::make_unique<Letter>(this->VillagerData, this->Offset + 0x568, this->SaveRegion);
+
+		case WWRegion::JPN:
+			return std::make_unique<Letter>(this->VillagerData, this->Offset + 0x4A0, this->SaveRegion);
+
+		case WWRegion::KOR:
+			return std::make_unique<Letter>(this->VillagerData, this->Offset + 0x634, this->SaveRegion);
 	}
 
 	return nullptr;

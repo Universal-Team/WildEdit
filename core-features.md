@@ -61,6 +61,7 @@ Here you can see all core features of WildEdit-Core, which are already implement
 - [x] Player Name
 - [x] Wallet Amount
 - [x] Bank Amount
+- [x] Pocket Letter
 - [x] Pocket Items
 - [x] Dresser Items
 - [x] Pattern Images
@@ -78,9 +79,11 @@ Here you can see all core features of WildEdit-Core, which are already implement
 - [x] Town Acres
 - [x] Town Map Items
 - [x] Town Exist
-- [X] Turnip Prices
+- [X] Turnip Price
 - [x] Town Flag Pattern
 - [x] Item Buried
+- [x] Townhall recycle Items
+- [x] Lost and Found Items
 
 ## Villager
 - [x] Villager ID
@@ -92,3 +95,5 @@ Here you can see all core features of WildEdit-Core, which are already implement
 - [x] Villager Carpet
 - [x] Villager Umbrella
 - [x] Villager Furniture
+- [x] Villager Pattern
+- [x] Villager Letter

@@ -88,6 +88,9 @@ public:
 	void umbrella(u8 umbr);
 
 	std::unique_ptr<Item> furniture(u8 slot) const;
+
+	std::unique_ptr<Pattern> pattern() const;
+	std::unique_ptr<Letter> letter() const;
 private:
 	u8 *villagerPointer() const { return this->VillagerData.get() + this->Offset; };
 };

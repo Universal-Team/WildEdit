@@ -27,11 +27,11 @@ all	:	$(TARGETS)
 
 %.gfx	:	%.bmp %.txt
 	@mkdir -p $(OUT)/$(@D)
-	@./$(BMP2DS) $< $(OUT)/$@ -o $(shell cat $(word 2,$^))
+	@$(BMP2DS) $< $(OUT)/$@ -o $(shell cat $(word 2,$^))
 
 %.gfx	:	%.bmp
 	@mkdir -p $(OUT)/$(@D)
-	@./$(BMP2DS) $< $(OUT)/$@
+	@$(BMP2DS) $< $(OUT)/$@
 
 clean	:
 	@echo clean ...

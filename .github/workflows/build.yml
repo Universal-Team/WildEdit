@@ -29,6 +29,11 @@ jobs:
         uses: actions/checkout@v1
         with:
           submodules: recursive
+      - name: Install tools
+        run: |
+          curl -L https://github.com/Universal-Team/bmp2ds/releases/latest/download/bmp2ds-linux -o bmp2ds
+          chmod +x bmp2ds
+          mv bmp2ds /usr/local/bin
       - name: Build
         id: build
         run: |

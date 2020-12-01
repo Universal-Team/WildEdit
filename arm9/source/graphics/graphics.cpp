@@ -192,7 +192,7 @@ void loadFont(void) {
 }
 
 Image loadImage(std::string path) {
-	Image image = {0, 0, {}, {}, 0};
+	Image image = { 0, 0, {}, {}, 0 };
 	FILE *file = fopen(("nitro:" + path).c_str(), "rb");
 
 	if (file) {
@@ -219,15 +219,15 @@ void copyPalette(const Image &image, bool top, int paletteOffset = 0) {
 u8 *gfxPointer(bool top, bool layer) {
 	if (top) {
 		if (layer) {
-			return (u8*)bgGetGfxPtr(bg2Main);
+			return (u8 *)bgGetGfxPtr(bg2Main);
 		} else {
-			return (u8*)bgGetGfxPtr(bg3Main);
+			return (u8 *)bgGetGfxPtr(bg3Main);
 		}
 	} else {
 		if (layer) {
-			return (u8*)bgGetGfxPtr(bg2Sub);
+			return (u8 *)bgGetGfxPtr(bg2Sub);
 		} else {
-			return (u8*)bgGetGfxPtr(bg3Sub);
+			return (u8 *)bgGetGfxPtr(bg3Sub);
 		}
 	}
 }
@@ -236,6 +236,7 @@ void drawImage(int x, int y, const Image &image, bool top, bool layer, int palet
 	copyPalette(image, top, paletteOffset);
 	u8 *dst = gfxPointer(top, layer);
 	u16 *pal = (top ? BG_PALETTE : BG_PALETTE_SUB);
+
 	for(int i=0;i<image.height;i++) {
 		imgcpy(dst+((y+i)*256+x), image.bitmap.data()+((i*image.width)), pal, image.width, paletteOffset);
 	}
@@ -243,6 +244,7 @@ void drawImage(int x, int y, const Image &image, bool top, bool layer, int palet
 
 void drawImageDMA(int x, int y, const Image &image, bool top, bool layer) {
 	copyPalette(image, top);
+
 	for(int i=0;i<image.height;i++) {
 		dmaCopyHalfWords(0, image.bitmap.data()+(i*image.width), gfxPointer(top, layer)+((y+i)*256)+x, image.width);
 	}
@@ -252,7 +254,7 @@ void drawImageScaled(int x, int y, float scaleX, float scaleY, const Image &imag
 	if (scaleX == 1 && scaleY == 1) drawImage(x, y, image, top, layer, paletteOffset);
 	else {
 		copyPalette(image, top, paletteOffset);
-		u8* dst = gfxPointer(top, layer);
+		u8 *dst = gfxPointer(top, layer);
 		u16 *pal = (top ? BG_PALETTE : BG_PALETTE_SUB);
 		u8 buffer[(int)(image.width*scaleX)];
 		for(int i=0;i<(image.height*scaleY);i++) {
@@ -267,8 +269,9 @@ void drawImageScaled(int x, int y, float scaleX, float scaleY, const Image &imag
 
 void drawImageSegment(int x, int y, int w, int h, const Image &image, int xOffset, int yOffset, bool top, bool layer) {
 	copyPalette(image, top);
-	u8* dst = gfxPointer(top, layer);
+	u8 *dst = gfxPointer(top, layer);
 	u16 *pal = (top ? BG_PALETTE : BG_PALETTE_SUB);
+
 	for(int i=0;i<h;i++) {
 		imgcpy(dst+((y+i)*256+x), image.bitmap.data()+(((yOffset+i)*image.width)+xOffset), pal, w, 0);
 	}
@@ -276,14 +279,16 @@ void drawImageSegment(int x, int y, int w, int h, const Image &image, int xOffse
 
 void drawImageSegmentDMA(int x, int y, int w, int h, const Image &image, int xOffset, int yOffset, bool top, bool layer) {
 	copyPalette(image, top);
+
 	for(int i=0;i<h;i++) {
 		dmaCopyHalfWords(0, image.bitmap.data()+((yOffset+i)*image.width)+xOffset, gfxPointer(top, layer)+((y+i)*256)+x, w);
 	}
 }
 
 void drawOutline(int x, int y, int w, int h, u8 color, bool top, bool layer) {
-	u8* dst = gfxPointer(top, layer);
+	u8 *dst = gfxPointer(top, layer);
 	h+=y;
+
 	if (y >= 0 && y < 192) toncset(dst+((y*256)+(x < 0 ? 0 : x)), color, (x+w > 256 ? w+(256-x-w) : w));
 	for(y++;y<(h-1);y++) {
 		if (y>=0 && y<192 && x>0) toncset(dst+((y)*256+x), color, 1);
@@ -296,6 +301,7 @@ void drawOutline(int x, int y, int w, int h, u8 color, bool top, bool layer) {
 void drawRectangle(int x, int y, int w, int h, u8 color, bool top, bool layer) { drawRectangle(x, y, w, h, color, color, top, layer); }
 void drawRectangle(int x, int y, int w, int h, u8 color1, u8 color2, bool top, bool layer) {
 	u8 *dst = gfxPointer(top, layer);
+
 	for(int i=0;i<h;i++) {
 		if (w > 1) {
 			dmaFillHalfWords(((i%2) ? color1 : color2) | ((i%2) ? color1 : color2) << 8, dst+((y+i)*256+x), w);
@@ -306,7 +312,7 @@ void drawRectangle(int x, int y, int w, int h, u8 color1, u8 color2, bool top, b
 }
 
 int initSprite(bool top, SpriteSize spriteSize, int id, int rotationIndex) {
-	if (id == -1)	id = maxSprite(top)++;
+	if (id == -1) id = maxSprite(top)++;
 
 	Sprite sprite = {0, spriteSize, SpriteColorFormat_Bmp, rotationIndex, 15, 0, 0};
 	sprites(top)[id] = sprite;
@@ -319,13 +325,16 @@ int initSprite(bool top, SpriteSize spriteSize, int id, int rotationIndex) {
 
 void fillSpriteColor(int id, bool top, u16 color) {
 	int size = 0;
+
 	switch(sprites(top)[id].size) {
 		default:
 			size = 0; // I'm lazy.
 			break;
+
 		case SpriteSize_16x16:
 			size = 16*16*2;
 			break;
+
 		case SpriteSize_32x32:
 			size = 32*32*2;
 			break;
@@ -368,7 +377,8 @@ void fillSpriteText(int id, bool top, const std::string &text, TextColor palette
 void fillSpriteText(int id, bool top, const std::u16string &text, TextColor palette, int xPos, int yPos) {
 	for(unsigned c=0;c<text.size();c++) {
 		int t = getCharIndex(text[c]);
-		Image image = {tileWidth, tileHeight, {}, {0, 0, 0, 0}, 0};
+		Image image = { tileWidth, tileHeight, {}, {0, 0, 0, 0}, 0 };
+
 		for(int i=0;i<tileSize;i++) {
 			image.bitmap.push_back(fontTiles[i+(t*tileSize)]>>6 & 3);
 			image.bitmap.push_back(fontTiles[i+(t*tileSize)]>>4 & 3);
@@ -440,6 +450,7 @@ void printTextTinted(const std::string &text, TextColor palette, int xPos, int y
 
 void printTextTinted(const std::u16string &text, TextColor palette, int xPos, int yPos, bool top, bool layer) {
 	int x=xPos;
+
 	for(unsigned c=0;c<text.size();c++) {
 		if (text[c] == '\n') {
 			x = xPos;
@@ -448,7 +459,8 @@ void printTextTinted(const std::u16string &text, TextColor palette, int xPos, in
 		}
 
 		int t = getCharIndex(text[c]);
-		Image image = {tileWidth, tileHeight, {}, {}, 0};
+		Image image = { tileWidth, tileHeight, {}, {}, 0 };
+
 		for(int i=0;i<tileSize;i++) {
 			image.bitmap[(i*4)]   = (fontTiles[i+(t*tileSize)]>>6 & 3);
 			image.bitmap[(i*4)+1] = (fontTiles[i+(t*tileSize)]>>4 & 3);
@@ -457,6 +469,7 @@ void printTextTinted(const std::u16string &text, TextColor palette, int xPos, in
 		}
 
 		x += fontWidths[t*3];
+
 		if (x > 256) {
 			x = xPos+fontWidths[t*3];
 			yPos += tileHeight;
@@ -474,6 +487,7 @@ void printTextCenteredMaxW(const std::u16string &text, float w, float scaleY, in
 void printTextCenteredTintedMaxW(const std::string &text, float w, float scaleY, TextColor palette, int xOffset, int yPos, bool top, bool layer) { printTextCenteredTintedMaxW(StringUtils::UTF8toUTF16(text), w, scaleY, palette, xOffset, yPos, top, layer); }
 void printTextCenteredTintedMaxW(std::u16string text, float w, float scaleY, TextColor palette, int xOffset, int yPos, bool top, bool layer) {
 	int i = 0;
+
 	while(text.find('\n') != text.npos) {
 		printTextTintedScaled(text.substr(0, text.find('\n')), std::min(1.0f, w/getTextWidth(text.substr(0, text.find('\n')))), scaleY, palette, ((256-getTextWidthMaxW(text.substr(0, text.find('\n')), w))/2)+xOffset, yPos+(i++*(16*scaleY)), top, layer);
 		text = text.substr(text.find('\n')+1);
@@ -491,6 +505,7 @@ void printTextCenteredScaled(const std::u16string &text, float scaleX, float sca
 void printTextCenteredTintedScaled(const std::string &text, float scaleX, float scaleY, TextColor palette, int xOffset, int yPos, bool top, bool layer) { printTextCenteredTintedScaled(StringUtils::UTF8toUTF16(text), scaleX, scaleY, palette, xOffset, yPos, top, layer); }
 void printTextCenteredTintedScaled(std::u16string text, float scaleX, float scaleY, TextColor palette, int xOffset, int yPos, bool top, bool layer) {
 	int i = 0;
+
 	while(text.find('\n') != text.npos) {
 		printTextTintedScaled(text.substr(0, text.find('\n')), scaleX, scaleY, palette, ((256-getTextWidth(text.substr(0, text.find('\n'))))/2)+xOffset, yPos+(i++*(16*scaleY)), top, layer);
 		text = text.substr(text.find('\n')+1);
@@ -507,6 +522,7 @@ void printTextTintedScaled(const std::u16string &text, float scaleX, float scale
 	}
 
 	int x=xPos;
+
 	for(unsigned c=0;c<text.size();c++) {
 		if (text[c] == '\n') {
 			x = xPos;
@@ -515,7 +531,7 @@ void printTextTintedScaled(const std::u16string &text, float scaleX, float scale
 		}
 
 		int t = getCharIndex(text[c]);
-		Image image = {tileWidth, tileHeight, {}, {}, 0};
+		Image image = { tileWidth, tileHeight, {}, {}, 0 };
 		for(int i=0;i<tileSize;i++) {
 			image.bitmap[(i*4)]   = (fontTiles[i+(t*tileSize)]>>6 & 3);
 			image.bitmap[(i*4)+1] = (fontTiles[i+(t*tileSize)]>>4 & 3);
@@ -524,6 +540,7 @@ void printTextTintedScaled(const std::u16string &text, float scaleX, float scale
 		}
 
 		x += fontWidths[t*3];
+
 		if (x > 256) {
 			x = xPos+fontWidths[t*3];
 			yPos += tileHeight;
@@ -541,6 +558,7 @@ int getTextWidthScaled(const std::u16string &text, float scale) { return getText
 int getTextWidth(const std::string &text) { return getTextWidth(StringUtils::UTF8toUTF16(text)); }
 int getTextWidth(const std::u16string &text) {
 	int textWidth = 0;
+
 	for(unsigned c=0;c<text.size();c++) {
 		textWidth += fontWidths[(getCharIndex(text[c])*3)+2];
 	}

@@ -34,13 +34,9 @@
 
 TownMapEditor::TownMapEditor(std::unique_ptr<Town> &refTown) : town(refTown) {
 	/* Get Town Items. */
-	for (int i = 0; i < 4096; i++) {
-		this->MapItems[i] = this->town->item(i);
-	}
+	for (int i = 0; i < 4096; i++) this->MapItems[i] = this->town->item(i);
 
-	for (int i = 0; i < 36; i++) {
-		this->townAcres[i] = this->town->acre(i);
-	}
+	for (int i = 0; i < 36; i++) this->townAcres[i] = this->town->acre(i);
 
 	/* Initialize Temp Item. */
 	this->TempItem = 65521;
@@ -60,9 +56,7 @@ TownMapEditor::~TownMapEditor() {
 	for (int i = 0; i < 16; i++) {
 		setSpriteVisibility(this->topAcres[i], true, false);
 
-		if (spritesMain[this->topAcres[i]].gfx) {
-			oamFreeGfx(&oamMain, spritesMain[this->topAcres[i]].gfx);
-		}
+		if (spritesMain[this->topAcres[i]].gfx) oamFreeGfx(&oamMain, spritesMain[this->topAcres[i]].gfx);
 	}
 }
 

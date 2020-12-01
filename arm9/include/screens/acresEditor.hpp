@@ -31,7 +31,6 @@
 #include "screenCommon.hpp"
 #include "structs.hpp"
 #include "Town.hpp"
-
 #include <vector>
 
 class AcresEditor : public Screen {
@@ -45,7 +44,7 @@ public:
 private:
 	std::unique_ptr<Acre> acres[36];
 
-	int saveAcres[36] = {0};
+	int saveAcres[36] = { 0 };
 	int previewAcre = 0;
 
 	/* Draw stuff. */

@@ -28,7 +28,6 @@
 #include "stringUtils.hpp"
 #include "Town.hpp"
 
-
 /*
 	Get and Set the Grasstype.
 */

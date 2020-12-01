@@ -30,11 +30,11 @@
 #include <string>
 
 namespace Overlays {
-    std::string SelectFile(const std::string initialPath, std::vector<std::string> fileType, const std::string Text);
+    std::string SelectFile(const std::string &initialPath, const std::vector<std::string> &fileType, const std::string &Text);
     std::string browseForSave(void);
-    
-    u16 SelectItem(u16 oldItem, const std::string Text = "Select an item.", bool showPointer = true, bool redrawScreen = true);
-    int SelectList(std::vector<std::string> &contents, int oldIndex, const std::string Text, bool showPointer = true, bool redrawScreen = true);
-}
+
+    u16 SelectItem(u16 oldItem, const std::string &Text = "Select an item.", bool showPointer = true, bool redrawScreen = true);
+    int SelectList(const std::vector<std::string> &contents, int oldIndex, const std::string &Text, bool showPointer = true, bool redrawScreen = true);
+};
 
 #endif

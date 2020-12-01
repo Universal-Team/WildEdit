@@ -10,14 +10,15 @@ std::vector<std::string> g_hairStyle;
 std::vector<std::string> g_personality;
 
 void loadToVector(std::string path, std::vector<std::string> &vec) {
-	char* line = NULL;
+	char *line = nullptr;
 	size_t len = 0;
 	vec.clear();
 
-	FILE* in = fopen(path.c_str(), "r");
+	FILE *in = fopen(path.c_str(), "r");
+
 	if (in) {
 		while(__getline(&line, &len, in) != -1) {
-			if (line[strlen(line)-1] == '\n')	line[strlen(line)-1] = '\0';
+			if (line[strlen(line)-1] == '\n') line[strlen(line)-1] = '\0';
 			vec.push_back(line);
 		}
 
@@ -26,14 +27,12 @@ void loadToVector(std::string path, std::vector<std::string> &vec) {
 }
 
 std::string Lang::get(const std::string &key) {
-	if (!appJson.contains(key)) {
-		return "";
-	}
+	if (!appJson.contains(key)) return "";
 
 	return appJson.at(key).get_ref<const std::string&>();
 }
 
-const std::string langs[] = {"de", "en", "es", "fr", "it", "lt", "pt", "jp"};
+const std::string langs[] = { "de", "en", "es", "fr", "it", "lt", "pt", "jp" };
 
 void Lang::load(int lang) {
 	loadToVector("nitro:/lang/strings/facetype.txt", g_faceType);
@@ -42,7 +41,8 @@ void Lang::load(int lang) {
 	loadToVector("nitro:/lang/strings/personalities.txt", g_personality);
 
 	/* Load app strings. */
-	FILE* file = fopen(("nitro:/lang/"+langs[lang]+"/app.json").c_str(), "rt");
+	FILE *file = fopen(("nitro:/lang/"+langs[lang]+"/app.json").c_str(), "rt");
+
 	if (file) {
 		appJson = nlohmann::json::parse(file, nullptr, false);
 		fclose(file);

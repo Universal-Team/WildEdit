@@ -31,7 +31,6 @@
 #include "screenCommon.hpp"
 #include "structs.hpp"
 #include "Town.hpp"
-
 #include <vector>
 
 class TownMapEditor : public Screen {

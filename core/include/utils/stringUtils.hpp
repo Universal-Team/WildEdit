@@ -28,7 +28,6 @@
 #define _WILDEDIT_CORE_STRINGUTILS_HPP
 
 #include "types.hpp"
-
 #include <string>
 
 namespace StringUtils {

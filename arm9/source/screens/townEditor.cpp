@@ -30,9 +30,9 @@
 
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
-TownEditor::TownEditor(std::unique_ptr<Town> refTown) : town(std::move(refTown)) { }
+TownEditor::TownEditor(std::unique_ptr<Town> refTown) : town(std::move(refTown)) { };
 
-TownEditor::~TownEditor() { }
+TownEditor::~TownEditor() { };
 
 void TownEditor::Draw(void) const {
 	Gui::DrawTop(true);

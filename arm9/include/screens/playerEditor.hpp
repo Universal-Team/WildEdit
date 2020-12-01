@@ -31,7 +31,6 @@
 #include "PatternImage.hpp"
 #include "Player.hpp"
 #include "screenCommon.hpp"
-
 #include "structs.hpp"
 #include <vector>
 
@@ -62,7 +61,7 @@ private:
 
 	int selection = 0, Mode = 0;
 	bool accessPattern = false;
-	int allocatedPattern[8] = {0};
+	int allocatedPattern[8] = { 0 };
 	std::unique_ptr<Pattern> ptrn[8] = { nullptr };
 	std::unique_ptr<PatternImage> ptrnImg[8] = { nullptr };
 

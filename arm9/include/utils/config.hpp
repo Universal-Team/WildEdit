@@ -28,7 +28,6 @@
 #define _WILDEDIT_CONFIG_HPP
 
 #include "json.hpp"
-
 #include <nds.h>
 #include <string>
 
@@ -40,28 +39,33 @@ public:
 	void addMissingThings();
 
 	/* Language. */
-	int language() { return this->v_language; }
-	void language(int v) { this->v_language = v; if (!this->changesMade) this->changesMade = true; }
+	int language() { return this->v_language; };
+	void language(int v) { this->v_language = v; if (!this->changesMade) this->changesMade = true; };
+
 	/* Do Backups. */
-	bool createBackups() { return this->v_createBackups; }
-	void createBackups(bool v) { this->v_createBackups = v; if (!this->changesMade) this->changesMade = true; }
+	bool createBackups() { return this->v_createBackups; };
+	void createBackups(bool v) { this->v_createBackups = v; if (!this->changesMade) this->changesMade = true; };
+
 	/* Version. */
-	int version() { return this->v_version; }
-	void version(int v) { this->v_version = v; if (!this->changesMade) this->changesMade = true; }
+	int version() { return this->v_version; };
+	void version(int v) { this->v_version = v; if (!this->changesMade) this->changesMade = true; };
 
 	/* Keyboard Layout. */
-	int kbLayout() { return this->v_kbLayout; }
-	void kbLayout(int v) { this->v_kbLayout = v; if (!this->changesMade) this->changesMade = true; }
-	/* Keyboard X Position. */
-	int kbXPos() { return this->v_kbXPos; }
-	void kbXPos(int v) { this->v_kbXPos = v; if (!this->changesMade) this->changesMade = true; }
-	/* Keyboard Directions. */
-	int kbDirections() { return this->v_kbDirections; }
-	void kbDirections(int v) { this->v_kbDirections = v; if (!this->changesMade) this->changesMade = true; }
-	/* Keyboard Group Amount. */
-	int kbGroupAmount() { return this->v_kbGroupAmount; }
-	void kbGroupAmount(int v) { this->v_kbGroupAmount = v; if (!this->changesMade) this->changesMade = true; }
+	int kbLayout() { return this->v_kbLayout; };
+	void kbLayout(int v) { this->v_kbLayout = v; if (!this->changesMade) this->changesMade = true; };
 
+	/* Keyboard X Position. */
+	int kbXPos() { return this->v_kbXPos; };
+	void kbXPos(int v) { this->v_kbXPos = v; if (!this->changesMade) this->changesMade = true; };
+
+	/* Keyboard Directions. */
+	int kbDirections() { return this->v_kbDirections; };
+	void kbDirections(int v) { this->v_kbDirections = v; if (!this->changesMade) this->changesMade = true; };
+
+	/* Keyboard Group Amount. */
+	int kbGroupAmount() { return this->v_kbGroupAmount; };
+	void kbGroupAmount(int v) { this->v_kbGroupAmount = v; if (!this->changesMade) this->changesMade = true; };
+private:
 	/* Mainly helper. */
 	bool getBool(const std::string &key);
 	void setBool(const std::string &key, bool v);
@@ -69,7 +73,7 @@ public:
 	void setInt(const std::string &key, int v);
 	std::string getString(const std::string &key);
 	void setString(const std::string &key, const std::string &v);
-private:
+
 	nlohmann::json json; // Our private JSON file.
 	bool changesMade = false;
 

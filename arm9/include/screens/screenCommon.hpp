@@ -32,9 +32,9 @@
 #include "gui.hpp"
 #include "lang.hpp"
 #include "Sav.hpp"
+#include "saveUtils.hpp"
 #include "screen.hpp"
 
-extern std::shared_ptr<Sav> save;
 extern bool updatePointer;
 
 #endif

@@ -28,7 +28,6 @@
 #define _WILDEDIT_CORE_SHOP_HPP
 
 #include "Pattern.hpp"
-
 #include <memory>
 #include <vector>
 

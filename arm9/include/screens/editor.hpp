@@ -29,7 +29,6 @@
 
 #include "screenCommon.hpp"
 #include "structs.hpp"
-
 #include <vector>
 
 class Editor : public Screen {

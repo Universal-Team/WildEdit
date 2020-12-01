@@ -29,7 +29,6 @@
 
 #include "graphics.hpp"
 #include "screen.hpp"
-
 #include <nds.h>
 
 namespace Gui {
@@ -47,7 +46,7 @@ namespace Gui {
 		Clear a Screen & Layer.
 		bool top is whether to draw on the top or bottom screen.
 		bool layer is whether to draw on layer 3 (false) or layer 2 (true).
-	*/ 
+	*/
 	void clearScreen(bool top, bool layer);
 
 	/* Sprites stuff. */
@@ -59,6 +58,6 @@ namespace Gui {
 	/* Pointer stuff. */
 	void pointerUpdate(int x = 0, int y = 0);
 	void showPointer(bool show = true);
-}
+};
 
 #endif

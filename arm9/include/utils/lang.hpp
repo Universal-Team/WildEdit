@@ -28,7 +28,6 @@
 #define _WILDEDIT_LANG_HPP
 
 #include "json.hpp"
-
 #include <string>
 
 namespace Lang {

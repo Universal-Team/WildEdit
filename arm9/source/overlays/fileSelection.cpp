@@ -32,20 +32,22 @@
 static void DrawList(int screenPos, bool background, std::vector<DirEntry> dirContents, const std::string Text) {
 	drawRectangle(0, 0, 256, 192, DARKERER_GRAY, DARKER_GRAY, true, false);
 	printTextCentered(Text, 0, 0, true, true);
+
 	if (background) {
 		/* Clear screen. */
 		drawRectangle(0, 0, 256, 192, DARKERER_GRAY, DARKER_GRAY, false, false);
 	}
-	
+
 	/* Clear text. */
 	drawRectangle(0, 0, 256, 192, CLEAR, false, true);
+
 	/* Print list. */
 	for (unsigned i = 0; i < std::min(9u, dirContents.size() - screenPos); i++) {
 		printText(dirContents[screenPos + i].name, 4, 4 + (i * 20), false, true);
 	}
 }
 
-std::string Overlays::SelectFile(const std::string initialPath, std::vector<std::string> fileType, const std::string Text) {
+std::string Overlays::SelectFile(const std::string &initialPath, const std::vector<std::string> &fileType, const std::string &Text) {
 	s32 selectedFile = 0;
 	bool dirChanged = false;
 	std::vector<DirEntry> dirContents;
@@ -55,6 +57,7 @@ std::string Overlays::SelectFile(const std::string initialPath, std::vector<std:
 	chdir(initialPath.c_str());
 	std::vector<DirEntry> dirContentsTemp;
 	getDirectoryContents(dirContentsTemp, fileType);
+
 	for(uint i = 0; i < dirContentsTemp.size(); i++) {
 		dirContents.push_back(dirContentsTemp[i]);
 	}
@@ -84,6 +87,7 @@ std::string Overlays::SelectFile(const std::string initialPath, std::vector<std:
 			dirContents.clear();
 			std::vector<DirEntry> dirContentsTemp;
 			getDirectoryContents(dirContentsTemp, fileType);
+
 			for(uint i = 0; i < dirContentsTemp.size(); i++) {
 				dirContents.push_back(dirContentsTemp[i]);
 			}
@@ -91,34 +95,34 @@ std::string Overlays::SelectFile(const std::string initialPath, std::vector<std:
 			selectedFile = 0;
 			screenPos = 0;
 			DrawList(screenPos, true, dirContents, Text);
-
 		}
 
 		if (held & KEY_UP) {
 			if (selectedFile > 0) selectedFile--;
 			else selectedFile = dirContents.size()-1;
 		}
-		
+
 		if (held & KEY_DOWN) {
 			if (selectedFile < (int)dirContents.size()-1) selectedFile++;
 			else selectedFile = 0;
 		}
-		
+
 		if (held & KEY_LEFT) {
 			selectedFile -= entriesPerScreen;
 			if (selectedFile < 0) selectedFile = 0;
 		}
-		
+
 		if (held & KEY_RIGHT) {
 			selectedFile += entriesPerScreen;
 			if (selectedFile > (int)dirContents.size()-1) selectedFile = dirContents.size()-1;
 		}
-		
+
 		if (pressed & KEY_A) {
 			if (dirContents[selectedFile].isDirectory) {
 				chdir(dirContents[selectedFile].name.c_str());
 				selectedFile = 0;
 				dirChanged = true;
+
 			} else {
 				char path[PATH_MAX];
 				getcwd(path, PATH_MAX);
@@ -131,9 +135,11 @@ std::string Overlays::SelectFile(const std::string initialPath, std::vector<std:
 		if (pressed & KEY_B) {
 			char path[PATH_MAX];
 			getcwd(path, PATH_MAX);
+
 			if (strcmp(path, "sd:/") == 0 || strcmp(path, "fat:/") == 0 || strcmp(path, "/") == 0) {
 				Gui::DrawScreen();
 				return "";
+
 			} else {
 				chdir("..");
 				selectedFile = 0;
@@ -145,6 +151,7 @@ std::string Overlays::SelectFile(const std::string initialPath, std::vector<std:
 		if (selectedFile < screenPos) {
 			screenPos = selectedFile;
 			DrawList(screenPos, false, dirContents, Text);
+
 		} else if (selectedFile > screenPos + entriesPerScreen - 1) {
 			screenPos = selectedFile - entriesPerScreen + 1;
 			DrawList(screenPos, false, dirContents, Text);

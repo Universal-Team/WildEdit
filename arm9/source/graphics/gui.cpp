@@ -37,11 +37,11 @@ void Gui::DrawScreen() {
 	screens.top()->Draw();
 }
 
-void Gui::mainLoop(u16 hDown, touchPosition touch) { screens.top()->Logic(hDown, touch); }
+void Gui::mainLoop(u16 hDown, touchPosition touch) { screens.top()->Logic(hDown, touch); };
 
-void Gui::setScreen(std::unique_ptr<Screen> screen) { screens.push(std::move(screen)); }
+void Gui::setScreen(std::unique_ptr<Screen> screen) { screens.push(std::move(screen)); };
 
-void Gui::screenBack() { screens.pop(); }
+void Gui::screenBack() { screens.pop(); };
 
 /* Basic GUI Stuff. */
 void Gui::DrawTop(bool useBars) {
@@ -49,6 +49,7 @@ void Gui::DrawTop(bool useBars) {
 		drawRectangle(0, 20, 256, 152, DARKER_GRAY, true, false);
 		drawRectangle(0, 0, 256, 20, DARKERER_GRAY, true, false);
 		drawRectangle(0, 172, 256, 20, DARKERER_GRAY, true, false);
+
 	} else {
 		drawRectangle(0, 0, 256, 192, DARKER_GRAY, true, false);
 	}
@@ -59,12 +60,13 @@ void Gui::DrawBottom(bool useBars) {
 		drawRectangle(0, 20, 256, 152, DARKER_GRAY, false, false);
 		drawRectangle(0, 0, 256, 20, DARKERER_GRAY, false, false);
 		drawRectangle(0, 172, 256, 20, DARKERER_GRAY, false, false);
+
 	} else {
 		drawRectangle(0, 0, 256, 192, DARKER_GRAY, false, false);
 	}
 }
 
-void Gui::clearScreen(bool top, bool layer) { drawRectangle(0, 0, 256, 192, CLEAR, top, layer); }
+void Gui::clearScreen(bool top, bool layer) { drawRectangle(0, 0, 256, 192, CLEAR, top, layer); };
 
 /* Sprites stuff. */
 int Gui::keyboardSpriteID, Gui::pointerID, Gui::saveID;

@@ -30,7 +30,6 @@
 #include "Item.hpp"
 #include "Player.hpp"
 #include "screenCommon.hpp"
-
 #include "structs.hpp"
 #include <vector>
 
@@ -43,8 +42,8 @@ public:
 	ItemEditor(std::unique_ptr<Player> &refPlayer);
 	~ItemEditor();
 private:
-	std::unique_ptr<Item> pockets[15] = {nullptr};
-	std::unique_ptr<Item> dresser[90] = {nullptr};
+	std::unique_ptr<Item> pockets[15] = { nullptr };
+	std::unique_ptr<Item> dresser[90] = { nullptr };
 	int Selection = 0, Mode = 0, box = 0;
 
 	/* Draws. */

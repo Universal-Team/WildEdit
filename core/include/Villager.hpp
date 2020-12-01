@@ -29,7 +29,6 @@
 
 #include "Item.hpp"
 #include "types.hpp"
-
 #include <memory>
 #include <vector>
 

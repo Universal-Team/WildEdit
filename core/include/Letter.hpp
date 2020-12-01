@@ -27,7 +27,7 @@
 #ifndef _WILDEDIT_CORE_LETTER_HPP
 #define _WILDEDIT_CORE_LETTER_HPP
 
-#include "item.hpp"
+#include "Item.hpp"
 #include "types.hpp"
 #include <memory>
 #include <vector>

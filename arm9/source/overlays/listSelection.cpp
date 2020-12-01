@@ -33,13 +33,15 @@ extern bool updatePointer;
 static void DrawList(int screenPos, bool background, std::vector<std::string> contents, const std::string Text) {
 	drawRectangle(0, 0, 256, 192, DARKERER_GRAY, DARKER_GRAY, true, false);
 	printTextCentered(Text, 0, 0, true, true);
+
 	if (background) {
 		/* Clear screen. */
 		drawRectangle(0, 0, 256, 192, DARKERER_GRAY, DARKER_GRAY, false, false);
 	}
-	
+
 	/* Clear text. */
 	drawRectangle(0, 0, 256, 192, CLEAR, false, true);
+
 	/* Print list. */
 	for (unsigned i = 0; i < std::min(9u, contents.size() - screenPos); i++) {
 		printText(contents[screenPos + i], 4, 4 + (i * 20), false, true);
@@ -47,7 +49,7 @@ static void DrawList(int screenPos, bool background, std::vector<std::string> co
 }
 
 /* Select from a list. */
-int Overlays::SelectList(std::vector<std::string> &contents, int oldIndex, const std::string Text, bool showPointer, bool redrawScreen) {
+int Overlays::SelectList(const std::vector<std::string> &contents, int oldIndex, const std::string &Text, bool showPointer, bool redrawScreen) {
 	int selectedEntry = 0;
 
 	/* Set pointer position. */
@@ -73,26 +75,27 @@ int Overlays::SelectList(std::vector<std::string> &contents, int oldIndex, const
 			if (selectedEntry > 0) selectedEntry--;
 			else selectedEntry = contents.size()-1;
 		}
-		
+
 		if (held & KEY_DOWN) {
 			if (selectedEntry < (int)contents.size()-1) selectedEntry++;
 			else selectedEntry = 0;
 		}
-		
+
 		if (held & KEY_LEFT) {
 			selectedEntry -= entriesPerScreen;
 			if (selectedEntry < 0) selectedEntry = 0;
 		}
-		
+
 		if (held & KEY_RIGHT) {
 			selectedEntry += entriesPerScreen;
 			if (selectedEntry > (int)contents.size()-1) selectedEntry = contents.size()-1;
 		}
-		
+
 		if (pressed & KEY_A) {
 			if (showPointer) {
 				setSpriteVisibility(Gui::pointerID, false, true);
 				updatePointer = true;
+
 			} else {
 				setSpriteVisibility(Gui::pointerID, false, false);
 				updateOam();
@@ -106,6 +109,7 @@ int Overlays::SelectList(std::vector<std::string> &contents, int oldIndex, const
 			if (showPointer) {
 				setSpriteVisibility(Gui::pointerID, false, true);
 				updatePointer = true;
+
 			} else {
 				setSpriteVisibility(Gui::pointerID, false, false);
 				updateOam();
@@ -119,6 +123,7 @@ int Overlays::SelectList(std::vector<std::string> &contents, int oldIndex, const
 		if (selectedEntry < screenPos) {
 			screenPos = selectedEntry;
 			DrawList(screenPos, false, contents, Text);
+
 		} else if (selectedEntry > screenPos + entriesPerScreen - 1) {
 			screenPos = selectedEntry - entriesPerScreen + 1;
 			DrawList(screenPos, false, contents, Text);

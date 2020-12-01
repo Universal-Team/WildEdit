@@ -37,9 +37,7 @@ void GraphicManagement::DrawAcre(u8 AcreID, int x, int y, float ScaleX, float Sc
 
 /* Draw a villager image. */
 void GraphicManagement::DrawVillager(u8 villagerID, int x, int y, bool top) {
-	if (villagerID > 149) {
-		villagerID = 150; // 150 -> EMPTY.
-	}
+	if (villagerID > 149) villagerID = 150; // 150 -> EMPTY.
 
 	Image villagerData = loadImage("/graphics/villagers/" + std::to_string(villagerID) + ".gfx"); // Load sprite.
 	drawImage(x, y, villagerData, top, true, 0x20); // Draw sprite.

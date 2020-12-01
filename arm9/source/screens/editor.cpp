@@ -42,7 +42,7 @@ extern bool exiting;
 
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
-Editor::Editor() { }
+Editor::Editor() { };
 
 void Editor::SaveInitialize() {
 	Gui::showPointer(false);
@@ -53,6 +53,7 @@ void Editor::SaveInitialize() {
 	if (this->saveName != "") {
 		if (!CoreUtils::loadSave(this->saveName)) {
 			Msg::DisplayWarnMsg(Lang::get("INVALID_SAVEFILE"));
+
 		} else {
 			loadState = SaveState::Loaded;
 
@@ -67,6 +68,7 @@ void Editor::SaveInitialize() {
 			Gui::showPointer(true);
 			updateOam();
 		}
+
 	} else {
 		exiting = true;
 	}
@@ -78,7 +80,7 @@ void Editor::Saving() {
 }
 
 void Editor::Draw(void) const {
-	if (loadState == SaveState::Loaded) {
+	if (this->loadState == SaveState::Loaded) {
 		Gui::DrawTop(true);
 		printTextCentered("WildEdit - " + Lang::get("EDITOR"), 0, 0, true, true);
 

@@ -34,6 +34,6 @@
 namespace GraphicManagement {
 	void DrawVillager(u8 villagerID, int x, int y, bool top = true);
 	void DrawAcre(u8 AcreID, int x, int y, float ScaleX = 1, float ScaleY = 1, bool top = true, bool Layer = true);
-}
+};
 
 #endif

@@ -31,7 +31,6 @@
 #include "Item.hpp"
 #include "Pattern.hpp"
 #include "types.hpp"
-
 #include <memory>
 #include <vector>
 

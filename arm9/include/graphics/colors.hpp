@@ -57,6 +57,6 @@ enum TextColor {
 
 namespace Colors {
 	void load(void);
-}
+};
 
 #endif

@@ -46,14 +46,10 @@ std::vector<std::string> TanLevel = {
 };
 
 PlayerEditor::PlayerEditor(std::unique_ptr<Player> refPlayer) : player(std::move(refPlayer)) {
-	for (int i = 0; i < 8; i++) {
-		this->allocatedPattern[i] = maxSpriteSub + i;
-	}
+	for (int i = 0; i < 8; i++) this->allocatedPattern[i] = maxSpriteSub + i;
 }
 
-PlayerEditor::~PlayerEditor() {
-	this->FreePattern();
-}
+PlayerEditor::~PlayerEditor() { this->FreePattern(); };
 
 void PlayerEditor::Draw(void) const {
 	switch(this->Mode) {
@@ -162,6 +158,7 @@ void PlayerEditor::DrawPattern(void) const {
 
 	if (this->ptrn[this->selection]->creatorGender()) {
 		printTextCentered(Lang::get("PATTERN_CREATOR_GENDER") + Lang::get("FEMALE"), 0, 153, true, true);
+
 	} else {
 		printTextCentered(Lang::get("PATTERN_CREATOR_GENDER") + Lang::get("MALE"), 0, 153, true, true);
 	}
@@ -337,7 +334,8 @@ void PlayerEditor::AppearanceLogic(u16 hDown, touchPosition touch) {
 
 	if (hDown & KEY_A) {
 		u8 length = 0;
-		std::vector<std::string> gender = {Lang::get("MALE"), Lang::get("FEMALE")};
+		const std::vector<std::string> gender = { Lang::get("MALE"), Lang::get("FEMALE") };
+
 		switch(this->selection) {
 			case 0:
 				/* We need to check for the Name length here. */
@@ -439,9 +437,7 @@ void PlayerEditor::DecodePattern() {
 void PlayerEditor::FreePattern() {
 	if (this->accessPattern) {
 		for (int i = 0; i < 8; i++) {
-			if (spritesSub[this->allocatedPattern[i]].gfx) {
-				oamFreeGfx(&oamSub, spritesSub[this->allocatedPattern[i]].gfx);
-			}
+			if (spritesSub[this->allocatedPattern[i]].gfx) oamFreeGfx(&oamSub, spritesSub[this->allocatedPattern[i]].gfx);
 		}
 	}
 }

@@ -31,16 +31,12 @@
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
 ItemEditor::ItemEditor(std::unique_ptr<Player> &refPlayer) : player(refPlayer) {
-	for (int i = 0; i < 15; i++) {
-		this->pockets[i] = this->player->pocket(i);
-	}
+	for (int i = 0; i < 15; i++) this->pockets[i] = this->player->pocket(i);
 
-	for (int i = 0; i < 90; i++) {
-		this->dresser[i] = this->player->dresser(i);
-	}
+	for (int i = 0; i < 90; i++) this->dresser[i] = this->player->dresser(i);
 }
 
-ItemEditor::~ItemEditor() { }
+ItemEditor::~ItemEditor() { };
 
 void ItemEditor::Draw(void) const {
 	switch(this->Mode) {
@@ -77,7 +73,7 @@ void ItemEditor::Logic(u16 hDown, touchPosition touch) {
 void ItemEditor::DrawSubMenu() const {
 	Gui::DrawTop(true);
 	printTextCentered("WildEdit", 0, 0, true, true);
-	
+
 	Gui::DrawBottom(true);
 
 	for (int i = 0; i < 2; i++) {
@@ -91,7 +87,7 @@ void ItemEditor::DrawSubMenu() const {
 void ItemEditor::DrawPocket() const {
 	Gui::DrawTop(true);
 	printTextCentered(Lang::get("CURRENT_ITEM") + this->pockets[this->Selection]->name(), 0, 170, true, true);
-	
+
 	Gui::DrawBottom(false);
 	for (int i = 0; i < 15; i++) {
 		drawRectangle(pocketPos[i].x, pocketPos[i].y, pocketPos[i].w, pocketPos[i].h, ItemManager::getColor(this->pockets[i]->itemtype()), false, true);
@@ -103,7 +99,7 @@ void ItemEditor::DrawDresser() const {
 	Gui::DrawTop(true);
 	printTextCentered("WildEdit - " + Lang::get("DRESSER") + std::to_string(this->box + 1), 0, 0, true, true);
 	printTextCentered(Lang::get("CURRENT_ITEM") + this->dresser[(this->box * 10) + this->Selection]->name(), 0, 170, true, true);
-	
+
 	Gui::DrawBottom(false);
 	for (int i = 0; i < 10; i++) {
 		drawRectangle(dresserPos[i].x, dresserPos[i].y, dresserPos[i].w, dresserPos[i].h, ItemManager::getColor(this->dresser[(this->box * 10) + i]->itemtype()), false, true);
@@ -127,7 +123,7 @@ void ItemEditor::SubMenuLogic(u16 hDown, touchPosition touch) {
 			updatePointer = true;
 		}
 	}
-	
+
 	if (hDown & KEY_DOWN) {
 		if (this->Selection < 1) {
 			this->Selection++;

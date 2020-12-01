@@ -26,7 +26,6 @@
 
 #include "checksum.hpp"
 #include "Sav.hpp"
-
 #include <cstring>
 
 /* Get Player data. */

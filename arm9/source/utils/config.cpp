@@ -32,12 +32,13 @@
 #include <unistd.h>
 
 /* Used to add missing stuff for the JSON. */
-void Config::addMissingThings() { }
+void Config::addMissingThings() { };
 
 /* In case it doesn't exist. */
 void Config::initialize() {
 	/* Create through fopen "Write". */
 	FILE *file = fopen(sdFound() ? "sd:/_nds/WildEdit/Settings.json" : "fat:/_nds/WildEdit/Settings.json", "w");
+
 	/* Set default values. */
 	this->setInt("Language", 1);
 	this->setBool("Create_Backups", true);
@@ -62,65 +63,36 @@ Config::Config() {
 	this->json = nlohmann::json::parse(file, nullptr, false);
 	fclose(file);
 
-	if (!this->json.contains("Version")) {
-		/* Let us create a new one. */
-		this->initialize();
-	}
+	/* Let us create a new one. */
+	if (!this->json.contains("Version")) this->initialize();
 
 	/* Here we add the missing things. */
-	if (this->json["Version"] < this->configVersion) {
-		this->addMissingThings();
-	}
+	if (this->json["Version"] < this->configVersion) this->addMissingThings();
 
-	if (!this->json.contains("Language")) {
-		this->language(1);
+	/* Language. */
+	if (!this->json.contains("Language")) this->language(1);
+	else this->language(this->getInt("Language"));
 
-	} else {
-		this->language(this->getInt("Language"));
-	}
+	/* Backup creation. */
+	if (!this->json.contains("Create_Backups")) this->createBackups(true);
+	else this->createBackups(this->getBool("Create_Backups"));
 
-	if (!this->json.contains("Create_Backups")) {
-		this->createBackups(true);
+	/* Config version. */
+	if (!this->json.contains("Version")) this->version(this->configVersion);
+	else this->version(this->getInt("Version"));
 
-	} else {
-		this->createBackups(this->getBool("Create_Backups"));
-	}
+	if (!this->json.contains("KeyboardDirections")) this->kbDirections(0);
+	else this->kbDirections(this->getInt("KeyboardDirections"));
 
-	if (!this->json.contains("Version")) {
-		this->version(this->configVersion);
-
-	} else {
-		this->version(this->getInt("Version"));
-	}
-
-	if (!this->json.contains("KeyboardDirections")) {
-		this->kbDirections(0);
-
-	} else {
-		this->kbDirections(this->getInt("KeyboardDirections"));
-	}
-
-	if (!this->json.contains("KeyboardGroupAmount")) {
-		this->kbGroupAmount(0);
-
-	} else {
-		this->kbGroupAmount(this->getInt("KeyboardGroupAmount"));
-	}
+	if (!this->json.contains("KeyboardGroupAmount")) this->kbGroupAmount(0);
+	else this->kbGroupAmount(this->getInt("KeyboardGroupAmount"));
 
 
-	if (!this->json.contains("KeyboardXPos")) {
-		this->kbXPos(0);
+	if (!this->json.contains("KeyboardXPos")) this->kbXPos(0);
+	else this->kbXPos(this->getInt("KeyboardXPos"));
 
-	} else {
-		this->kbXPos(this->getInt("KeyboardXPos"));
-	}
-
-	if (!this->json.contains("KeyboardLayout")) {
-		this->kbLayout(0);
-
-	} else {
-		this->kbLayout(this->getInt("KeyboardLayout"));
-	}
+	if (!this->json.contains("KeyboardLayout")) this->kbLayout(0);
+	else this->kbLayout(this->getInt("KeyboardLayout"));
 
 	this->changesMade = false; // No changes made yet.
 }
@@ -130,6 +102,7 @@ Config::Config() {
 void Config::save() {
 	if (this->changesMade) {
 		FILE *file = fopen(sdFound() ? "sd:/_nds/LeafEdit/Settings.json" : "fat:/_nds/LeafEdit/Settings.json", "w");
+
 		/* Set values. */
 		this->setInt("Language", this->language());
 		this->setBool("Create_Backups", this->createBackups());
@@ -138,6 +111,7 @@ void Config::save() {
 		this->setInt("KeyboardGroupAmount", this->kbGroupAmount());
 		this->setInt("KeyboardXPos", this->kbXPos());
 		this->setInt("KeyboardLayout", this->kbLayout());
+
 		/* Write changes to file. */
 		const std::string dump = this->json.dump(1, '\t');
 		fwrite(dump.c_str(), 1, this->json.dump(1, '\t').size(), file);
@@ -147,31 +121,22 @@ void Config::save() {
 
 
 bool Config::getBool(const std::string &key) {
-	if (!this->json.contains(key)) {
-		return false;
-	}
+	if (!this->json.contains(key)) return false;
 
 	return this->json.at(key).get_ref<const bool&>();
 }
-
-void Config::setBool(const std::string &key, bool v) { this->json[key] = v; }
+void Config::setBool(const std::string &key, bool v) { this->json[key] = v; };
 
 int Config::getInt(const std::string &key) {
-	if (!this->json.contains(key)) {
-		return 0;
-	}
+	if (!this->json.contains(key)) return 0;
 
 	return this->json.at(key).get_ref<const int64_t&>();
 }
-
-void Config::setInt(const std::string &key, int v) { this->json[key] = v; }
+void Config::setInt(const std::string &key, int v) { this->json[key] = v; };
 
 std::string Config::getString(const std::string &key) {
-	if (!this->json.contains(key)) {
-		return "";
-	}
+	if (!this->json.contains(key)) return "";
 
 	return this->json.at(key).get_ref<const std::string&>();
 }
-
-void Config::setString(const std::string &key, const std::string &v) { this->json[key] = v; }
+void Config::setString(const std::string &key, const std::string &v) { this->json[key] = v; };

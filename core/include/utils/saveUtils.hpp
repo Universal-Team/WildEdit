@@ -29,7 +29,6 @@
 
 #include "Sav.hpp"
 #include "types.hpp"
-
 #include <string>
 
 inline std::shared_ptr<Sav> save;

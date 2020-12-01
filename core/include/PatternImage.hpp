@@ -27,9 +27,7 @@
 #ifndef _WILDEDIT_CORE_PATTERN_IMAGE_HPP
 #define _WILDEDIT_CORE_PATTERN_IMAGE_HPP
 
-#include "PatternImage.hpp"
 #include "types.hpp"
-
 #include <memory>
 
 /*

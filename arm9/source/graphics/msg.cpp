@@ -55,6 +55,7 @@ void Msg::DisplayWaitMsg(std::string waitMsg) {
 
 	while(1) {
 		scanKeys();
+
 		if (keysDown() & KEY_A) break;
 	}
 
@@ -88,4 +89,4 @@ bool Msg::promptMsg(std::string promptMsg) {
 	return result;
 }
 
-void Msg::notImplemented() { Msg::DisplayWarnMsg(Lang::get("NOT_IMPLEMENTED_YET")); }
+void Msg::notImplemented() { Msg::DisplayWarnMsg(Lang::get("NOT_IMPLEMENTED_YET")); };

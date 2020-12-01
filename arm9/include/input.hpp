@@ -9,6 +9,6 @@ namespace Input {
 
 	int getInt2(std::string Text, int currentValue = 0, bool showPointer = true, bool redrawScreen = true);
 	int getInt(std::string Text, unsigned max, int currentValue = 0, bool showPointer = true, bool redrawScreen = true);
-}
+};
 
 #endif

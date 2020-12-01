@@ -28,7 +28,6 @@
 #include "saveUtils.hpp"
 #include "stringUtils.hpp"
 
-
 /*
 	Get and Set for the Face.
 */

@@ -27,7 +27,6 @@
 #include "Pattern.hpp"
 #include "saveUtils.hpp"
 #include "stringUtils.hpp"
-
 #include <cstring>
 #include <unistd.h>
 

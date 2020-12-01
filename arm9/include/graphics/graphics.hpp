@@ -27,11 +27,10 @@
 #ifndef _WILDEDIT_GRAPHICS_HPP
 #define _WILDEDIT_GRAPHICS_HPP
 
+#include "colors.hpp"
 #include <nds.h>
 #include <string>
 #include <vector>
-
-#include "colors.hpp"
 
 struct Image {
 	u16 width;

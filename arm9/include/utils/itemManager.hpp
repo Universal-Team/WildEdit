@@ -28,15 +28,14 @@
 #define _WILDEDIT_ITEM_MANAGER_HPP
 
 #include "Item.hpp"
-
 #include <nds.h>
 #include <string>
 
 namespace ItemManager {
 	u8 getColor(ItemType item);
-	
+
 	int getIndex(const u16 &v);
-	int getIndexString(const int &current, const std::string &v); 
+	int getIndexString(const int &current, const std::string &v);
 }
 
 #endif

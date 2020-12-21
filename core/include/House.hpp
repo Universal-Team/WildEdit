@@ -27,36 +27,30 @@
 #ifndef _WILDEDIT_CORE_HOUSE_HPP
 #define _WILDEDIT_CORE_HOUSE_HPP
 
+#include "Room.hpp"
 #include "types.hpp"
 #include <memory>
 #include <vector>
-
-class Room {
-protected:
-	std::shared_ptr<u8[]> RoomData;
-	u32 Offset;
-	WWRegion SaveRegion;
-public:
-	Room(std::shared_ptr<u8[]> roomData, u32 offset, WWRegion region) :
-		RoomData(roomData), Offset(offset), SaveRegion(region) { };
-	Room(const Room& room) = delete;
-	Room& operator=(const Room& room) = delete;
-private:
-	u8 *roomPointer() const { return this->RoomData.get() + this->Offset; };
-};
 
 class House {
 protected:
 	std::shared_ptr<u8[]> HouseData;
 	u32 Offset;
-	WWRegion SaveRegion;
 public:
-	House(std::shared_ptr<u8[]> houseData, u32 offset, WWRegion region) :
-		HouseData(houseData), Offset(offset), SaveRegion(region) { };
+	House(std::shared_ptr<u8[]> houseData, u32 offset) :
+		HouseData(houseData), Offset(offset) { };
 	House(const House& house) = delete;
 	House& operator=(const House& house) = delete;
 
-	std::unique_ptr<Room> room(int room) const;
+	std::unique_ptr<Room> room(uint8_t room) const;
+
+	u32 debts() const;
+	void debts(u32 v);
+
+	u8 size() const;
+	void size(u8 v);
+
+	void unlockSongs();
 private:
 	u8 *housePointer() const { return this->HouseData.get() + this->Offset; };
 };

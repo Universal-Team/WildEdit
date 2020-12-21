@@ -24,44 +24,29 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "House.hpp"
-#include "saveUtils.hpp"
+#ifndef _WILDEDIT_CORE_ROOM_HPP
+#define _WILDEDIT_CORE_ROOM_HPP
 
-constexpr uint32_t HouseSizeDebts[7] = { 19800, 120000, 298000, 598000, 728000, 848000, 948000 };
+#include "Item.hpp"
+#include "types.hpp"
+#include <memory>
 
-/*
-	Return a room.
+class Room {
+protected:
+	std::shared_ptr<u8[]> RoomData;
+	u32 Offset;
+public:
+	Room(std::shared_ptr<u8[]> roomData, u32 offset) :
+		RoomData(roomData), Offset(offset) { };
+	Room(const Room& room) = delete;
+	Room& operator=(const Room& room) = delete;
 
-	uint8_t room: The room.
-*/
-std::unique_ptr<Room> House::room(uint8_t room) const {
-	if (room > 4) return nullptr; // 0 - 4 allowed.
-
-	return std::make_unique<Room>(this->HouseData, this->Offset + (room * 0x450));
-}
-
-/*
-	House Debts.
-*/
-u32 House::debts() const { return SaveUtils::Read<u32>(this->housePointer(), 0x1590); };
-void House::debts(u32 v) { SaveUtils::Write<u32>(this->housePointer(), 0x1590, v); };
-
-/*
-	House upgrade size.
-*/
-u8 House::size() const { return this->housePointer()[0x15A0] & 7; };
-void House::size(u8 v) {
-	if (v > 6) return;
-
-	this->housePointer()[0x15A1] = ((this->size() & ~7) | (v & 7));
-	this->debts(HouseSizeDebts[v]); // Should we set the House size debts after it, or not?
+	std::unique_ptr<Item> Furniture(bool topLayer, u8 slot) const;
+	std::unique_ptr<Item> Carpet() const;
+	std::unique_ptr<Item> Wallpaper() const;
+	std::unique_ptr<Item> Song() const;
+private:
+	u8 *roomPointer() const { return this->RoomData.get() + this->Offset; };
 };
 
-/* Unlock House Songs. */
-void House::unlockSongs() {
-	constexpr uint8_t SongList[9] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x3F };
-
-	for (uint8_t i = 0; i < 9; i++) {
-		this->housePointer()[0x1594 + i] = SongList[i];
-	}
-}
+#endif

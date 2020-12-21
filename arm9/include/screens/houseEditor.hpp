@@ -1,5 +1,5 @@
 /*
-*   This file is part of WildEdit-Core
+*   This file is part of WildEdit
 *   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -24,44 +24,34 @@
 *         reasonable ways as different from the original version.
 */
 
+#ifndef _WILDEDIT_HOUSE_EDITOR_HPP
+#define _WILDEDIT_HOUSE_EDITOR_HPP
+
 #include "House.hpp"
-#include "saveUtils.hpp"
+#include "Room.hpp"
+#include "screenCommon.hpp"
+#include "structs.hpp"
+#include <vector>
 
-constexpr uint32_t HouseSizeDebts[7] = { 19800, 120000, 298000, 598000, 728000, 848000, 948000 };
+class HouseEditor : public Screen {
+public:
+	HouseEditor();
+	void Draw(void) const override;
+	void Logic(u16 hDown, touchPosition touch) override;
+private:
+	std::unique_ptr<Room> activeRoom = nullptr;
+	std::unique_ptr<House> house = nullptr;
+	/*
+		Modes:
+		0 -> Base.
+		1 -> Furniture Layer 1.
+		2 -> Furniture Layer 2.
+	*/
+	int Mode = 0;
 
-/*
-	Return a room.
-
-	uint8_t room: The room.
-*/
-std::unique_ptr<Room> House::room(uint8_t room) const {
-	if (room > 4) return nullptr; // 0 - 4 allowed.
-
-	return std::make_unique<Room>(this->HouseData, this->Offset + (room * 0x450));
-}
-
-/*
-	House Debts.
-*/
-u32 House::debts() const { return SaveUtils::Read<u32>(this->housePointer(), 0x1590); };
-void House::debts(u32 v) { SaveUtils::Write<u32>(this->housePointer(), 0x1590, v); };
-
-/*
-	House upgrade size.
-*/
-u8 House::size() const { return this->housePointer()[0x15A0] & 7; };
-void House::size(u8 v) {
-	if (v > 6) return;
-
-	this->housePointer()[0x15A1] = ((this->size() & ~7) | (v & 7));
-	this->debts(HouseSizeDebts[v]); // Should we set the House size debts after it, or not?
+	/* House base. */
+	void DrawBase(void) const;
+	void BaseLogic(u16 hDown, touchPosition touch);
 };
 
-/* Unlock House Songs. */
-void House::unlockSongs() {
-	constexpr uint8_t SongList[9] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x3F };
-
-	for (uint8_t i = 0; i < 9; i++) {
-		this->housePointer()[0x1594 + i] = SongList[i];
-	}
-}
+#endif

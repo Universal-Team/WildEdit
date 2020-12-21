@@ -31,7 +31,7 @@
 
 /* Draw an Acre image. */
 void GraphicManagement::DrawAcre(u8 AcreID, int x, int y, float ScaleX, float ScaleY, bool top, bool Layer) {
-	Image AcreData = loadImage("/graphics/acres/" + std::to_string(AcreID) + ".gfx"); // Load Image.
+	const Image AcreData = loadImage("/graphics/acres/" + std::to_string(AcreID) + ".gfx"); // Load Image.
 	drawImageScaled(x, y, ScaleX, ScaleY, AcreData, top, Layer, 0x20); // Draw Image.
 }
 
@@ -39,6 +39,12 @@ void GraphicManagement::DrawAcre(u8 AcreID, int x, int y, float ScaleX, float Sc
 void GraphicManagement::DrawVillager(u8 villagerID, int x, int y, bool top) {
 	if (villagerID > 149) villagerID = 150; // 150 -> EMPTY.
 
-	Image villagerData = loadImage("/graphics/villagers/" + std::to_string(villagerID) + ".gfx"); // Load sprite.
-	drawImage(x, y, villagerData, top, true, 0x20); // Draw sprite.
+	const Image villagerData = loadImage("/graphics/villagers/" + std::to_string(villagerID) + ".gfx"); // Load image.
+	drawImage(x, y, villagerData, top, true, 0x20); // Draw image.
+}
+
+/* Draw a player face. */
+void GraphicManagement::DrawFace(u8 facetype, int x, int y, bool top) {
+	const Image faceData = loadImage("/graphics/faces/" + std::to_string(facetype) + ".gfx"); // Load image.
+	drawImage(x, y, faceData, top, true, 0x20); // Draw image.
 }

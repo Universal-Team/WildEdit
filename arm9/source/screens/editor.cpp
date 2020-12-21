@@ -29,6 +29,7 @@
 #include "editor.hpp"
 #include "fileBrowse.hpp"
 #include "gui.hpp"
+#include "houseEditor.hpp"
 #include "lang.hpp"
 #include "msg.hpp"
 #include "overlay.hpp"
@@ -170,6 +171,14 @@ void Editor::Logic(u16 hDown, touchPosition touch) {
 					updateOam();
 					break;
 			}
+		}
+
+		if (hDown & KEY_SELECT) {
+			Gui::setScreen(std::make_unique<HouseEditor>());
+			setSpriteVisibility(Gui::saveID, false, false);
+			Gui::DrawScreen();
+			Gui::showPointer(false);
+			updateOam();
 		}
 
 	} else {

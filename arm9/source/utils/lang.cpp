@@ -3,11 +3,11 @@
 
 nlohmann::json appJson;
 /* Player. */
-std::vector<std::string> g_faceType;
-std::vector<std::string> g_hairColor;
-std::vector<std::string> g_hairStyle;
+std::vector<std::string> g_faceType, g_hairColor, g_hairStyle;
 /* Villager. */
 std::vector<std::string> g_personality;
+/* House / Room stuff. */
+std::vector<std::string> g_roomnames, g_houseSizes;
 
 void loadToVector(std::string path, std::vector<std::string> &vec) {
 	char *line = nullptr;
@@ -39,6 +39,8 @@ void Lang::load(int lang) {
 	loadToVector("nitro:/lang/strings/haircolor.txt", g_hairColor);
 	loadToVector("nitro:/lang/strings/hairstyle.txt", g_hairStyle);
 	loadToVector("nitro:/lang/strings/personalities.txt", g_personality);
+	loadToVector("nitro:/lang/strings/rooms.txt", g_roomnames);
+	loadToVector("nitro:/lang/strings/houseupgrades.txt", g_houseSizes);
 
 	/* Load app strings. */
 	FILE *file = fopen(("nitro:/lang/"+langs[lang]+"/app.json").c_str(), "rt");

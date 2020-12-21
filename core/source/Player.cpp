@@ -108,7 +108,7 @@ u8 Player::gender() const {
 			return this->playerPointer()[0x228A];
 
 		case WWRegion::JPN:
-			return this->playerPointer()[0x1CFB];
+			return this->playerPointer()[0x1D18];
 
 		case WWRegion::KOR:
 			return this->playerPointer()[0x249A];
@@ -124,7 +124,7 @@ void Player::gender(u8 v) {
 			break;
 
 		case WWRegion::JPN:
-			SaveUtils::Write<u8>(this->playerPointer(), 0x1CFB, v);
+			SaveUtils::Write<u8>(this->playerPointer(), 0x1D18, v);
 			break;
 
 		case WWRegion::KOR:
@@ -490,13 +490,13 @@ std::unique_ptr<Item> Player::dresser(u8 slot) const {
 	switch(this->SaveRegion) {
 		case WWRegion::EUR:
 		case WWRegion::USA:
-			return std::make_unique<Item>(this->PlayerData, 0x15430 + (0xB4 * Index) + slot * 2);
+			return std::make_unique<Item>(this->PlayerData, 0x15430 + (0xB4 * this->Index) + slot * 2);
 
 		case WWRegion::JPN:
-			return std::make_unique<Item>(this->PlayerData, 0x11764 + (0xB4 * Index) + slot * 2);
+			return std::make_unique<Item>(this->PlayerData, 0x11764 + (0xB4 * this->Index) + slot * 2);
 
 		case WWRegion::KOR:
-			return std::make_unique<Item>(this->PlayerData, 0x16800 + (0xB4 * Index) + slot * 2);
+			return std::make_unique<Item>(this->PlayerData, 0x16800 + (0xB4 * this->Index) + slot * 2);
 	}
 
 	return nullptr;
@@ -513,13 +513,13 @@ std::unique_ptr<Pattern> Player::pattern(u8 slot) const {
 	switch(this->SaveRegion) {
 		case WWRegion::EUR:
 		case WWRegion::USA:
-			return std::make_unique<Pattern>(this->PlayerData, this->Offset + 0 + slot * 0x228, this->SaveRegion);
+			return std::make_unique<Pattern>(this->PlayerData, this->Offset + slot * 0x228, this->SaveRegion);
 
 		case WWRegion::JPN:
-			return std::make_unique<Pattern>(this->PlayerData, this->Offset + 0 + slot * 0x220, this->SaveRegion);
+			return std::make_unique<Pattern>(this->PlayerData, this->Offset + slot * 0x220, this->SaveRegion);
 
 		case WWRegion::KOR:
-			return std::make_unique<Pattern>(this->PlayerData, this->Offset + 0 + slot * 0x234, this->SaveRegion);
+			return std::make_unique<Pattern>(this->PlayerData, this->Offset + slot * 0x234, this->SaveRegion);
 	}
 
 	return nullptr;
@@ -556,7 +556,7 @@ bool Player::injectPlayer(const std::string fileName) {
 
 	if (pl) {
 		fseek(pl, 0, SEEK_END);
-		u32 size = ftell(pl);
+		const u32 size = ftell(pl);
 		fseek(pl, 0, SEEK_SET);
 
 		/* Check for size. */

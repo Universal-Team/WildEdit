@@ -1,5 +1,5 @@
 /*
-*   This file is part of WildEdit-Core
+*   This file is part of WildEdit
 *   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -24,44 +24,59 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "House.hpp"
-#include "saveUtils.hpp"
+#include "houseEditor.hpp"
 
-constexpr uint32_t HouseSizeDebts[7] = { 19800, 120000, 298000, 598000, 728000, 848000, 948000 };
+extern std::vector<std::string> g_houseSizes, g_roomNames;
 
-/*
-	Return a room.
-
-	uint8_t room: The room.
-*/
-std::unique_ptr<Room> House::room(uint8_t room) const {
-	if (room > 4) return nullptr; // 0 - 4 allowed.
-
-	return std::make_unique<Room>(this->HouseData, this->Offset + (room * 0x450));
+HouseEditor::HouseEditor() {
+	this->house = save->house();
+	this->activeRoom = this->house->room(0); // Load first room.
 }
 
-/*
-	House Debts.
-*/
-u32 House::debts() const { return SaveUtils::Read<u32>(this->housePointer(), 0x1590); };
-void House::debts(u32 v) { SaveUtils::Write<u32>(this->housePointer(), 0x1590, v); };
+void HouseEditor::Draw(void) const {
+	switch(this->Mode) {
+		case 0:
+			this->DrawBase();
+			break;
 
-/*
-	House upgrade size.
-*/
-u8 House::size() const { return this->housePointer()[0x15A0] & 7; };
-void House::size(u8 v) {
-	if (v > 6) return;
+		case 1:
+			break;
 
-	this->housePointer()[0x15A1] = ((this->size() & ~7) | (v & 7));
-	this->debts(HouseSizeDebts[v]); // Should we set the House size debts after it, or not?
-};
+		case 2:
+			break;
+	}
+}
 
-/* Unlock House Songs. */
-void House::unlockSongs() {
-	constexpr uint8_t SongList[9] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x3F };
+void HouseEditor::Logic(u16 hDown, touchPosition touch) {
+	switch(this->Mode) {
+		case 0:
+			this->BaseLogic(hDown, touch);
+			break;
 
-	for (uint8_t i = 0; i < 9; i++) {
-		this->housePointer()[0x1594 + i] = SongList[i];
+		case 1:
+			break;
+
+		case 2:
+			break;
+	}
+}
+
+void HouseEditor::DrawBase(void) const {
+	Gui::DrawTop(true);
+	printTextCentered("WildEdit - " + Lang::get("HOUSE_EDITOR"), 0, 0, true, true);
+
+	printTextCentered(Lang::get("HOUSE_DEBTS") + ": " + std::to_string(this->house->debts()), 0, 28, true, true);
+	printTextCentered(Lang::get("HOUSE_SIZE") + ": " + g_houseSizes[this->house->size()], 0, 53, true, true);
+}
+void HouseEditor::BaseLogic(u16 hDown, touchPosition touch) {
+	if (hDown & KEY_B) {
+		Gui::screenBack();
+
+		/* Display Save icon. */
+		setSpriteVisibility(Gui::saveID, false, true);
+		updateOam();
+		Gui::DrawScreen();
+		Gui::showPointer(true);
+		return;
 	}
 }

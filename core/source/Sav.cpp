@@ -86,6 +86,23 @@ std::unique_ptr<LetterStorage> Sav::letterstorage() const {
 	return nullptr;
 }
 
+/* Get House Data. */
+std::unique_ptr<House> Sav::house() const {
+	switch(this->SaveRegion) {
+		case WWRegion::EUR:
+		case WWRegion::USA:
+			return std::make_unique<House>(this->SaveData, 0xE558);
+
+		case WWRegion::JPN:
+			return std::make_unique<House>(this->SaveData, 0xC554);
+
+		case WWRegion::KOR:
+			return std::make_unique<House>(this->SaveData, 0xF52C);
+	}
+
+	return nullptr;
+}
+
 /* Last call before writing to file. Update Checksum. */
 void Sav::Finish(void) {
 	switch (this->SaveRegion) {

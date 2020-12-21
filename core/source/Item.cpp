@@ -32,13 +32,18 @@
 u16 Item::id() const { return SaveUtils::Read<u16>(itemPointer(), 0); };
 void Item::id(u16 v) { SaveUtils::Write<u16>(itemPointer(), 0, v); };
 
-/* Item Flags. (Does not exist?) */
-u16 Item::flags() const { return 0; };
-void Item::flags(u16 v) { };
+/* House Furniture Item ID. */
+u16 Item::houseid() const { return SaveUtils::Read<u16>(itemPointer(), 0) & 0xFFFC; };
+void Item::houseid(u16 v) { SaveUtils::Write<u16>(itemPointer(), 0, v); };
 
 /* Item Rotation. (Furniture / House) */
-int Item::rotation() const { return 0; };
-void Item::rotation(int Direction) { }; // TODO.
+FurnitureDirection Item::rotation() const {
+	/* Only Gyroids and Furnitures have a direction. */
+	if (this->itemtype() == ItemType::Furniture || this->itemtype() == ItemType::Gyroid) return FurnitureDirection(this->id() & 3);
+
+	return FurnitureDirection::None;
+};
+void Item::rotation(FurnitureDirection Direction) { }; // TODO.
 
 /* Item Name. */
 std::string Item::name() const { return ItemUtils::getName(this->id()); };

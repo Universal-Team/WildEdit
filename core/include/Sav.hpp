@@ -27,6 +27,7 @@
 #ifndef _WILDEDIT_CORE_SAV_HPP
 #define _WILDEDIT_CORE_SAV_HPP
 
+#include "House.hpp"
 #include "LetterStorage.hpp"
 #include "Player.hpp"
 #include "Sav.hpp"
@@ -36,6 +37,7 @@
 
 #include <string>
 
+class House;
 class LetterStorage;
 class Player;
 class Town;
@@ -65,6 +67,7 @@ public:
 	std::unique_ptr<Villager> villager(u8 villager) const;
 	std::unique_ptr<Town> town() const;
 	std::unique_ptr<LetterStorage> letterstorage() const;
+	std::unique_ptr<House> house() const;
 
 	WWRegion getRegion() const { return this->SaveRegion; };
 

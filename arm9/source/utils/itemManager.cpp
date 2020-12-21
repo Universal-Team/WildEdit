@@ -42,9 +42,6 @@ u8 ItemManager::getColor(ItemType item) {
 		case ItemType::Gyroid:
 			return 0xF6;
 
-		case ItemType::Diary:
-			return 0x0; // Isn't supported in WildEdit.
-
 		case ItemType::Clothes:
 			return 0xEC;
 
@@ -69,14 +66,8 @@ u8 ItemManager::getColor(ItemType item) {
 		case ItemType::Catchable:
 			return 0xED;
 
-		case ItemType::QuestItem:
-			return 0x0; // Isn't supported in WildEdit.
-
 		case ItemType::Item:
 			return 0xF1;
-
-		case ItemType::RaffleTicket:
-			return 0x0; // Isn't supported in WildEdit.
 
 		case ItemType::WallpaperCarpet:
 			return 0xEB;
@@ -102,14 +93,8 @@ u8 ItemManager::getColor(ItemType item) {
 		case ItemType::MoneyRock:
 			return 0xE9;
 
-		case ItemType::Signboard:
-			return 0x0; // Isn't supported in WildEdit.
-
 		case ItemType::Money:
 			return 0xF0;
-
-		case ItemType::HouseObject:
-			return 0x0; // Isn't supported in WildEdit.
 
 		case ItemType::Building:
 			return 0xF7;

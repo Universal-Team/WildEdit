@@ -288,7 +288,7 @@ void Pattern::designtype(u8 v) {
 */
 void Pattern::dumpPattern(const std::string fileName) {
 	/* Open File. */
-	FILE* ptrn = fopen(fileName.c_str(), "wb");
+	FILE *ptrn = fopen(fileName.c_str(), "wb");
 
 	if (ptrn) {
 		/* Write to file and close. */
@@ -306,11 +306,11 @@ void Pattern::injectPattern(const std::string fileName) {
 	if ((access(fileName.c_str(), F_OK) != 0)) return; // File not found. Do NOTHING.
 
 	/* Open file and get size. */
-	FILE* ptrn = fopen(fileName.c_str(), "rb");
+	FILE *ptrn = fopen(fileName.c_str(), "rb");
 
 	if (ptrn) {
 		fseek(ptrn, 0, SEEK_END);
-		u32 size = ftell(ptrn);
+		const u32 size = ftell(ptrn);
 		fseek(ptrn, 0, SEEK_SET);
 
 		if (size == this->getPatternSize()) {

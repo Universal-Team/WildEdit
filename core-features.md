@@ -3,16 +3,18 @@
 Here you can see all core features of WildEdit-Core, which are already implemented or set as TODO.
 
 ## Acre
-- [x] Acre ID.
+- [x] Acre ID
 
 ## House
+- [x] Debts
+- [x] House size
+- [x] Unlock all Songs
 
 ## Item
 - [x] Item ID (uint16_t)
-- [ ] Item Flags // Do they exist there?
-- [ ] Rotation for furniture // TODO.
+- [x] Rotation for furniture
 - [x] Item Name
-- [x] Item Type // TODO: Sort out non existing AC:WW ones.
+- [x] Item Type
 
 ## Letter
 - [x] Receiver Town ID
@@ -69,6 +71,11 @@ Here you can see all core features of WildEdit-Core, which are already implement
 - [x] Attic bed (JPN only as of now.)
 
 ## Room
+- [x] All 5 Rooms
+- [x] Furniture Item Layer 1 & 2
+- [x] Room Carpet
+- [x] Room Song
+- [x] Room Wallpaper
 
 ## Shop
 - [x] Able Sister Pattern Images

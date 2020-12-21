@@ -25,6 +25,7 @@
 */
 
 #include "acresEditor.hpp"
+#include "stringUtils.hpp"
 #include "townEditor.hpp"
 #include "townMapEditor.hpp"
 
@@ -37,6 +38,7 @@ TownEditor::~TownEditor() { };
 void TownEditor::Draw(void) const {
 	Gui::DrawTop(true);
 	printTextCentered("WildEdit - " + Lang::get("TOWN_EDITOR"), 0, 0, true, true);
+	printTextCentered(Lang::get("TOWN_NAME") + ": " + StringUtils::UTF16toUTF8(this->town->name()), 0, 28, true, true);
 
 	Gui::DrawBottom(true);
 	for (int i = 0; i < 3; i++) {

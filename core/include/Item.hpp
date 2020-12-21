@@ -32,6 +32,17 @@
 #include <memory>
 #include <vector>
 
+/*
+	0: DOWN; 1: RIGHT; 2: UP; 3: LEFT.
+*/
+enum class FurnitureDirection : uint8_t {
+	Down,
+	Right,
+	Up,
+	Left,
+	None
+};
+
 class Item {
 protected:
 	std::shared_ptr<u8[]> ItemData;
@@ -42,20 +53,18 @@ public:
 	Item(const Item& item) = delete;
 	Item& operator=(const Item& item) = delete;
 
-	u32 maxItems() const { return 0; };
-
 	u16 id() const;
 	void id(u16 v);
 
-	u16 flags() const;
-	void flags(u16 v);
+	u16 houseid() const;
+	void houseid(u16 v);
 
 	std::string name() const;
 
 	ItemType itemtype() const;
 
-	int rotation() const;
-	void rotation(int Direction);
+	FurnitureDirection rotation() const;
+	void rotation(FurnitureDirection Direction);
 private:
 	u8 *itemPointer() const { return this->ItemData.get() + this->Offset; };
 };

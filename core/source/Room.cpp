@@ -24,44 +24,29 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "House.hpp"
-#include "saveUtils.hpp"
-
-constexpr uint32_t HouseSizeDebts[7] = { 19800, 120000, 298000, 598000, 728000, 848000, 948000 };
+#include "Room.hpp"
 
 /*
-	Return a room.
+	Returns a Furniture of a room.
 
-	uint8_t room: The room.
+	bool topLayer: If on a furniture or not (AKA Layer 2).
+	u8 slot: Item slot.
 */
-std::unique_ptr<Room> House::room(uint8_t room) const {
-	if (room > 4) return nullptr; // 0 - 4 allowed.
-
-	return std::make_unique<Room>(this->HouseData, this->Offset + (room * 0x450));
-}
-
-/*
-	House Debts.
-*/
-u32 House::debts() const { return SaveUtils::Read<u32>(this->housePointer(), 0x1590); };
-void House::debts(u32 v) { SaveUtils::Write<u32>(this->housePointer(), 0x1590, v); };
-
-/*
-	House upgrade size.
-*/
-u8 House::size() const { return this->housePointer()[0x15A0] & 7; };
-void House::size(u8 v) {
-	if (v > 6) return;
-
-	this->housePointer()[0x15A1] = ((this->size() & ~7) | (v & 7));
-	this->debts(HouseSizeDebts[v]); // Should we set the House size debts after it, or not?
+std::unique_ptr<Item> Room::Furniture(bool topLayer, u8 slot) const {
+	return std::make_unique<Item>(this->RoomData, this->Offset + (topLayer ? 0x200 : 0) + (slot * 2));
 };
 
-/* Unlock House Songs. */
-void House::unlockSongs() {
-	constexpr uint8_t SongList[9] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x3F };
+/*
+	Return the Room's Carpet.
+*/
+std::unique_ptr<Item> Room::Carpet() const { return std::make_unique<Item>(this->RoomData, this->Offset + 0x448); };
 
-	for (uint8_t i = 0; i < 9; i++) {
-		this->housePointer()[0x1594 + i] = SongList[i];
-	}
-}
+/*
+	Return the Room's Wallpaper.
+*/
+std::unique_ptr<Item> Room::Wallpaper() const { return std::make_unique<Item>(this->RoomData, this->Offset + 0x44A); };
+
+/*
+	Return the Room's Song.
+*/
+std::unique_ptr<Item> Room::Song() const { return std::make_unique<Item>(this->RoomData, this->Offset + 0x44C); };

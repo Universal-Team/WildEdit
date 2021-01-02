@@ -1,6 +1,6 @@
 /*
 *   This file is part of WildEdit-Core
-*   Copyright (C) 2020 Universal-Team
+*   Copyright (C) 2020-2021 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -32,9 +32,7 @@
 #include <memory>
 #include <vector>
 
-/*
-	0: DOWN; 1: RIGHT; 2: UP; 3: LEFT.
-*/
+/* 0: DOWN; 1: RIGHT; 2: UP; 3: LEFT. */
 enum class FurnitureDirection : uint8_t {
 	Down,
 	Right,

@@ -1,6 +1,6 @@
 /*
 *   This file is part of WildEdit-Core
-*   Copyright (C) 2020 Universal-Team
+*   Copyright (C) 2020-2021 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@
 #include "saveUtils.hpp"
 
 /*
-	Get and Set for the Acre ID.
+    Get and Set for the Acre ID.
 */
-u8 Acre::id() const { return acrePointer()[0]; };
+u8 Acre::id() const { return this->acrePointer()[0]; };
 void Acre::id(u8 v) { SaveUtils::Write<u8>(this->acrePointer(), 0x0, v); };

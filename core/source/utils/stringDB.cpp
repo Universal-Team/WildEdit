@@ -1,6 +1,6 @@
 /*
 *   This file is part of WildEdit-Core
-*   Copyright (C) 2020 Universal-Team
+*   Copyright (C) 2020-2021 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -54,7 +54,7 @@ void StringDB::LoadItemDatabase() {
 		/* Push category. */
 		if (currentLine.find("//") == 0) {
 			categoryName = currentLine.substr(2);
-			itemCategories.push_back({categoryName});
+			itemCategories.push_back({ categoryName });
 
 		/* confirm we don't have any comments. */
 		} else if (currentLine.size() > 8 && currentLine.find("//") == std::string::npos) {
@@ -89,7 +89,7 @@ void StringDB::LoadVillagerDatabase() {
 		/* Push category. */
 		if (currentLine.find("//") == 0) {
 			categoryName = currentLine.substr(2);
-			villagerSpecies.push_back({categoryName});
+			villagerSpecies.push_back({ categoryName });
 
 		/* confirm we don't have any comments. */
 		} else if (currentLine.size() > 8 && currentLine.find("//") == std::string::npos) {

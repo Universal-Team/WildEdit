@@ -1,6 +1,6 @@
 /*
 *   This file is part of WildEdit-Core
-*   Copyright (C) 2020 Universal-Team
+*   Copyright (C) 2020-2021 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -45,22 +45,6 @@ public:
 	Villager(const Villager& villager) = delete;
 	Villager& operator=(const Villager& villager) = delete;
 
-	u32 getVillagerSize() const {
-		switch(this->SaveRegion) {
-			case WWRegion::EUR:
-			case WWRegion::USA:
-				return 0x700;
-
-			case WWRegion::JPN:
-				return 0x5C0;
-
-			case WWRegion::KOR:
-				return 0x7EC;
-		}
-
-		return 0;
-	};
-
 	u8 id() const;
 	void id(u8 v);
 
@@ -69,9 +53,7 @@ public:
 	u8 personality() const;
 	void personality(u8 v);
 
-	/*
-		Items.
-	*/
+	/* Items. */
 	u8 song() const;
 	void song(u8 sng);
 
@@ -92,6 +74,22 @@ public:
 	std::unique_ptr<Letter> letter() const;
 private:
 	u8 *villagerPointer() const { return this->VillagerData.get() + this->Offset; };
+
+	u32 getVillagerSize() const {
+		switch(this->SaveRegion) {
+			case WWRegion::EUR:
+			case WWRegion::USA:
+				return 0x700;
+
+			case WWRegion::JPN:
+				return 0x5C0;
+
+			case WWRegion::KOR:
+				return 0x7EC;
+		}
+
+		return 0;
+	};
 };
 
 #endif

@@ -1,6 +1,6 @@
 /*
 *   This file is part of WildEdit
-*   Copyright (C) 2020 Universal-Team
+*   Copyright (C) 2020-2021 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -143,7 +143,7 @@ void AcresEditor::Logic(u16 hDown, touchPosition touch) {
 			}
 		}
 	}
-	
+
 	if (held & KEY_RIGHT) {
 		if (this->Selection < 35) {
 			this->Selection++;
@@ -179,7 +179,7 @@ void AcresEditor::Logic(u16 hDown, touchPosition touch) {
 			this->updateTop();
 		}
 	}
-	
+
 	if (held & KEY_R) {
 		if (this->selectedAcre < 130) {
 			this->selectedAcre++;

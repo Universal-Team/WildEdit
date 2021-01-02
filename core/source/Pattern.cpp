@@ -1,6 +1,6 @@
 /*
 *   This file is part of WildEdit-Core
-*   Copyright (C) 2020 Universal-Team
+*   Copyright (C) 2020-2021 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -314,16 +314,13 @@ void Pattern::injectPattern(const std::string fileName) {
 		fseek(ptrn, 0, SEEK_SET);
 
 		if (size == this->getPatternSize()) {
-			u8 *patternData = new u8[size];
-			fread(patternData, 1, size, ptrn);
+			std::unique_ptr<u8[]> patternData = std::make_unique<u8[]>(size);
+			fread(patternData.get(), 1, size, ptrn);
 
 			/* Set Buffer data to save. */
 			for(int i = 0; i < (int)size; i++) {
-				SaveUtils::Write<u8>(this->patternPointer(), i, patternData[i]);
+				SaveUtils::Write<u8>(this->patternPointer(), i, patternData.get()[i]);
 			}
-
-			/* Delete Buffer. */
-			delete[] patternData;
 
 		}
 

@@ -1,6 +1,6 @@
 /*
 *   This file is part of WildEdit-Core
-*   Copyright (C) 2020 Universal-Team
+*   Copyright (C) 2020-2021 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ extern std::vector<std::tuple<u16, std::string, std::string>> itemDB;
 std::string ItemUtils::getName(u16 ID) {
 	if (itemDB.empty()) return "???"; // Database empty.
 
-	for (auto const& entry : itemDB) {
+	for (auto const &entry : itemDB) {
 		if (std::get<0>(entry) == ID) return std::get<1>(entry);
 	}
 

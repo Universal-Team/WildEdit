@@ -1,6 +1,6 @@
 /*
 *   This file is part of WildEdit-Core
-*   Copyright (C) 2020 Universal-Team
+*   Copyright (C) 2020-2021 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -51,23 +51,6 @@ public:
 	Player(const Player& player) = delete;
 	Player& operator=(const Player& player) = delete;
 
-	u32 getPlayerSize() const {
-		switch(this->SaveRegion) {
-			case WWRegion::EUR:
-			case WWRegion::USA:
-				return 0x228C;
-
-			case WWRegion::JPN:
-				return 0x1D10;
-
-			case WWRegion::KOR:
-				return 0x249C;
-		}
-
-		return 0;
-	};
-
-
 	u8 face() const;
 	void face(u8 v);
 
@@ -110,9 +93,7 @@ public:
 
 	std::unique_ptr<Pattern> pattern(u8 slot) const;
 
-	/*
-		Dump & Inject.
-	*/
+	/* Dump & Inject. */
 	void dumpPlayer(const std::string fileName);
 	bool injectPlayer(const std::string fileName);
 
@@ -123,6 +104,22 @@ public:
 	void bed(u8 v);
 private:
 	u8 *playerPointer() const { return this->PlayerData.get() + this->Offset; };
+
+	u32 getPlayerSize() const {
+		switch(this->SaveRegion) {
+			case WWRegion::EUR:
+			case WWRegion::USA:
+				return 0x228C;
+
+			case WWRegion::JPN:
+				return 0x1D10;
+
+			case WWRegion::KOR:
+				return 0x249C;
+		}
+
+		return 0;
+	};
 };
 
 #endif

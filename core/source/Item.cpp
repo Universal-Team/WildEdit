@@ -1,6 +1,6 @@
 /*
 *   This file is part of WildEdit-Core
-*   Copyright (C) 2020 Universal-Team
+*   Copyright (C) 2020-2021 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -29,12 +29,12 @@
 #include "saveUtils.hpp"
 
 /* Item ID. */
-u16 Item::id() const { return SaveUtils::Read<u16>(itemPointer(), 0); };
-void Item::id(u16 v) { SaveUtils::Write<u16>(itemPointer(), 0, v); };
+u16 Item::id() const { return SaveUtils::Read<u16>(this->itemPointer(), 0); };
+void Item::id(u16 v) { SaveUtils::Write<u16>(this->itemPointer(), 0, v); };
 
 /* House Furniture Item ID. */
-u16 Item::houseid() const { return SaveUtils::Read<u16>(itemPointer(), 0) & 0xFFFC; };
-void Item::houseid(u16 v) { SaveUtils::Write<u16>(itemPointer(), 0, v); };
+u16 Item::houseid() const { return SaveUtils::Read<u16>(this->itemPointer(), 0) & 0xFFFC; };
+void Item::houseid(u16 v) { SaveUtils::Write<u16>(this->itemPointer(), 0, v); };
 
 /* Item Rotation. (Furniture / House) */
 FurnitureDirection Item::rotation() const {

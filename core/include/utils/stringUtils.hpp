@@ -1,6 +1,6 @@
 /*
 *   This file is part of WildEdit-Core
-*   Copyright (C) 2020 Universal-Team
+*   Copyright (C) 2020-2021 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -31,33 +31,23 @@
 #include <string>
 
 namespace StringUtils {
-	/*
-		Converters.
-	*/
+	/* Converters. */
 	std::u16string UTF8toUTF16(const std::string& src);
 	std::string UTF16toUTF8(const std::u16string& src);
 
-	/*
-		Other utilities.
-	*/
+	/* Other utilities. */
 	std::u16string& toFullWidth(std::u16string &in);
 	u16 strToU16(const std::string &str);
 
-	/*
-		For AC:WW Korean.
-	*/
+	/* For AC:WW Korean. */
 	std::u16string ReadUTF16String(u8 *data, u32 offset, u32 maxSize);
 	void WriteUTF16String(u8 *data, const std::u16string &str, u32 offset, u32 maxSize);
 
-	/*
-		Wild World all regions except Korean.
-	*/
+	/* Wild World all regions except Korean. */
 	std::u16string ReadUTF8String(u8 *data, u32 offset, u32 maxSize, WWRegion region);
 	void WriteUTF8String(u8 *data, const std::u16string &str, u32 offset, u32 maxSize, WWRegion region);
 
-	/*
-		Wild World to unicode stuff.
-	*/
+	/* Wild World to unicode stuff. */
 	std::u16string wwToUnicode(const std::string &input, WWRegion region);
 	std::string unicodeToWW(const std::u16string &input, WWRegion region);
 };

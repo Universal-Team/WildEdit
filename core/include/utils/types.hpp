@@ -1,6 +1,6 @@
 /*
 *   This file is part of WildEdit-Core
-*   Copyright (C) 2020 Universal-Team
+*   Copyright (C) 2020-2021 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -39,9 +39,7 @@ struct Byte {
 	u8 Nibble2: 4; // 4 - 7.
 };
 
-/*
-	Save Regions.
-*/
+/* Save Regions. */
 enum class WWRegion : u8 {
 	EUR,
 	USA,

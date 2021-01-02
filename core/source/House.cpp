@@ -1,6 +1,6 @@
 /*
 *   This file is part of WildEdit-Core
-*   Copyright (C) 2020 Universal-Team
+*   Copyright (C) 2020-2021 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ u8 House::size() const { return this->housePointer()[0x15A0] & 7; };
 void House::size(u8 v) {
 	if (v > 6) return;
 
-	this->housePointer()[0x15A1] = ((this->size() & ~7) | (v & 7));
+	this->housePointer()[0x15A0] = ((this->size() & ~7) | (v & 7));
 	this->debts(HouseSizeDebts[v]); // Should we set the House size debts after it, or not?
 };
 

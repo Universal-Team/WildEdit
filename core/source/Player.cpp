@@ -1,6 +1,6 @@
 /*
 *   This file is part of WildEdit-Core
-*   Copyright (C) 2020 Universal-Team
+*   Copyright (C) 2020-2021 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -562,16 +562,14 @@ bool Player::injectPlayer(const std::string fileName) {
 		/* Check for size. */
 		if (size == this->getPlayerSize()) {
 			/* Create Buffer with the size and read the file. */
-			u8 *playerData = new u8[size];
-			fread(playerData, 1, size, pl);
+			std::unique_ptr<u8[]> playerData = std::make_unique<u8[]>(size);
+			fread(playerData.get(), 1, size, pl);
 
 			/* Set Buffer data to save. */
 			for(int i = 0; i < (int)size; i++){
-				SaveUtils::Write<u8>(this->playerPointer(), i, playerData[i]);
+				SaveUtils::Write<u8>(this->playerPointer(), i, playerData.get()[i]);
 			}
 
-			/* Free Buffer. */
-			delete[] playerData;
 			isGood = true;
 		}
 

@@ -1,6 +1,6 @@
 /*
 *   This file is part of WildEdit-Core
-*   Copyright (C) 2020 Universal-Team
+*   Copyright (C) 2020-2021 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -55,14 +55,10 @@ public:
 	Sav(const Sav& sav) = delete;
 	Sav& operator=(const Sav& sav) = delete;
 
-	/*
-		Call this when finished editing.
-	*/
+	/* Call this when finished editing. */
 	void Finish(void);
 
-	/*
-		Get Sav Contents.
-	*/
+	/* Get Sav Contents. */
 	std::unique_ptr<Player> player(u8 player) const;
 	std::unique_ptr<Villager> villager(u8 villager) const;
 	std::unique_ptr<Town> town() const;
@@ -71,20 +67,14 @@ public:
 
 	WWRegion getRegion() const { return this->SaveRegion; };
 
-	/*
-		Get max Values.
-	*/
+	/* Get max Values. */
 	int maxVillager() const { return 7; };
 
-	/*
-		Set Changes made and such.
-	*/
+	/* Set Changes made and such. */
 	void setChangesMade(bool v = true) { if (v != this->Changes) this->Changes = v; };
 	bool changesMade() const { return this->Changes; };
 
-	/*
-		return Sav stuff.
-	*/
+	/* return Sav stuff. */
 	u32 getLength() const { return this->SaveSize; };
 	std::shared_ptr<u8[]> rawData() const { return this->SaveData; };
 

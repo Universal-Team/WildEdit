@@ -26,6 +26,7 @@
 
 #include "fileBrowse.hpp"
 
+#include <algorithm>
 #include <dirent.h>
 #include <functional>
 #include <nds.h>
